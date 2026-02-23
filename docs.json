@@ -1,13 +1,12 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Welcome to TEQOIN Blockchain documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#08cbf6",
+    "light": "#f3fffb",
+    "dark": "#2b89fb"
   },
-  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
@@ -118,5 +117,12 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "background": {
+    "image": "/images/logo2.png",
+    "decoration": "gradient"
+  },
+  "appearance": {
+    "default": "light"
   }
 }
