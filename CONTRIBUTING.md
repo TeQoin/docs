@@ -1,34 +1,77 @@
-> **Customize this file**: Tailor this template to your project by noting specific contribution types you're looking for, adding a Code of Conduct, or adjusting the writing guidelines to match your style.
+# Contributing to TeQoin Documentation
 
-# Contribute to the documentation
+Thank you for contributing to TeQoin's documentation! 🎉
 
-Thank you for your interest in contributing to our documentation! This guide will help you get started.
+## 🤝 Code of Conduct
 
-## How to contribute
+Be respectful, inclusive, and professional in all interactions.
 
-### Option 1: Edit directly on GitHub
+## 🚀 Getting Started
 
-1. Navigate to the page you want to edit
-2. Click the "Edit this file" button (the pencil icon)
-3. Make your changes and submit a pull request
-
-### Option 2: Local development
-
-1. Fork and clone this repository
-2. Install the Mintlify CLI: `npm i -g mint`
-3. Create a branch for your changes
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/docs.git`
+3. Create a feature branch: `git checkout -b feature/your-feature`
 4. Make changes
-5. Navigate to the docs directory and run `mint dev`
-6. Preview your changes at `http://localhost:3000`
-7. Commit your changes and submit a pull request
+5. Test locally: `mintlify dev`
+6. Submit a pull request
 
-For more details on local development, see our [development guide](development.mdx).
+## 🌿 Branch Naming Convention
 
-## Writing guidelines
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `feature/` | New content or features | `feature/api-reference` |
+| `docs/` | Documentation updates | `docs/fix-typos` |
+| `fix/` | Bug fixes | `fix/broken-links` |
+| `style/` | Formatting/design | `style/update-colors` |
 
-- **Use active voice**: "Run the command" not "The command should be run"
-- **Address the reader directly**: Use "you" instead of "the user"
-- **Keep sentences concise**: Aim for one idea per sentence
-- **Lead with the goal**: Start instructions with what the user wants to accomplish
-- **Use consistent terminology**: Don't alternate between synonyms for the same concept
-- **Include examples**: Show, don't just tell
+## 📝 Commit Message Format
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+```
+<type>(<scope>): <subject>
+
+<body> (optional)
+```
+
+**Types:** `docs`, `feat`, `fix`, `style`, `refactor`, `test`, `chore`
+
+**Examples:**
+```bash
+git commit -m "docs(api): add indexer endpoints documentation"
+git commit -m "feat(tutorials): add smart contract deployment guide"
+git commit -m "fix(quickstart): correct MetaMask network parameters"
+```
+
+## 🔄 Pull Request Process
+
+1. Create PR to `develop` (not `main`)
+2. Use conventional commit format for title
+3. Describe changes clearly
+4. List what you tested
+5. Wait for review and approval
+
+## 📚 Style Guide
+
+### Writing
+
+- **Clear and concise** - Avoid jargon
+- **Active voice** - "Deploy the contract"
+- **Present tense** - "The API returns"
+- **Second person** - "You can deploy"
+
+### Code Blocks
+
+Always specify language:
+```javascript
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+```
+
+## ✅ Checklist
+
+- [ ] Code blocks have language specified
+- [ ] All links work locally
+- [ ] Tested with `mintlify dev`
+- [ ] Follows conventional commits
+- [ ] PR targets `develop` branch
+
+Thank you for contributing! 🚀
