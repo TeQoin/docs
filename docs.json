@@ -83,8 +83,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/TeQoin.svg",
+    "dark": "/logo/TeQoin.svg"
   },
   "navbar": {
     "links": [
