@@ -3,10 +3,10 @@
   "theme": "mint",
   "name": " TeQoin Official Documentation",
   "colors": {
-    "primary": "#08cbf6",
-    "light": "#f3fffb",
-    "dark": "#2b89fb"
-  },
+    "primary": "#0066FF",
+    "light": "#00D4AA",
+    "dark": "#0066FF"
+  },    
   "navigation": {
     "tabs": [
       {
@@ -117,15 +117,12 @@
       "github": "https://github.com/TeQoin"
     }
   },
-  "background": {
-    "decoration": "gradient",
-    "image": "/images/TeqoinLogo.png"
-  },
+
   "appearance": {
     "default": "light"
   },
   "description": "Welcome to TeQoin Blockchain documentation",
-  "favicon": "/images/TeqoinLogo.png",
+  "favicon": "/images/TeQoin.svg",
   "fonts": {
     "family": "Inter",
     "weight": 500
