@@ -1,55 +1,80 @@
-# Mintlify Starter Kit
+# TeQoin Documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+> **Official documentation for TeQoin(Testnet) - EVM Layer-2 Scaling with Low-Fee Optimistic Rollup**
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+[![Documentation](https://img.shields.io/badge/docs-doc.teqoin.io-blue)](https://doc.teqoin.io)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Mintlify](https://img.shields.io/badge/Built%20with-Mintlify-blueviolet)](https://mintlify.com)
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+## 🌐 Live Documentation
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+Visit our documentation at **[docs.teqoin.io](https://docs.teqoin.io)**
 
-## AI-assisted writing
+## 📖 About This Repository
 
-Set up your AI coding tool to work with Mintlify:
+This repository contains the complete source code for TeQoin's technical documentation, built with [Mintlify](https://mintlify.com). Our documentation covers:
 
+- 🚀 **Quick Start Guides** - Get started with TeQoin in minutes
+- 💻 **Developer Documentation** - Build on TeQoin L2
+- 🌉 **Bridge Guides** - Move assets between L1 and L2
+- 🏗️ **Architecture** - Technical deep dives
+- 📚 **Tutorials** - Step-by-step guides
+- 🛠️ **API Reference** - Complete API documentation
+
+## 🏗️ Repository Structure
+```
+docs/
+├── introduction/          # What is TeQoin, why use it
+├── quickstart/           # Getting started guides
+├── developers/           # Developer documentation
+├── bridge/              # L1 ↔ L2 bridge documentation
+├── architecture/        # Technical architecture docs
+├── tutorials/           # Step-by-step tutorials
+├── resources/           # Additional resources
+└── mint.json            # Mintlify configuration
+```
+
+## 🚀 Local Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 ```bash
-npx skills add https://mintlify.com/docs
+# Clone the repository
+git clone https://github.com/TeQoin/docs.git
+cd docs
+
+# Install Mintlify CLI
+npm i -g mintlify
+
+# Start development server
+mintlify dev
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+Open [http://localhost:3000](http://localhost:3000)
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+## 📝 Contributing
 
-## Development
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+### Quick Start for Contributors
+```bash
+# Fork and clone
+git clone https://github.com/YOUR_USERNAME/docs.git
 
+# Create feature branch
+git checkout -b feature/your-feature
+
+# Make changes and commit
+git commit -m "docs: your changes"
+
+# Push and create PR
+git push origin feature/your-feature
 ```
-npm i -g mint
-```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## 📄 License
 
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+MIT License - see [LICENSE](LICENSE) file for details.
