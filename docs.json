@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": " TeQoin Docs",
+  "name": " TeQoin Official Documentation",
   "colors": {
     "primary": "#08cbf6",
     "light": "#f3fffb",
@@ -113,20 +113,19 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/TeQoin",
+      "github": "https://github.com/TeQoin"
     }
   },
   "background": {
     "decoration": "gradient",
-    "image": "/images/logo2copy2.png"
+    "image": "/images/TeqoinLogo.png"
   },
   "appearance": {
     "default": "light"
   },
   "description": "Welcome to TeQoin Blockchain documentation",
-  "favicon": "/images/logo2copy.png",
+  "favicon": "/images/TeqoinLogo.png",
   "fonts": {
     "family": "Inter",
     "weight": 500
