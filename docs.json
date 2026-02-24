@@ -3,65 +3,111 @@
   "theme": "mint",
   "name": " TeQoin Official Documentation",
   "colors": {
-    "primary": "#08cbf6",
-    "light": "#f3fffb",
-    "dark": "#2b89fb"
-  },
+    "primary": "#0066FF",
+    "light": "#00D4AA",
+    "dark": "#0066FF"
+  },    
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Introduction",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "introduction/welcome",
+              "introduction/what-is-teqoin",
+              "introduction/why-teqoin",
+              "introduction/key-features"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Quick Start",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "quickstart/add-network",
+              "quickstart/get-testnet-eth",
+              "quickstart/first-transaction",
+              "quickstart/bridge-assets"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Developer Documentation",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "developers/network-information",
+              "developers/smart-contracts",
+              "developers/deploy-contract",
+              "developers/verify-contract",
+              "developers/integration-guide"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Bridge",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "bridge/overview",
+              "bridge/deposit-l1-to-l2",
+              "bridge/withdraw-l2-to-l1",
+              "bridge/challenge-period",
+              "bridge/faq"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/technical-overview",
+              "architecture/optimistic-rollup",
+              "architecture/fraud-proofs",
+              "architecture/sequencer",
+              "architecture/security-model"
+            ]
+          },
+          {
+            "group": "Tutorials",
+            "pages": [
+              "tutorials/deploy-first-contract",
+              "tutorials/build-dapp",
+              "tutorials/integrate-wallet",
+              "tutorials/run-node"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/contract-abis",
+              "resources/sdks-libraries",
+              "resources/block-explorer",
+              "resources/faucet",
+              "resources/support"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "API Documentation",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+              "api-reference/authentication",
+              "api-reference/rate-limits"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Indexer API",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/indexer/get-transactions",
+              "api-reference/indexer/get-transaction",
+              "api-reference/indexer/get-block",
+              "api-reference/indexer/get-stats"
+            ]
+          },
+          {
+            "group": "JSON-RPC API",
+            "pages": [
+              "api-reference/rpc/eth-methods",
+              "api-reference/rpc/net-methods",
+              "api-reference/rpc/web3-methods"
             ]
           }
         ]
@@ -70,21 +116,31 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Github",
+          "href": "https://github.com/TeQoin",
+          "icon": "github"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Telegram",
+          "href": "https://t.me/TeQoin",
+          "icon": "telegram"
+        },
+        {
+          "anchor": "Twitter",
+          "href": "https://x.com/TeQoin",
+          "icon": "x"
+        },
+        {
+          "anchor": "Block Explorer",
+          "href": "https://block-explorer.teqoin.io",
+          "icon": "magnifying-glass"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/TeQoin.svg",
+    "dark": "/logo/TeQoin.svg"
   },
   "navbar": {
     "links": [
@@ -105,8 +161,6 @@
      "view",
      "chatgpt",
      "claude",
-     "perplexity",
-     "mcp",
      "cursor",
      "vscode"
    ]
@@ -117,15 +171,12 @@
       "github": "https://github.com/TeQoin"
     }
   },
-  "background": {
-    "decoration": "gradient",
-    "image": "/images/TeqoinLogo.png"
-  },
+
   "appearance": {
     "default": "light"
   },
   "description": "Welcome to TeQoin Blockchain documentation",
-  "favicon": "/images/TeqoinLogo.png",
+  "favicon": "/images/TeQoin.svg",
   "fonts": {
     "family": "Inter",
     "weight": 500
