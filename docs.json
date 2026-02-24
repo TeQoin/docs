@@ -116,14 +116,24 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Github",
+          "href": "https://github.com/TeQoin",
+          "icon": "github"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Telegram",
+          "href": "https://t.me/TeQoin",
+          "icon": "telegram"
+        },
+        {
+          "anchor": "Twitter",
+          "href": "https://x.com/TeQoin",
+          "icon": "x"
+        },
+        {
+          "anchor": "Block Explorer",
+          "href": "https://block-explorer.teqoin.io",
+          "icon": "magnifying-glass"
         }
       ]
     }
@@ -151,8 +161,6 @@
      "view",
      "chatgpt",
      "claude",
-     "perplexity",
-     "mcp",
      "cursor",
      "vscode"
    ]
