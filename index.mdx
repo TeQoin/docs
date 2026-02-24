@@ -1,97 +1,137 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: 'Welcome to TeQoin'
+description: 'Official documentation for TeQoin - EVM Layer-2 Scaling with Low-Fee Optimistic Rollup'
+icon: '/logo/TeQoin.svg'
 ---
 
-## Setting up
+<div className="flex items-center gap-3 mb-6">
+  <h1 className="text-4xl font-bold m-0">Welcome to TeQoin</h1>
+  <img 
+    src="/logo/TeQoin.svg" 
+    alt="TeQoin" 
+    className="h-10 pointer-events-none select-none" 
+  />
+</div>
 
-Get your documentation site up and running in minutes.
+Welcome to the official TeQoin documentation! TeQoin is an **EVM-compatible Layer-2 scaling solution** built on Ethereum using **Optimistic Rollup technology**.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## What is TeQoin?
 
-## Make it yours
+TeQoin provides **low-fee, high-speed transactions** while maintaining the security guarantees of Ethereum mainnet. Built for developers, users, and businesses who need scalable blockchain infrastructure without compromising on security.
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="low Transaction Fees" icon="coins">
+    Enjoy low fee transactions on L2. low fees for users.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="5-Second Blocks" icon="clock">
+    Lightning-fast transaction finality with 5-second block times.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Full EVM Compatibility" icon="code">
+    Deploy existing Ethereum contracts without modifications.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Ethereum Security" icon="shield">
+    Inherit Ethereum's security through optimistic rollup technology.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Quick Links
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart/add-network">
+    Get started with TeQoin in 5 minutes
+  </Card>
+  <Card title="Network Information" icon="network-wired" href="/developers/network-information">
+    RPC endpoints, Chain ID, and contract addresses
+  </Card>
+  <Card title="Bridge Assets" icon="bridge" href="/bridge/deposit-l1-to-l2">
+    Move ETH between L1 and L2
+  </Card>
+  <Card title="Deploy Contracts" icon="file-code" href="/developers/deploy-contract">
+    Deploy your first smart contract on TeQoin
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Network Information
 
-## Need inspiration?
+| Parameter | Value |
+|-----------|-------|
+| **Network Name** | TeQoin L2 |
+| **Chain ID(Testnet)** | 420377 (0x66B69) |
+| **Currency Symbol** | ETH |
+| **Block Time** | 5 seconds |
+| **Finality** | Instant (optimistic) |
+| **Challenge Period** | 7 days |
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Key Features
+
+### 🎯 Low-Fee Transactions
+Pay **low gas fees** on TeQoin L2. Perfect for microtransactions, gaming, and high-frequency applications.
+
+### ⚡ Lightning Fast
+**5-second block times** provide near-instant transaction confirmation. Build responsive dApps with superior UX.
+
+### 🔒 Ethereum Security
+TeQoin inherits Ethereum's battle-tested security through optimistic rollup technology and fraud proofs.
+
+### 🛠️ Developer Friendly
+Use familiar tools:
+- **Solidity** for smart contracts
+- **Hardhat/Foundry** for development
+- **Web3.js/Ethers.js** for frontend integration
+- **MetaMask** for wallet connection
+
+## How It Works
+```mermaid
+graph LR
+    A[User] -->|Submit TX| B[TeQoin L2]
+    B -->|Batch TXs| C[Ethereum L1]
+    C -->|Security| B
+    B -->|Fast Execution| A
+```
+
+1. **Submit transactions** to TeQoin L2 sequencer
+2. **Execute instantly** with 5-second finality
+3. **Batch and post** transaction data to Ethereum L1
+4. **Inherit security** from Ethereum mainnet
+
+## Get Started
+
+<Steps>
+  <Step title="Install Teqoin Wallet in Telegram">
+    Configure TeQoin L2 network in your wallet
+    
+    [Add Network Guide →](/quickstart/add-network)
+  </Step>
+  
+  <Step title="Get Testnet ETH">
+    Use our faucet to get test ETH on L2
+    
+    [Get Testnet ETH →](/quickstart/get-testnet-eth)
+  </Step>
+  
+  <Step title="Make Your First Transaction">
+    Send a transaction on TeQoin L2
+    
+    [First Transaction →](/quickstart/first-transaction)
+  </Step>
+</Steps>
+
+## Support & Community
+
+Need help? Join our community!
+
+<CardGroup cols={3}>
+  <Card title="Telegram" icon="Telegram" href="https://t.me/TeQoin">
+    Chat with the community
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/TeQoin">
+    Contribute to the project
+  </Card>
+  <Card title="Twitter" icon="twitter" href="https://twitter.com/TeQoin">
+    Follow for updates
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to build?** Head to the [Quick Start Guide](/quickstart/add-network) to begin! 🚀

@@ -1,0 +1,242 @@
+---
+title: 'What is TeQoin?'
+description: 'Learn about TeQoin L2 - an EVM-compatible optimistic rollup scaling solution for Ethereum'
+---
+
+# What is TeQoin?
+
+TeQoin is an **EVM-compatible Layer-2 (L2) blockchain** built on Ethereum using **Optimistic Rollup technology**. It provides developers and users with a scalable, cost-efficient alternative to Ethereum mainnet while maintaining the security guarantees of the Ethereum network.
+
+## Layer-2 Scaling Solution
+
+TeQoin operates as a **separate blockchain** that runs in parallel to Ethereum (Layer-1), processing transactions off-chain and periodically posting transaction data back to Ethereum mainnet.
+
+
+
+### How TeQoin Relates to Ethereum
+
+| Aspect | Ethereum L1 | TeQoin L2 |
+|--------|-------------|-----------|
+| **Transaction Speed** | ~12-15 seconds | **5 seconds** |
+| **Transaction Fees** | $1-50+ per transaction | **$0 (zero fees)** |
+| **Security** | Ethereum consensus | **Inherits from Ethereum** |
+| **Smart Contracts** | EVM-compatible | **Fully EVM-compatible** |
+| **Finality** | Probabilistic | **Instant (optimistic)** |
+
+## Optimistic Rollup Technology
+
+TeQoin uses **Optimistic Rollup** - a specific type of Layer-2 scaling that:
+
+<AccordionGroup>
+  <Accordion title="1. Assumes Transactions are Valid">
+    Transactions are assumed to be correct by default. This allows for fast processing without requiring validators to verify every transaction immediately.
+  </Accordion>
+
+  <Accordion title="2. Posts Data to Ethereum">
+    All transaction data is posted to Ethereum L1, ensuring data availability and transparency. Anyone can reconstruct the L2 state from L1 data.
+  </Accordion>
+
+  <Accordion title="3. Allows Fraud Proofs">
+    If someone submits an invalid transaction, anyone can challenge it by submitting a **fraud proof** within the 7-day challenge period.
+  </Accordion>
+
+  <Accordion title="4. Inherits Ethereum Security">
+    Because transaction data lives on Ethereum and fraud proofs are enforced, TeQoin inherits Ethereum's security model.
+  </Accordion>
+</AccordionGroup>
+
+## Core Components
+
+### 🔄 Sequencer
+The **sequencer** is responsible for:
+- Accepting user transactions
+- Ordering transactions into blocks
+- Executing transactions and updating state
+- Posting transaction data to Ethereum L1
+
+<Note>
+The sequencer provides **instant transaction confirmation** while batching transactions for efficient L1 posting.
+</Note>
+
+### 🌉 Bridge Contracts
+Bridge contracts on L1 and L2 enable:
+- **Deposits** (L1 → L2): Lock ETH on L1, mint on L2
+- **Withdrawals** (L2 → L1): Burn on L2, unlock on L1 after 7-day challenge period
+
+[Learn more about bridging →](/bridge/overview)
+
+### 🔐 Fraud Proof System
+The fraud proof system ensures:
+- Anyone can challenge invalid state transitions
+- Challengers submit fraud proofs to L1
+- Invalid transactions are reverted
+- System remains secure without trusting the sequencer
+
+[Learn more about fraud proofs →](/architecture/fraud-proofs)
+
+## Key Characteristics
+
+### Low Transaction Fees
+
+<Card title="Gasless Transactions" icon="gift">
+  Users pay **low in gas fees** on TeQoin L2. This makes microtransactions, gaming, and frequent interactions economically viable.
+</Card>
+
+**How is this possible?**
+- The sequencer covers gas costs
+- Transaction costs are amortized across many users
+- L2 execution is much cheaper than L1
+
+### Full EVM Compatibility
+
+TeQoin is **100% compatible** with Ethereum's EVM (Ethereum Virtual Machine):
+```solidity
+// Your existing Ethereum contracts work on TeQoin
+contract MyToken {
+    mapping(address => uint256) public balances;
+    
+    function transfer(address to, uint256 amount) public {
+        require(balances[msg.sender] >= amount);
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+    }
+}
+```
+
+<Check>No code changes required</Check>
+<Check>Same development tools (Hardhat, Foundry)</Check>
+<Check>Same libraries (Web3.js, Ethers.js)</Check>
+<Check>Same wallets (MetaMask, WalletConnect)</Check>
+
+### Lightning-Fast Blocks
+
+- **5-second block times** provide near-instant confirmation
+- Transactions feel instantaneous to users
+- Perfect for interactive applications and gaming
+
+### Ethereum-Grade Security
+
+<CardGroup cols={2}>
+  <Card title="Data Availability" icon="database">
+    All transaction data is posted to Ethereum, ensuring anyone can verify the state.
+  </Card>
+  <Card title="Fraud Proofs" icon="shield-check">
+    Invalid transactions can be challenged and reverted, protecting user funds.
+  </Card>
+  <Card title="Censorship Resistance" icon="ban">
+    Users can force transactions through L1 if the sequencer censors them.
+  </Card>
+  <Card title="Decentralization" icon="sitemap">
+    Security doesn't depend on trusting the sequencer - it's enforced by Ethereum.
+  </Card>
+</CardGroup>
+
+## TeQoin vs. Other Solutions
+
+### Comparison with L1 (Ethereum Mainnet)
+
+| Feature | Ethereum L1 | TeQoin L2 |
+|---------|-------------|-----------|
+| Transaction Cost | $1-50+ | **low-fee** |
+| Confirmation Time | 12-15 seconds | **5 seconds** |
+| Throughput (TPS) | ~15-30 | **1000+** |
+| Security Model | Ethereum consensus | **Inherits from Ethereum** |
+| Finality | Probabilistic (~15 min) | Instant (optimistic) |
+
+## Use Cases
+
+TeQoin is ideal for:
+
+<CardGroup cols={2}>
+  <Card title="DeFi Applications" icon="chart-line">
+    Low-cost swaps, lending, and yield farming with low gas fees
+  </Card>
+  <Card title="Gaming & NFTs" icon="gamepad">
+    Frequent in-game transactions and NFT mints at low cost
+  </Card>
+  <Card title="Social & Content" icon="users">
+    Microtransactions for tipping, subscriptions, and social interactions
+  </Card>
+  <Card title="Enterprise Solutions" icon="building">
+    High-throughput business applications requiring low costs
+  </Card>
+</CardGroup>
+
+## How TeQoin Works (Simplified)
+
+<Steps>
+  <Step title="User Submits Transaction">
+    Alice wants to send 1 ETH to Bob on TeQoin L2. She submits the transaction through MetaMask.
+  </Step>
+
+  <Step title="Sequencer Processes Transaction">
+    The TeQoin sequencer receives the transaction, validates it, and includes it in the next block (5 seconds).
+  </Step>
+
+  <Step title="Instant Confirmation">
+    Alice sees the transaction confirmed instantly. Bob receives the ETH immediately.
+  </Step>
+
+  <Step title="Data Posted to Ethereum">
+    The sequencer batches Alice's transaction with hundreds of others and posts the compressed data to Ethereum L1.
+  </Step>
+
+  <Step title="Security Guaranteed">
+    For 7 days, anyone can verify the transaction was correct. If invalid, it can be challenged with a fraud proof.
+  </Step>
+
+  <Step title="Final Settlement">
+    After 7 days with no successful challenges, the transaction is considered final on Ethereum.
+  </Step>
+</Steps>
+
+## Getting Started
+
+Ready to use TeQoin?
+
+<CardGroup cols={2}>
+  <Card title="Add Network to Wallet" icon="wallet" href="/quickstart/add-network">
+    Add Teqoin Wallet for TeQoin L2
+  </Card>
+  <Card title="Get Testnet ETH" icon="faucet" href="/quickstart/get-testnet-eth">
+    Request test funds from our faucet
+  </Card>
+  <Card title="Deploy a Contract" icon="code" href="/developers/deploy-contract">
+    Deploy your first smart contract
+  </Card>
+  <Card title="Learn More" icon="book" href="/architecture/technical-overview">
+    Deep dive into the architecture
+  </Card>
+</CardGroup>
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Is TeQoin secure?">
+    Yes! TeQoin inherits Ethereum's security through fraud proofs. All transaction data is posted to Ethereum, and anyone can challenge invalid transactions. This means you don't need to trust the TeQoin sequencer - security is enforced by Ethereum L1.
+  </Accordion>
+
+  <Accordion title="How long do withdrawals take?">
+    Withdrawals from TeQoin L2 to Ethereum L1 require a **7-day challenge period**. This allows time for anyone to submit fraud proofs if the withdrawal is invalid. After 7 days, you can finalize your withdrawal on L1.
+  </Accordion>
+
+  <Accordion title="Can I use existing Ethereum tools?">
+    Yes! TeQoin is 100% EVM-compatible. You can use:
+    - MetaMask, WalletConnect for wallets
+    - Hardhat, Foundry for development
+    - Web3.js, Ethers.js for frontend
+    - Solidity for smart contracts
+  </Accordion>
+
+  <Accordion title="What happens if the sequencer goes down?">
+    TeQoin includes censorship resistance mechanisms. If the sequencer is offline or censoring transactions, users can force their transactions through Ethereum L1 directly. This ensures the network remains accessible even if the sequencer fails.
+  </Accordion>
+
+  <Accordion title="Are there transaction fees?">
+    No! TeQoin provides **zero-fee transactions** for users. The sequencer covers the cost of posting data to Ethereum L1.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+**Next:** Learn [Why Choose TeQoin](/introduction/why-teqoin) over other scaling solutions.
