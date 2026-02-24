@@ -1,0 +1,359 @@
+---
+title: 'Why Choose TeQoin?'
+description: 'Discover why TeQoin is the best Layer-2 solution for developers and users'
+---
+
+# Why Choose TeQoin?
+
+TeQoin offers a unique combination of **low fees**, **high speed**, and **Ethereum security** that makes it the ideal Layer-2 solution for developers and users alike.
+
+## The Problem with Ethereum L1
+
+While Ethereum is the leading smart contract platform, it faces significant challenges:
+
+<CardGroup cols={2}>
+  <Card title="High Gas Fees" icon="fire">
+    Simple transactions can cost **`$5-$50+`** during network congestion
+  </Card>
+  <Card title="Slow Transactions" icon="turtle">
+    **12-15 second** block times feel sluggish for modern applications.
+  </Card>
+  <Card title="Limited Throughput" icon="gauge-high">
+    Only **15-30 transactions per second** creates bottlenecks
+  </Card>
+  <Card title="Poor UX" icon="face-frown">
+    High fees and slow speeds create friction for users
+  </Card>
+</CardGroup>
+
+### Real-World Impact
+```
+User Action: Swap $50 worth of tokens
+L1 Gas Fee: $25
+User Experience: 😞 "Why am I paying 50% in fees?"
+
+User Action: Mint an NFT
+L1 Scenario: Bot-driven Gas War 
+User Experience: 😠 "This costs more than the NFT itself! only whales won."
+
+User Action: Play a blockchain game
+L1 Gas Fee: $10 per move
+User Experience: 😤 "This is unplayable!"
+```
+
+## How TeQoin Solves This
+
+<Note>
+TeQoin eliminates these pain points while maintaining the security guarantees you expect from Ethereum.
+</Note>
+
+### 💰 Low Transaction Fees
+
+The most compelling reason to use TeQoin is simple: **users pay low in gas fees**.
+
+<CardGroup cols={2}>
+  <Card title="For Users" icon="user">
+    Make transactions without worrying about gas costs
+  </Card>
+  <Card title="For Developers" icon="code">
+    Build applications without users complaining about fees
+  </Card>
+  <Card title="For Businesses" icon="building">
+    Predictable costs and better unit economics
+  </Card>
+  <Card title="For Innovation" icon="lightbulb">
+    Enable new use cases that weren't viable on L1
+  </Card>
+</CardGroup>
+
+### ⚡ Lightning-Fast Performance
+
+**5-second block times** provide instant transaction confirmation.
+
+<Tabs>
+  <Tab title="User Experience">
+```
+    Ethereum L1:
+    Click "Send" → Wait 12-15 seconds → Transaction confirmed
+    User thinks: "Is this still processing?"
+    
+    TeQoin L2:
+    Click "Send" → Wait 5 seconds → Transaction confirmed
+    User thinks: "Wow, that was fast!"
+```
+  </Tab>
+  
+  <Tab title="Developer Benefits">
+    - Build responsive, real-time applications
+    - Better user retention (users don't bounce while waiting)
+    - Competitive advantage over L1 alternatives
+    - Support high-frequency use cases (gaming, social)
+  </Tab>
+  
+  
+  <Tab title="Technical Stats">
+    | Metric | Ethereum L1 | TeQoin L2 |
+    |--------|-------------|-----------|
+    | Block Time | 12-15 seconds | **5 seconds** |
+    | TPS | 15-30 | **1000+** |
+  </Tab>
+  <Tab title="Anti-MEV Advantage">
+    #### Defeating the Bots
+    Ethereum's 12-15s block time creates a large "wait window" where MEV bots can monitor the mempool, calculate attacks, and "sandwich" your trades.
+
+    **TeQoin's 5-second blocks:**
+    - **Shrink the Attack Window:** Bots have 60% less time to simulate and execute front-running attacks.
+    - **Tighter Pricing:** Rapid finality keeps on-chain prices synced with global markets, reducing "stale price" arbitrage.
+    - **Fairer for LPs:** Liquidity providers suffer less from Loss Versus Rebalancing (LVR) compared to slower chains.
+
+  </Tab>
+</Tabs>
+
+### 🔒 Ethereum-Grade Security
+
+TeQoin doesn't compromise on security to achieve speed and low costs.
+
+<AccordionGroup>
+  <Accordion title="Inherits Ethereum Security">
+    All transaction data is posted to Ethereum L1. This means TeQoin's security is backed by Ethereum's $40B+ network, making it as secure as Ethereum itself.
+  </Accordion>
+
+  <Accordion title="Fraud Proof Protection">
+    If the TeQoin sequencer submits invalid transactions, anyone can challenge them with fraud proofs. Invalid transactions are automatically reverted, protecting user funds.
+  </Accordion>
+
+  <Accordion title="No Trust Required">
+    You don't need to trust the TeQoin team or sequencer. Security is enforced by Ethereum smart contracts and cryptographic fraud proofs.
+  </Accordion>
+
+  <Accordion title="Censorship Resistance">
+    If the sequencer censors your transactions, you can force them through Ethereum L1 directly. The network remains accessible even if the sequencer is malicious or offline.
+  </Accordion>
+</AccordionGroup>
+
+### 🛠️ Full EVM Compatibility
+
+**Zero learning curve.** Use the exact same tools, libraries, and code you already know.
+
+<CodeGroup>
+```javascript MetaMask Integration
+// Same code works on both Ethereum and TeQoin
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+await provider.send("eth_requestAccounts", []);
+
+// Just change the network - everything else stays the same!
+```
+```solidity Smart Contracts
+// Your existing contracts work on TeQoin with ZERO changes
+contract MyDApp {
+    mapping(address => uint256) public balances;
+    
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+    }
+    
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount);
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+}
+```
+```bash Deployment
+# Use Hardhat exactly as you would for Ethereum
+npx hardhat run scripts/deploy.js --network teqoin
+
+# Or Foundry
+forge create src/MyContract.sol:MyContract --rpc-url https://rpc.teqoin.io
+```
+</CodeGroup>
+
+**Compatible Tools:**
+
+<Check>Hardhat - Complete support</Check>
+<Check>Foundry - Complete support</Check>
+<Check>Remix - Complete support</Check>
+<Check>Web3.js - Complete support</Check>
+<Check>Ethers.js - Complete support</Check>
+<Check>MetaMask - Complete support</Check>
+<Check>WalletConnect - Complete support</Check>
+
+## TeQoin vs. Alternatives
+
+### Why TeQoin vs. Other L2s?
+
+| Feature | TeQoin | Optimism | Arbitrum | Base | zkSync |
+|---------|--------|----------|----------|------|--------|
+| **Block Time** | **5 sec** | 2 sec | ~0.25 sec | 2 sec | ~10 sec |
+| **Architecture** | Optimistic(Future ZK-Ready) | Optimistic | Optimistic | ZK-Rollup
+| **EVM Compatibility** | **100%** | 100% | 100% | 100% | ~95% |
+| **Withdrawal Time** | 7 day-> Minutes | 7 days | 7 days | 7 days | Minutes-Hours |
+
+<Tip>
+Built for the Future: TeQoin uses a Diamond architecture, making it the only L2 that is truly modular. While other L2s require massive, risky "hard forks" to change their tech, TeQoin can "hot-swap" its internal logic. This allows us to evolve from Optimistic to Zero-Knowledge (ZK) seamlessly over time, constantly lowering costs and withdrawal times without ever disrupting the ecosystem.
+</Tip>
+
+
+## Who Should Use TeQoin?
+
+### 🎮 Game Developers
+
+**Perfect for:**
+- Free-to-play with blockchain assets
+- High-frequency in-game transactions
+- NFT-based items and rewards
+- Real-time multiplayer games
+
+**Why TeQoin wins:**
+```
+Without TeQoin:
+- Each player action costs $1-10 in gas
+- Players refuse to pay fees
+- Game is DOA
+
+With TeQoin:
+- Unlimited player actions at low cost
+- Seamless gameplay experience
+- Players happy, game succeeds
+```
+
+### 👨‍💻 DeFi Developers
+
+**Perfect for:**
+- DEXs with frequent trading
+- Lending/borrowing protocols
+- Yield farming
+- Liquidity mining
+
+**Why TeQoin wins:**
+- Users can trade small amounts profitably
+- High-frequency strategies become viable
+- Better capital efficiency
+- Attract more liquidity
+
+### 🎨 NFT Creators
+
+**Perfect for:**
+- Low-cost minting
+- Dynamic/evolving NFTs
+- Gaming NFTs with metadata updates
+- Social NFTs (profile pictures, badges)
+
+**Why TeQoin wins:**
+- Update metadata low cost
+- Enable creator royalties without user friction
+
+## Real-World Scenarios
+
+### Scenario 1: Social Media Platform
+
+**Challenge:** Users want to tip creators small amounts
+
+**L1 Ethereum:**
+```
+Tip amount: $2.00
+Gas fee: $5.00
+Total cost: $7.00
+Result: (uneconomical)
+```
+
+**TeQoin L2:**
+```
+Tip amount: $0.5
+Gas fee: low-fee
+Total cost: ~$0.50
+Result: Tipping thrives!
+```
+
+### Scenario 2: GameFi Application
+
+**Challenge:** Game requires 100+ transactions per player per day
+
+**L1 Ethereum:**
+```
+Transactions: 100
+Gas per TX: $2
+Daily cost: $200
+Monthly cost: $6,000
+Result: Game is unplayable
+```
+
+**TeQoin L2:**
+```
+Transactions: 100
+Gas per TX: low-fee
+Daily cost: low
+Monthly cost: low
+Result: Game is fun and accessible
+```
+
+### Scenario 3: DeFi Trader
+
+**Challenge:** User wants to make 10 small trades per day
+
+**L1 Ethereum:**
+```
+Trades: 10/day
+Gas per trade: $15
+Daily cost: $150
+Monthly cost: $4,500
+Result: Only whales can afford to trade
+```
+
+**TeQoin L2:**
+```
+Trades: 10/day
+Gas per trade: low-fee
+Daily cost: low
+Monthly cost: low
+Result: Everyone can trade profitably
+```
+
+## Getting Started
+
+Ready to experience the difference?
+
+<Steps>
+  <Step title="Add TeQoin Network">
+    Configure your wallet in 2 minutes
+    
+    [Add Network →](/quickstart/add-network)
+  </Step>
+
+  <Step title="Get Test ETH">
+    Request testnet funds from our faucet
+    
+    [Get ETH →](/quickstart/get-testnet-eth)
+  </Step>
+
+  <Step title="Make a Transaction">
+    Experience zero fees firsthand
+    
+    [First Transaction →](/quickstart/first-transaction)
+  </Step>
+
+  <Step title="Deploy Your dApp">
+    Build on TeQoin today
+    
+    [Deploy Contract →](/developers/deploy-contract)
+  </Step>
+</Steps>
+
+## Key Takeaways
+
+<CardGroup cols={2}>
+  <Card title="💰 Save Money" icon="piggy-bank">
+    low-fee mean users are more free
+  </Card>
+  <Card title="⚡ Move Fast" icon="rocket">
+    5-second blocks provide instant confirmation
+  </Card>
+  <Card title="🔒 Stay Safe" icon="shield">
+    Ethereum-grade security without compromise
+  </Card>
+  <Card title="🛠️ Build Easily" icon="code">
+    Same tools, same code, zero learning curve
+  </Card>
+</CardGroup>
+
+---
