@@ -1,0 +1,944 @@
+---
+title: 'dApp Integration Guide'
+description: 'Integrate TeQoin L2 into your decentralized application'
+---
+
+# dApp Integration Guide
+
+Learn how to integrate TeQoin L2 into your web application and enable users to interact with your smart contracts.
+
+<Note>
+**What You'll Learn:**
+- Connect wallets (MetaMask, WalletConnect)
+- Interact with smart contracts
+- Handle transactions
+- Listen to events
+- Best practices for production dApps
+</Note>
+
+---
+
+## 🎯 Integration Stack
+
+<CardGroup cols={3}>
+  <Card title="Ethers.js v6" icon="code" href="#ethersjs-integration">
+    **Recommended**
+    
+    Modern, lightweight library
+  </Card>
+  
+  <Card title="Web3.js" icon="cube" href="#web3js-integration">
+    **Classic**
+    
+    Original Ethereum library
+  </Card>
+  
+  <Card title="Wagmi + Viem" icon="react" href="#wagmi-integration">
+    **React Hooks**
+    
+    Modern React integration
+  </Card>
+</CardGroup>
+
+---
+
+## 🚀 Quick Start Template
+
+A minimal dApp to get you started quickly.
+
+### Complete Working Example
+
+<CodeGroup>
+```html index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TeQoin dApp</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+</head>
+<body>
+    <h1>TeQoin dApp Example</h1>
+    
+    <!-- Connect Wallet -->
+    <button id="connectBtn">Connect Wallet</button>
+    <p>Connected: <span id="account">Not connected</span></p>
+    <p>Network: <span id="network">Unknown</span></p>
+    
+    <!-- Contract Interaction -->
+    <h2>Contract Interaction</h2>
+    <input id="addressInput" placeholder="Contract Address" />
+    <button id="getBalanceBtn">Get Balance</button>
+    <p>Balance: <span id="balance">-</span></p>
+    
+    <script src="app.js"></script>
+</body>
+</html>
+```
+```javascript app.js
+// Initialize
+let provider;
+let signer;
+let userAddress;
+
+// Connect button
+document.getElementById('connectBtn').addEventListener('click', connectWallet);
+document.getElementById('getBalanceBtn').addEventListener('click', getBalance);
+
+async function connectWallet() {
+    if (typeof window.ethereum === 'undefined') {
+        alert('Please install MetaMask!');
+        return;
+    }
+    
+    try {
+        // Request account access
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+        // Create provider and signer
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+        userAddress = await signer.getAddress();
+        
+        // Check network
+        const network = await provider.getNetwork();
+        
+        // Verify TeQoin network
+        if (network.chainId !== 420377) {
+            await switchToTeQoin();
+        }
+        
+        // Update UI
+        document.getElementById('account').textContent = userAddress;
+        document.getElementById('network').textContent = `TeQoin L2 (${network.chainId})`;
+        
+        console.log('Connected to TeQoin L2!');
+        
+    } catch (error) {
+        console.error('Connection error:', error);
+        alert('Failed to connect wallet');
+    }
+}
+
+async function switchToTeQoin() {
+    try {
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x66B69' }], // 420377 in hex
+        });
+    } catch (switchError) {
+        // Chain not added, add it
+        if (switchError.code === 4902) {
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: '0x66B69',
+                    chainName: 'TeQoin L2',
+                    rpcUrls: ['https://rpc.teqoin.io'],
+                    nativeCurrency: {
+                        name: 'Ether',
+                        symbol: 'ETH',
+                        decimals: 18
+                    },
+                    blockExplorerUrls: ['https://explorer.teqoin.io']
+                }]
+            });
+        }
+    }
+}
+
+async function getBalance() {
+    if (!provider) {
+        alert('Please connect wallet first');
+        return;
+    }
+    
+    const address = document.getElementById('addressInput').value;
+    if (!address) {
+        alert('Please enter an address');
+        return;
+    }
+    
+    try {
+        const balance = await provider.getBalance(address);
+        const balanceInEth = ethers.utils.formatEther(balance);
+        document.getElementById('balance').textContent = `${balanceInEth} ETH`;
+    } catch (error) {
+        console.error('Error getting balance:', error);
+        alert('Failed to get balance');
+    }
+}
+
+// Listen for account changes
+if (window.ethereum) {
+    window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length === 0) {
+            document.getElementById('account').textContent = 'Not connected';
+        } else {
+            userAddress = accounts[0];
+            document.getElementById('account').textContent = userAddress;
+        }
+    });
+    
+    window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+    });
+}
+```
+</CodeGroup>
+
+---
+
+<div id="ethersjs-integration"></div>
+
+## 📦 Ethers.js Integration (Recommended)
+
+Modern, lightweight library for Ethereum interaction.
+
+### Installation
+```bash
+# Install ethers.js v6
+npm install ethers
+
+# Or use CDN
+<script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+```
+
+### Connect to TeQoin
+
+<CodeGroup>
+```javascript Ethers.js v6
+import { ethers } from 'ethers';
+
+// Connect to TeQoin L2
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+
+// Check connection
+const network = await provider.getNetwork();
+console.log('Connected to chain ID:', network.chainId); // 420377n
+
+// Get latest block
+const blockNumber = await provider.getBlockNumber();
+console.log('Latest block:', blockNumber);
+```
+```javascript Connect Wallet
+import { ethers } from 'ethers';
+
+// Request wallet connection
+async function connectWallet() {
+    if (typeof window.ethereum === 'undefined') {
+        throw new Error('Please install MetaMask');
+    }
+    
+    // Request accounts
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
+    // Create provider from MetaMask
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    
+    console.log('Connected:', address);
+    return { provider, signer, address };
+}
+```
+```javascript Switch Network
+async function switchToTeQoin() {
+    try {
+        // Try to switch to TeQoin
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x66B69' }]
+        });
+    } catch (error) {
+        // If chain not added, add it
+        if (error.code === 4902) {
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: '0x66B69',
+                    chainName: 'TeQoin L2',
+                    rpcUrls: ['https://rpc.teqoin.io'],
+                    nativeCurrency: {
+                        name: 'Ether',
+                        symbol: 'ETH',
+                        decimals: 18
+                    },
+                    blockExplorerUrls: ['https://explorer.teqoin.io']
+                }]
+            });
+        } else {
+            throw error;
+        }
+    }
+}
+```
+</CodeGroup>
+
+### Interact with Smart Contracts
+
+<CodeGroup>
+```javascript Read Contract (View Functions)
+import { ethers } from 'ethers';
+
+// Contract ABI (only the functions you need)
+const abi = [
+    "function totalSupply() view returns (uint256)",
+    "function balanceOf(address) view returns (uint256)",
+    "function name() view returns (string)",
+    "function symbol() view returns (string)"
+];
+
+// Connect to contract
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+const contract = new ethers.Contract(
+    '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D', // Contract address
+    abi,
+    provider
+);
+
+// Call view functions (no gas cost)
+const totalSupply = await contract.totalSupply();
+const balance = await contract.balanceOf('0x...');
+const name = await contract.name();
+
+console.log('Total Supply:', ethers.formatUnits(totalSupply, 18));
+console.log('Balance:', ethers.formatUnits(balance, 18));
+console.log('Name:', name);
+```
+```javascript Write Contract (Transactions)
+import { ethers } from 'ethers';
+
+// Connect with signer (for transactions)
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+
+// Contract ABI
+const abi = [
+    "function transfer(address to, uint256 amount) returns (bool)"
+];
+
+// Connect contract with signer
+const contract = new ethers.Contract(
+    '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D',
+    abi,
+    signer // Use signer for write operations
+);
+
+// Send transaction
+const tx = await contract.transfer(
+    '0x919aa27d5278BC98bf40BA5A79be468B91f061dA', // To address
+    ethers.parseUnits('10', 18) // Amount (10 tokens)
+);
+
+console.log('Transaction sent:', tx.hash);
+
+// Wait for confirmation
+const receipt = await tx.wait();
+console.log('Transaction confirmed in block:', receipt.blockNumber);
+```
+```javascript Listen to Events
+import { ethers } from 'ethers';
+
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+
+// Contract ABI with events
+const abi = [
+    "event Transfer(address indexed from, address indexed to, uint256 value)"
+];
+
+const contract = new ethers.Contract(
+    '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D',
+    abi,
+    provider
+);
+
+// Listen for Transfer events
+contract.on('Transfer', (from, to, value, event) => {
+    console.log('Transfer detected!');
+    console.log('From:', from);
+    console.log('To:', to);
+    console.log('Amount:', ethers.formatUnits(value, 18));
+    console.log('Block:', event.log.blockNumber);
+});
+
+// Query past events
+const filter = contract.filters.Transfer(null, userAddress); // Transfers TO user
+const events = await contract.queryFilter(filter, -1000, 'latest'); // Last 1000 blocks
+
+events.forEach(event => {
+    console.log('Past transfer:', event.args);
+});
+```
+```javascript Send ETH
+import { ethers } from 'ethers';
+
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+
+// Send ETH
+const tx = await signer.sendTransaction({
+    to: '0x919aa27d5278BC98bf40BA5A79be468B91f061dA',
+    value: ethers.parseEther('0.1') // 0.1 ETH
+});
+
+console.log('Transaction hash:', tx.hash);
+
+// Wait for confirmation
+const receipt = await tx.wait();
+console.log('Confirmed!');
+```
+</CodeGroup>
+
+---
+
+<div id="web3js-integration"></div>
+
+## 🔷 Web3.js Integration
+
+Classic Ethereum library, still widely used.
+
+### Installation
+```bash
+npm install web3
+```
+
+### Basic Usage
+
+<CodeGroup>
+```javascript Connect to TeQoin
+const Web3 = require('web3');
+
+// Connect to TeQoin L2
+const web3 = new Web3('https://rpc.teqoin.io');
+
+// Check connection
+const chainId = await web3.eth.getChainId();
+console.log('Chain ID:', chainId); // 420377
+
+// Get latest block
+const blockNumber = await web3.eth.getBlockNumber();
+console.log('Latest block:', blockNumber);
+```
+```javascript Connect Wallet
+const Web3 = require('web3');
+
+async function connectWallet() {
+    if (typeof window.ethereum === 'undefined') {
+        throw new Error('Please install MetaMask');
+    }
+    
+    // Request accounts
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
+    // Create Web3 instance
+    const web3 = new Web3(window.ethereum);
+    
+    // Get accounts
+    const accounts = await web3.eth.getAccounts();
+    const address = accounts[0];
+    
+    console.log('Connected:', address);
+    return { web3, address };
+}
+```
+```javascript Contract Interaction
+const Web3 = require('web3');
+
+const web3 = new Web3('https://rpc.teqoin.io');
+
+// Contract ABI
+const abi = [/* your ABI */];
+
+// Create contract instance
+const contract = new web3.eth.Contract(
+    abi,
+    '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D'
+);
+
+// Call view function
+const totalSupply = await contract.methods.totalSupply().call();
+console.log('Total Supply:', web3.utils.fromWei(totalSupply, 'ether'));
+
+// Send transaction (requires wallet connection)
+const accounts = await web3.eth.getAccounts();
+const tx = await contract.methods
+    .transfer('0x919aa...', web3.utils.toWei('10', 'ether'))
+    .send({ from: accounts[0] });
+
+console.log('Transaction:', tx.transactionHash);
+```
+</CodeGroup>
+
+---
+
+<div id="wagmi-integration"></div>
+
+## ⚛️ Wagmi + Viem Integration (React)
+
+Modern React hooks for Ethereum.
+
+### Installation
+```bash
+npm install wagmi viem @tanstack/react-query
+```
+
+### Setup
+
+<CodeGroup>
+```typescript wagmi.config.ts
+import { http, createConfig } from 'wagmi';
+import { teqoin } from './chains';
+
+export const config = createConfig({
+  chains: [teqoin],
+  transports: {
+    [teqoin.id]: http('https://rpc.teqoin.io'),
+  },
+});
+```
+```typescript chains.ts
+import { defineChain } from 'viem';
+
+export const teqoin = defineChain({
+  id: 420377,
+  name: 'TeQoin L2',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.teqoin.io'],
+      webSocket: ['wss://ws.teqoin.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'TeQoin Explorer',
+      url: 'https://explorer.teqoin.io',
+    },
+  },
+});
+```
+```tsx App.tsx
+import { WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { config } from './wagmi.config';
+import { ConnectButton } from './components/ConnectButton';
+
+const queryClient = new QueryClient();
+
+function App() {
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <ConnectButton />
+        {/* Your app components */}
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+
+export default App;
+```
+</CodeGroup>
+
+### React Components
+
+<CodeGroup>
+```tsx ConnectButton.tsx
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+
+export function ConnectButton() {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+
+  if (isConnected) {
+    return (
+      <div>
+        <p>Connected: {address}</p>
+        <button onClick={() => disconnect()}>Disconnect</button>
+      </div>
+    );
+  }
+
+  return (
+    <button onClick={() => connect({ connector: injected() })}>
+      Connect Wallet
+    </button>
+  );
+}
+```
+```tsx ContractRead.tsx
+import { useReadContract } from 'wagmi';
+
+const contractConfig = {
+  address: '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D',
+  abi: [
+    {
+      name: 'totalSupply',
+      type: 'function',
+      stateMutability: 'view',
+      inputs: [],
+      outputs: [{ type: 'uint256' }],
+    },
+  ],
+};
+
+export function TotalSupply() {
+  const { data, isError, isLoading } = useReadContract({
+    ...contractConfig,
+    functionName: 'totalSupply',
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error reading contract</div>;
+
+  return <div>Total Supply: {data?.toString()}</div>;
+}
+```
+```tsx ContractWrite.tsx
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { parseEther } from 'viem';
+
+const contractConfig = {
+  address: '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D',
+  abi: [
+    {
+      name: 'transfer',
+      type: 'function',
+      stateMutability: 'nonpayable',
+      inputs: [
+        { name: 'to', type: 'address' },
+        { name: 'amount', type: 'uint256' },
+      ],
+      outputs: [{ type: 'bool' }],
+    },
+  ],
+};
+
+export function TransferToken() {
+  const { data: hash, writeContract } = useWriteContract();
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
+
+  const handleTransfer = () => {
+    writeContract({
+      ...contractConfig,
+      functionName: 'transfer',
+      args: ['0x919aa27d5278BC98bf40BA5A79be468B91f061dA', parseEther('10')],
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleTransfer} disabled={isLoading}>
+        {isLoading ? 'Sending...' : 'Transfer 10 Tokens'}
+      </button>
+      {isSuccess && <div>Transaction successful!</div>}
+    </div>
+  );
+}
+```
+</CodeGroup>
+
+---
+
+## 🎨 Complete React dApp Example
+
+A production-ready React + Wagmi dApp template:
+
+<CodeGroup>
+```tsx src/App.tsx
+import { useState } from 'react';
+import { useAccount, useConnect, useDisconnect, useReadContract, useWriteContract } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import { parseEther, formatEther } from 'viem';
+
+const CONTRACT_ADDRESS = '0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D';
+const CONTRACT_ABI = [
+  {
+    name: 'balanceOf',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'account', type: 'address' }],
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    name: 'transfer',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ type: 'bool' }],
+  },
+];
+
+function App() {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
+
+  // Read balance
+  const { data: balance } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined,
+  });
+
+  // Write transaction
+  const { writeContract, isPending } = useWriteContract();
+
+  const handleTransfer = () => {
+    if (!recipient || !amount) return;
+    
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'transfer',
+      args: [recipient, parseEther(amount)],
+    });
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>TeQoin dApp</h1>
+      
+      {/* Connect Wallet */}
+      {!isConnected ? (
+        <button onClick={() => connect({ connector: injected() })}>
+          Connect Wallet
+        </button>
+      ) : (
+        <div>
+          <p>Connected: {address}</p>
+          <p>Balance: {balance ? formatEther(balance) : '0'} MTK</p>
+          <button onClick={() => disconnect()}>Disconnect</button>
+          
+          {/* Transfer Form */}
+          <div style={{ marginTop: '20px' }}>
+            <h2>Transfer Tokens</h2>
+            <input
+              placeholder="Recipient Address"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              style={{ width: '100%', marginBottom: '10px' }}
+            />
+            <input
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              style={{ width: '100%', marginBottom: '10px' }}
+            />
+            <button onClick={handleTransfer} disabled={isPending}>
+              {isPending ? 'Sending...' : 'Transfer'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+</CodeGroup>
+
+---
+
+## 🔐 Best Practices
+
+### Security
+
+<AccordionGroup>
+  <Accordion title="Validate User Input">
+```javascript
+    // ❌ BAD: No validation
+    const tx = await contract.transfer(userInput, amount);
+    
+    // ✅ GOOD: Validate addresses
+    import { ethers } from 'ethers';
+    
+    if (!ethers.isAddress(userInput)) {
+      throw new Error('Invalid address');
+    }
+    
+    const tx = await contract.transfer(userInput, amount);
+```
+  </Accordion>
+  
+  <Accordion title="Handle Errors Gracefully">
+```javascript
+    try {
+      const tx = await contract.transfer(to, amount);
+      await tx.wait();
+      alert('Transfer successful!');
+    } catch (error) {
+      if (error.code === 'ACTION_REJECTED') {
+        alert('Transaction cancelled');
+      } else if (error.code === 'INSUFFICIENT_FUNDS') {
+        alert('Insufficient balance');
+      } else {
+        alert('Transaction failed: ' + error.message);
+      }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="Verify Network">
+```javascript
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const network = await provider.getNetwork();
+    
+    if (network.chainId !== 420377n) {
+      alert('Please switch to TeQoin L2');
+      await switchToTeQoin();
+    }
+```
+  </Accordion>
+</AccordionGroup>
+
+### Performance
+
+<Tip>
+**Use Read-Only Provider for View Functions**
+```javascript
+// ❌ BAD: Using wallet provider for reads (slower)
+const provider = new ethers.BrowserProvider(window.ethereum);
+
+// ✅ GOOD: Use direct RPC for reads (faster)
+const readProvider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+const contract = new ethers.Contract(address, abi, readProvider);
+```
+</Tip>
+
+<Tip>
+**Cache Contract Instances**
+```javascript
+// ❌ BAD: Creating new instance every time
+function getBalance() {
+  const contract = new ethers.Contract(...);
+  return contract.balanceOf(address);
+}
+
+// ✅ GOOD: Reuse contract instance
+const contract = new ethers.Contract(...);
+function getBalance() {
+  return contract.balanceOf(address);
+}
+```
+</Tip>
+
+---
+
+## 📱 Mobile Wallet Integration
+
+### WalletConnect Support
+```bash
+npm install @walletconnect/web3-provider
+```
+
+<CodeGroup>
+```javascript WalletConnect Setup
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
+
+const walletConnectProvider = new WalletConnectProvider({
+  rpc: {
+    420377: 'https://rpc.teqoin.io',
+  },
+  chainId: 420377,
+});
+
+// Enable session
+await walletConnectProvider.enable();
+
+// Create ethers provider
+const provider = new ethers.providers.Web3Provider(walletConnectProvider);
+const signer = provider.getSigner();
+```
+</CodeGroup>
+
+---
+
+## 🎯 Testing Your dApp
+
+### Local Testing
+```bash
+# Use Hardhat local node
+npx hardhat node --fork https://rpc.teqoin.io
+
+# Your dApp can connect to:
+# http://localhost:8545
+```
+
+### Testnet Testing
+```javascript
+// Configure for testnet
+const provider = new ethers.JsonRpcProvider('https://rpc-testnet.teqoin.io');
+```
+
+---
+
+## 📚 Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Ethers.js Docs" icon="book" href="https://docs.ethers.org">
+    Official Ethers.js documentation
+  </Card>
+  
+  <Card title="Wagmi Docs" icon="react" href="https://wagmi.sh">
+    React hooks for Ethereum
+  </Card>
+  
+  <Card title="Web3.js Docs" icon="cube" href="https://web3js.readthedocs.io">
+    Web3.js documentation
+  </Card>
+  
+  <Card title="Network Info" icon="network-wired" href="/developers/network-information">
+    TeQoin network details
+  </Card>
+</CardGroup>
+
+---
+
+## 🎯 Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Deploy Your dApp" icon="rocket">
+    Host on Vercel, Netlify, or IPFS
+  </Card>
+  
+  <Card title="Add Analytics" icon="chart-line">
+    Track user interactions
+  </Card>
+  
+  <Card title="Build Backend" icon="server">
+    Add off-chain components
+  </Card>
+  
+  <Card title="Get Users" icon="users">
+    Market your dApp
+  </Card>
+</CardGroup>
+
+---
+
+## 🎉 Developer Documentation Complete!
+
+You've completed all developer guides:
+
+- ✅ Network Information
+- ✅ Smart Contracts
+- ✅ Deploy Contract
+- ✅ Verify Contract
+- ✅ Integration Guide
+
+**Ready to build amazing dApps on TeQoin L2!** 🚀
