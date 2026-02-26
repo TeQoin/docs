@@ -1,0 +1,786 @@
+---
+title: 'Deploy Smart Contracts'
+description: 'Deploy your smart contracts to TeQoin L2 using Hardhat or Foundry'
+---
+
+# Deploy Smart Contracts to TeQoin L2
+
+Deploy your Solidity smart contracts to TeQoin L2 using your favorite development framework.
+
+<Note>
+**What You'll Learn:**
+- Deploy with Hardhat
+- Deploy with Foundry
+- Deploy with Remix
+- Verify deployment
+- Best practices
+</Note>
+
+---
+
+## 🎯 Choose Your Tool
+
+<CardGroup cols={3}>
+  <Card title="Hardhat" icon="hammer" href="#deploy-with-hardhat">
+    **Most Popular**
+    
+    JavaScript-based framework
+    
+    [Deploy →](#deploy-with-hardhat)
+  </Card>
+  
+  <Card title="Foundry" icon="anvil" href="#deploy-with-foundry">
+    **Fast & Modern**
+    
+    Rust-based framework
+    
+    [Deploy →](#deploy-with-foundry)
+  </Card>
+  
+  <Card title="Remix" icon="code" href="#deploy-with-remix">
+    **Browser-Based**
+    
+    No installation needed
+    
+    [Deploy →](#deploy-with-remix)
+  </Card>
+</CardGroup>
+
+---
+
+<div id="deploy-with-hardhat"></div>
+
+## 🔨 Deploy with Hardhat
+
+Hardhat is the most popular Ethereum development framework.
+
+### Prerequisites
+```bash
+# Check Node.js installation
+node --version  # Should be v18+
+
+# Check npm
+npm --version
+```
+
+### Step 1: Create New Project
+
+<Steps>
+  <Step title="Initialize Project">
+```bash
+    # Create project directory
+    mkdir my-teqoin-project
+    cd my-teqoin-project
+    
+    # Initialize npm
+    npm init -y
+    
+    # Install Hardhat
+    npm install --save-dev hardhat
+```
+  </Step>
+  
+  <Step title="Initialize Hardhat">
+```bash
+    # Create Hardhat project
+    npx hardhat init
+    
+    # Choose: "Create a JavaScript project"
+    # Accept all defaults
+```
+    
+    This creates:
+```
+    my-teqoin-project/
+    ├── contracts/          # Your Solidity contracts
+    ├── scripts/           # Deployment scripts
+    ├── test/              # Test files
+    ├── hardhat.config.js  # Configuration
+    └── package.json
+```
+  </Step>
+  
+  <Step title="Install Dependencies">
+```bash
+    # Install essential plugins
+    npm install --save-dev @nomicfoundation/hardhat-toolbox
+    
+    # Install OpenZeppelin (optional but recommended)
+    npm install @openzeppelin/contracts
+    
+    # Install dotenv for environment variables
+    npm install dotenv
+```
+  </Step>
+</Steps>
+
+### Step 2: Configure for TeQoin
+
+<Steps>
+  <Step title="Create .env File">
+```bash
+    # Create .env file
+    touch .env
+```
+    
+    Add your private key:
+```bash .env
+    PRIVATE_KEY=your_private_key_here
+```
+    
+    <Warning>
+    **Never commit .env to Git!** Add it to .gitignore:
+```bash
+    echo ".env" >> .gitignore
+```
+    </Warning>
+  </Step>
+  
+  <Step title="Configure hardhat.config.js">
+```javascript hardhat.config.js
+    require("@nomicfoundation/hardhat-toolbox");
+    require("dotenv").config();
+    
+    module.exports = {
+      solidity: {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        }
+      },
+      networks: {
+        // TeQoin L2 Mainnet
+        teqoin: {
+          url: "https://rpc.teqoin.io",
+          chainId: 420377,
+          accounts: [process.env.PRIVATE_KEY]
+        },
+        // TeQoin L2 Testnet
+        teqoinTestnet: {
+          url: "https://rpc-testnet.teqoin.io",
+          chainId: 420377,
+          accounts: [process.env.PRIVATE_KEY]
+        }
+      },
+      etherscan: {
+        apiKey: {
+          teqoin: "your-api-key-here" // Get from explorer.teqoin.io
+        },
+        customChains: [
+          {
+            network: "teqoin",
+            chainId: 420377,
+            urls: {
+              apiURL: "https://explorer.teqoin.io/api",
+              browserURL: "https://explorer.teqoin.io"
+            }
+          }
+        ]
+      }
+    };
+```
+  </Step>
+</Steps>
+
+### Step 3: Write Your Contract
+```solidity contracts/MyToken.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000000 * 10 ** decimals());
+    }
+}
+```
+
+### Step 4: Compile Contract
+```bash
+# Compile contracts
+npx hardhat compile
+
+# Output:
+# Compiled 1 Solidity file successfully
+```
+
+### Step 5: Create Deployment Script
+```javascript scripts/deploy.js
+const { ethers } = require("hardhat");
+
+async function main() {
+  // Get deployer account
+  const [deployer] = await ethers.getSigners();
+  
+  console.log("Deploying contracts with account:", deployer.address);
+  console.log("Account balance:", (await ethers.provider.getBalance(deployer.address)).toString());
+  
+  // Deploy contract
+  const MyToken = await ethers.getContractFactory("MyToken");
+  const token = await MyToken.deploy();
+  
+  await token.waitForDeployment();
+  
+  const address = await token.getAddress();
+  
+  console.log("MyToken deployed to:", address);
+  console.log("Transaction hash:", token.deploymentTransaction().hash);
+  
+  // Wait for a few confirmations
+  console.log("Waiting for confirmations...");
+  await token.deploymentTransaction().wait(3);
+  
+  console.log("Deployment confirmed!");
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+### Step 6: Deploy to TeQoin
+
+<Tabs>
+  <Tab title="Deploy to Testnet">
+```bash
+    # Deploy to testnet first (recommended)
+    npx hardhat run scripts/deploy.js --network teqoinTestnet
+    
+    # Output:
+    # Deploying contracts with account: 0x...
+    # Account balance: 1000000000000000000
+    # MyToken deployed to: 0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D
+    # Transaction hash: 0x8551993d9c5625bc8e3e75afc58c0aa2998f95be9eb9bd033875157ce900afe8
+    # Waiting for confirmations...
+    # Deployment confirmed!
+```
+    
+    ✅ **Contract deployed to testnet!**
+  </Tab>
+  
+  <Tab title="Deploy to Mainnet">
+```bash
+    # Deploy to mainnet (use with caution!)
+    npx hardhat run scripts/deploy.js --network teqoin
+    
+    # Output:
+    # Deploying contracts with account: 0x...
+    # MyToken deployed to: 0x...
+```
+    
+    <Warning>
+    **Double-check everything before deploying to mainnet:**
+    - Contract code audited
+    - Tested thoroughly on testnet
+    - Sufficient ETH for deployment
+    - Private key is secure
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Step 7: Verify Deployment
+```bash
+# Check contract on explorer
+# Visit: https://explorer.teqoin.io/address/YOUR_CONTRACT_ADDRESS
+
+# Or verify programmatically
+npx hardhat verify --network teqoinTestnet YOUR_CONTRACT_ADDRESS
+```
+
+[Learn more about verification →](/developers/verify-contract)
+
+---
+
+<div id="deploy-with-foundry"></div>
+
+## ⚒️ Deploy with Foundry
+
+Foundry is a blazing fast, modern development framework written in Rust.
+
+### Prerequisites
+```bash
+# Install Foundry
+curl -L https://foundry.paradigm.xyz | bash
+
+# Run foundryup to install forge, cast, anvil
+foundryup
+
+# Verify installation
+forge --version
+cast --version
+```
+
+### Step 1: Create New Project
+```bash
+# Create new Foundry project
+forge init my-teqoin-project
+cd my-teqoin-project
+
+# Project structure:
+# src/          - Contracts
+# script/       - Deployment scripts
+# test/         - Tests
+# foundry.toml  - Configuration
+```
+
+### Step 2: Configure for TeQoin
+```toml foundry.toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.20"
+optimizer = true
+optimizer_runs = 200
+
+[rpc_endpoints]
+teqoin = "https://rpc.teqoin.io"
+teqoin_testnet = "https://rpc-testnet.teqoin.io"
+
+[etherscan]
+teqoin = { key = "${ETHERSCAN_API_KEY}", url = "https://explorer.teqoin.io/api" }
+```
+
+### Step 3: Write Your Contract
+```solidity src/MyToken.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000000 * 10 ** decimals());
+    }
+}
+```
+
+### Step 4: Install Dependencies
+```bash
+# Install OpenZeppelin
+forge install OpenZeppelin/openzeppelin-contracts
+
+# Remappings are created automatically
+```
+
+### Step 5: Compile Contract
+```bash
+# Compile
+forge build
+
+# Output:
+# [⠊] Compiling...
+# [⠒] Compiling 1 files with 0.8.20
+# [⠢] Solc 0.8.20 finished in 1.23s
+# Compiler run successful!
+```
+
+### Step 6: Create Deployment Script
+```solidity script/Deploy.s.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "forge-std/Script.sol";
+import "../src/MyToken.sol";
+
+contract DeployScript is Script {
+    function run() external {
+        // Get private key from environment
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        
+        // Start broadcasting transactions
+        vm.startBroadcast(deployerPrivateKey);
+        
+        // Deploy contract
+        MyToken token = new MyToken();
+        
+        console.log("MyToken deployed to:", address(token));
+        
+        vm.stopBroadcast();
+    }
+}
+```
+
+### Step 7: Deploy to TeQoin
+
+<Tabs>
+  <Tab title="Deploy to Testnet">
+```bash
+    # Set your private key
+    export PRIVATE_KEY=your_private_key_here
+    
+    # Deploy to testnet
+    forge script script/Deploy.s.sol:DeployScript \
+      --rpc-url teqoin_testnet \
+      --broadcast \
+      --verify
+    
+    # Output:
+    # [⠊] Compiling...
+    # Script ran successfully.
+    # MyToken deployed to: 0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D
+    # 
+    # ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+    # Total Paid: 0.00123 ETH (123000 gas * avg 10 gwei)
+```
+    
+    ✅ **Contract deployed and verified!**
+  </Tab>
+  
+  <Tab title="Deploy to Mainnet">
+```bash
+    # Deploy to mainnet
+    forge script script/Deploy.s.sol:DeployScript \
+      --rpc-url teqoin \
+      --broadcast \
+      --verify
+```
+    
+    <Warning>
+    Always test on testnet first before deploying to mainnet!
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Foundry Useful Commands
+```bash
+# Check gas usage
+forge test --gas-report
+
+# Run tests
+forge test
+
+# Format code
+forge fmt
+
+# Get contract size
+forge build --sizes
+
+# Interact with contract
+cast call CONTRACT_ADDRESS "totalSupply()" --rpc-url teqoin
+```
+
+---
+
+<div id="deploy-with-remix"></div>
+
+## 🌐 Deploy with Remix
+
+Remix is a browser-based IDE - no installation required!
+
+### Step 1: Open Remix
+
+Visit **https://remix.ethereum.org**
+
+### Step 2: Create Contract
+
+<Steps>
+  <Step title="Create New File">
+    1. In the File Explorer, click **"+"** to create new file
+    2. Name it `MyToken.sol`
+  </Step>
+  
+  <Step title="Write Contract">
+```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.20;
+    
+    contract MyToken {
+        string public name = "MyToken";
+        string public symbol = "MTK";
+        uint256 public totalSupply = 1000000 * 10**18;
+        
+        mapping(address => uint256) public balanceOf;
+        
+        constructor() {
+            balanceOf[msg.sender] = totalSupply;
+        }
+        
+        function transfer(address to, uint256 amount) public returns (bool) {
+            require(balanceOf[msg.sender] >= amount, "Insufficient balance");
+            balanceOf[msg.sender] -= amount;
+            balanceOf[to] += amount;
+            return true;
+        }
+    }
+```
+  </Step>
+</Steps>
+
+### Step 3: Compile
+
+<Steps>
+  <Step title="Select Compiler">
+    1. Click **"Solidity Compiler"** tab (left sidebar)
+    2. Select compiler version: **0.8.20**
+    3. Click **"Compile MyToken.sol"**
+  </Step>
+  
+  <Step title="Verify Compilation">
+    ✅ Green checkmark appears when compilation succeeds
+  </Step>
+</Steps>
+
+### Step 4: Connect Wallet
+
+<Steps>
+  <Step title="Open Deploy Tab">
+    Click **"Deploy & Run Transactions"** tab
+  </Step>
+  
+  <Step title="Select Environment">
+    In "ENVIRONMENT" dropdown, select:
+    - **"Injected Provider - MetaMask"**
+  </Step>
+  
+  <Step title="Connect MetaMask">
+    1. MetaMask popup appears
+    2. Select account
+    3. Click **"Connect"**
+    4. Make sure you're on **TeQoin L2** network in MetaMask
+  </Step>
+</Steps>
+
+### Step 5: Deploy
+
+<Steps>
+  <Step title="Select Contract">
+    In "CONTRACT" dropdown, select **MyToken**
+  </Step>
+  
+  <Step title="Click Deploy">
+    1. Click orange **"Deploy"** button
+    2. MetaMask popup appears
+    3. Review transaction
+    4. Click **"Confirm"**
+  </Step>
+  
+  <Step title="Verify Deployment">
+    - Contract appears under "Deployed Contracts"
+    - You can interact with it directly in Remix
+    - Copy contract address for use in your dApp
+    
+    ✅ **Contract deployed!**
+  </Step>
+</Steps>
+
+---
+
+## 💰 Deployment Costs
+
+### Estimated Gas Costs
+
+| Contract Type | Gas Used | Estimated Cost (TeQoin L2) |
+|---------------|----------|----------------------------|
+| **Simple Storage** | ~100,000 | < $0.01 |
+| **ERC20 Token** | ~1,200,000 | ~$0.05 - $0.10 |
+| **ERC721 NFT** | ~2,500,000 | ~$0.10 - $0.20 |
+| **Complex DeFi** | ~4,000,000 | ~$0.20 - $0.40 |
+
+<Tip>
+**Much cheaper than Ethereum L1** where the same deployments would cost $50-500+!
+</Tip>
+
+---
+
+## ✅ Post-Deployment Checklist
+
+<Steps>
+  <Step title="Save Contract Address">
+```bash
+    # Save to a file
+    echo "CONTRACT_ADDRESS=0x..." >> .env
+    
+    # Or create deployment record
+    echo "MyToken: 0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D" >> deployments.txt
+```
+  </Step>
+  
+  <Step title="Verify on Explorer">
+    Visit https://explorer.teqoin.io/address/YOUR_ADDRESS
+    
+    Verify:
+    - ✅ Contract created successfully
+    - ✅ Transaction shows "Success"
+    - ✅ Contract code is visible (after verification)
+  </Step>
+  
+  <Step title="Test Contract Functions">
+```bash
+    # Using Hardhat console
+    npx hardhat console --network teqoinTestnet
+    
+    > const MyToken = await ethers.getContractFactory("MyToken")
+    > const token = await MyToken.attach("0x...")
+    > await token.totalSupply()
+    1000000000000000000000000n
+```
+    
+    Or use Foundry:
+```bash
+    cast call 0x... "totalSupply()" --rpc-url teqoin_testnet
+```
+  </Step>
+  
+  <Step title="Verify Contract Source">
+    Verify your contract source code on the explorer:
+    
+    [Contract Verification Guide →](/developers/verify-contract)
+  </Step>
+</Steps>
+
+---
+
+## 🔧 Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'Insufficient funds' error">
+    You don't have enough ETH to pay for deployment gas.
+    
+    **Solution:**
+    - For testnet: Get ETH from [faucet](/quickstart/get-testnet-eth)
+    - For mainnet: Bridge ETH from L1 to L2
+    - Check balance: `cast balance YOUR_ADDRESS --rpc-url teqoin`
+  </Accordion>
+  
+  <Accordion title="'Nonce too high' error">
+    Your wallet's nonce is out of sync.
+    
+    **Solution:**
+    - Reset MetaMask: Settings → Advanced → Clear activity tab data
+    - Or wait a few minutes and try again
+  </Accordion>
+  
+  <Accordion title="Contract deployed but not showing on explorer">
+    The explorer indexer might be delayed.
+    
+    **Solution:**
+    - Wait 1-2 minutes
+    - Refresh the explorer page
+    - Check the transaction hash directly
+  </Accordion>
+  
+  <Accordion title="'Contract creation code storage out of gas'">
+    Your contract is too large (> 24KB limit).
+    
+    **Solution:**
+    - Enable optimizer in compiler settings
+    - Split contract into multiple contracts
+    - Use libraries to reduce size
+```javascript
+    // hardhat.config.js
+    solidity: {
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200  // Increase for smaller bytecode
+        }
+      }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="Private key not found / Invalid private key">
+    Environment variable not set correctly.
+    
+    **Solution:**
+```bash
+    # Make sure .env is loaded
+    cat .env  # Should show PRIVATE_KEY=...
+    
+    # Try exporting manually
+    export PRIVATE_KEY=your_key_here
+    
+    # For Hardhat, check dotenv is required
+    # Add to hardhat.config.js:
+    require("dotenv").config();
+```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📊 Deployment Comparison
+
+| Feature | Hardhat | Foundry | Remix |
+|---------|---------|---------|-------|
+| **Setup Time** | 5 minutes | 3 minutes | 0 minutes |
+| **Speed** | Medium | Fast | Slow |
+| **Testing** | Excellent | Excellent | Basic |
+| **Gas Reports** | Yes | Yes | No |
+| **Best For** | Teams | Advanced devs | Beginners |
+| **Language** | JavaScript | Rust/Solidity | Browser |
+
+---
+
+## 🎯 Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Verify Your Contract" icon="badge-check" href="/developers/verify-contract">
+    Verify source code on block explorer
+  </Card>
+  
+  <Card title="Integrate with Frontend" icon="window" href="/developers/integration-guide">
+    Connect your contract to a dApp
+  </Card>
+  
+  <Card title="Write Tests" icon="flask" href="/developers/smart-contracts">
+    Test your contract thoroughly
+  </Card>
+  
+  <Card title="Deploy to Mainnet" icon="rocket">
+    After testing, deploy to production
+  </Card>
+</CardGroup>
+
+---
+
+## 💡 Best Practices
+
+<Tip>
+**Always Deploy to Testnet First**
+
+1. Deploy to testnet
+2. Test all functions
+3. Get community feedback
+4. Audit if handling significant value
+5. Only then deploy to mainnet
+</Tip>
+
+<Tip>
+**Use Environment Variables**
+
+Never hardcode private keys in your code:
+```javascript
+// ❌ NEVER DO THIS
+const privateKey = "0x1234...";
+
+// ✅ ALWAYS DO THIS
+const privateKey = process.env.PRIVATE_KEY;
+```
+</Tip>
+
+<Tip>
+**Keep Deployment Records**
+
+Maintain a file with all your deployments:
+```txt deployments.txt
+# TeQoin Testnet
+MyToken: 0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D
+MyNFT: 0x1234567890abcdef1234567890abcdef12345678
+
+# TeQoin Mainnet
+MyToken: 0xabcdef1234567890abcdef1234567890abcdef12
+```
+</Tip>
+
+---
+
+**Contract deployed?** Now [verify it on the block explorer](/developers/verify-contract) →

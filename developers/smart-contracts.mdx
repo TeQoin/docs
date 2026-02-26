@@ -1,0 +1,837 @@
+---
+title: 'Smart Contracts on TeQoin'
+description: 'Write, compile, and optimize smart contracts for TeQoin L2'
+---
+
+# Smart Contracts on TeQoin
+
+Learn how to write and deploy smart contracts on TeQoin L2. TeQoin is 100% EVM-compatible, so your existing Ethereum contracts work without modifications.
+
+<Note>
+**Key Points:**
+- ✅ Full EVM compatibility (Shanghai version)
+- ✅ Use Solidity 0.4.x - 0.8.x
+- ✅ Same tooling as Ethereum (Hardhat, Foundry, Remix)
+- ✅ No code changes needed for existing contracts
+</Note>
+
+---
+
+## 🎯 EVM Compatibility
+
+TeQoin L2 is **100% EVM-compatible**, which means:
+
+<CardGroup cols={2}>
+  <Card title="Same Languages" icon="code">
+    **Solidity, Vyper, Yul**
+    
+    All Ethereum contract languages work
+  </Card>
+  
+  <Card title="Same Tools" icon="hammer">
+    **Hardhat, Foundry, Remix**
+    
+    Use your existing development stack
+  </Card>
+  
+  <Card title="Same Libraries" icon="book">
+    **OpenZeppelin, Chainlink**
+    
+    All Ethereum libraries are compatible
+  </Card>
+  
+  <Card title="Same Bytecode" icon="file-binary">
+    **No Compilation Changes**
+    
+    Deploy existing contracts as-is
+  </Card>
+</CardGroup>
+
+### Supported Solidity Versions
+
+| Version Range | Status | Notes |
+|---------------|--------|-------|
+| **0.8.x** | ✅ Fully Supported | Recommended for new contracts |
+| **0.7.x** | ✅ Fully Supported | Works perfectly |
+| **0.6.x** | ✅ Fully Supported | Works perfectly |
+| **0.5.x** | ✅ Fully Supported | Works perfectly |
+| **0.4.x** | ✅ Supported | Older version, still works |
+
+<Tip>
+**Recommended:** Use Solidity **0.8.20** or later for new contracts. It includes the latest security features and optimizations.
+</Tip>
+
+---
+
+## 📝 Writing Your First Contract
+
+Let's write a simple smart contract for TeQoin L2.
+
+### Example: Simple Storage Contract
+
+<CodeGroup>
+```solidity SimpleStorage.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/**
+ * @title SimpleStorage
+ * @dev Store and retrieve a value
+ */
+contract SimpleStorage {
+    uint256 private storedValue;
+    
+    event ValueChanged(uint256 newValue);
+    
+    /**
+     * @dev Store a value
+     * @param value The value to store
+     */
+    function store(uint256 value) public {
+        storedValue = value;
+        emit ValueChanged(value);
+    }
+    
+    /**
+     * @dev Retrieve the stored value
+     * @return The stored value
+     */
+    function retrieve() public view returns (uint256) {
+        return storedValue;
+    }
+}
+```
+```solidity ERC20Token.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+/**
+ * @title MyToken
+ * @dev ERC20 Token with minting capability
+ */
+contract MyToken is ERC20, Ownable {
+    constructor() ERC20("MyToken", "MTK") Ownable(msg.sender) {
+        // Mint initial supply to deployer
+        _mint(msg.sender, 1000000 * 10 ** decimals());
+    }
+    
+    /**
+     * @dev Mint new tokens (only owner)
+     * @param to Address to receive tokens
+     * @param amount Amount to mint
+     */
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+}
+```
+```solidity NFT.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+/**
+ * @title MyNFT
+ * @dev ERC721 NFT with minting
+ */
+contract MyNFT is ERC721, Ownable {
+    uint256 private _tokenIdCounter;
+    
+    constructor() ERC721("MyNFT", "MNFT") Ownable(msg.sender) {}
+    
+    /**
+     * @dev Mint a new NFT
+     * @param to Address to receive the NFT
+     */
+    function mint(address to) public onlyOwner {
+        uint256 tokenId = _tokenIdCounter++;
+        _safeMint(to, tokenId);
+    }
+    
+    /**
+     * @dev Get total supply
+     */
+    function totalSupply() public view returns (uint256) {
+        return _tokenIdCounter;
+    }
+}
+```
+</CodeGroup>
+
+---
+
+## 🏗️ Contract Patterns for TeQoin
+
+### Gas Optimization Tips
+
+TeQoin L2 already has low fees, but you can optimize further:
+
+<Tabs>
+  <Tab title="Storage Optimization">
+    **Pack Variables:**
+```solidity
+    // ❌ BAD: Uses 3 storage slots
+    contract Unoptimized {
+        uint8 a;      // Slot 0
+        uint256 b;    // Slot 1
+        uint8 c;      // Slot 2
+    }
+    
+    // ✅ GOOD: Uses 2 storage slots
+    contract Optimized {
+        uint8 a;      // Slot 0
+        uint8 c;      // Slot 0 (packed)
+        uint256 b;    // Slot 1
+    }
+```
+    
+    **Use mappings over arrays** when appropriate:
+```solidity
+    // For frequent random access
+    mapping(address => uint256) public balances; // ✅
+    
+    // For iteration
+    address[] public users; // ✅ When you need to loop
+```
+  </Tab>
+  
+  <Tab title="Function Optimization">
+    **Use `calldata` for external functions:**
+```solidity
+    // ❌ BAD: Copies to memory
+    function process(string memory data) external {
+        // ...
+    }
+    
+    // ✅ GOOD: Reads from calldata
+    function process(string calldata data) external {
+        // ...
+    }
+```
+    
+    **Mark view/pure functions:**
+```solidity
+    // ✅ No state changes = view
+    function getBalance(address user) public view returns (uint256) {
+        return balances[user];
+    }
+    
+    // ✅ No state read = pure
+    function add(uint256 a, uint256 b) public pure returns (uint256) {
+        return a + b;
+    }
+```
+  </Tab>
+  
+  <Tab title="Event Optimization">
+    **Use events for data storage:**
+```solidity
+    // Instead of storing history on-chain:
+    
+    // ❌ EXPENSIVE
+    struct Transaction {
+        address from;
+        address to;
+        uint256 amount;
+    }
+    Transaction[] public history;
+    
+    // ✅ CHEAP
+    event Transfer(
+        address indexed from,
+        address indexed to,
+        uint256 amount
+    );
+    
+    function transfer(address to, uint256 amount) public {
+        // ... transfer logic ...
+        emit Transfer(msg.sender, to, amount);
+    }
+```
+  </Tab>
+  
+  <Tab title="Loop Optimization">
+    **Avoid unbounded loops:**
+```solidity
+    // ❌ BAD: Could run out of gas
+    function distributeToAll() public {
+        for (uint i = 0; i < users.length; i++) {
+            balances[users[i]] += reward;
+        }
+    }
+    
+    // ✅ GOOD: Paginated
+    function distribute(uint256 start, uint256 end) public {
+        require(end <= users.length, "Out of bounds");
+        for (uint i = start; i < end; i++) {
+            balances[users[i]] += reward;
+        }
+    }
+```
+  </Tab>
+</Tabs>
+
+---
+
+## 🔐 Security Best Practices
+
+### Common Vulnerabilities to Avoid
+
+<AccordionGroup>
+  <Accordion title="1. Reentrancy Attacks">
+    **Problem:** External calls before state updates can be exploited.
+```solidity
+    // ❌ VULNERABLE
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount);
+        
+        (bool success,) = msg.sender.call{value: amount}("");
+        require(success);
+        
+        balances[msg.sender] -= amount; // State update AFTER external call
+    }
+    
+    // ✅ SAFE: Checks-Effects-Interactions pattern
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount);
+        
+        balances[msg.sender] -= amount; // State update BEFORE external call
+        
+        (bool success,) = msg.sender.call{value: amount}("");
+        require(success);
+    }
+    
+    // ✅ SAFEST: Use ReentrancyGuard from OpenZeppelin
+    import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+    
+    contract Safe is ReentrancyGuard {
+        function withdraw(uint256 amount) public nonReentrant {
+            // Safe from reentrancy
+        }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="2. Integer Overflow/Underflow">
+    **Solution:** Use Solidity 0.8.x which has built-in overflow checks.
+```solidity
+    // Solidity 0.8.x automatically reverts on overflow
+    pragma solidity ^0.8.0;
+    
+    contract Safe {
+        function add(uint256 a, uint256 b) public pure returns (uint256) {
+            return a + b; // ✅ Safe: reverts on overflow
+        }
+    }
+    
+    // For 0.7.x and below, use SafeMath
+    pragma solidity ^0.7.0;
+    import "@openzeppelin/contracts/math/SafeMath.sol";
+    
+    contract Safe {
+        using SafeMath for uint256;
+        
+        function add(uint256 a, uint256 b) public pure returns (uint256) {
+            return a.add(b); // ✅ Safe with SafeMath
+        }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="3. Access Control">
+    **Use proper access control mechanisms:**
+```solidity
+    import "@openzeppelin/contracts/access/Ownable.sol";
+    import "@openzeppelin/contracts/access/AccessControl.sol";
+    
+    // ✅ Simple owner-only functions
+    contract MyContract is Ownable {
+        function adminFunction() public onlyOwner {
+            // Only owner can call
+        }
+    }
+    
+    // ✅ Role-based access control (complex scenarios)
+    contract MyContract is AccessControl {
+        bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+        
+        constructor() {
+            _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        }
+        
+        function mint(address to) public onlyRole(MINTER_ROLE) {
+            // Only minters can call
+        }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="4. Front-Running Protection">
+    **Protect against transaction ordering attacks:**
+```solidity
+    // Use commit-reveal scheme for sensitive operations
+    contract Auction {
+        mapping(address => bytes32) public commitments;
+        
+        // Step 1: Commit
+        function commit(bytes32 hash) public {
+            commitments[msg.sender] = hash;
+        }
+        
+        // Step 2: Reveal (after commit period)
+        function reveal(uint256 value, bytes32 secret) public {
+            bytes32 hash = keccak256(abi.encodePacked(value, secret));
+            require(hash == commitments[msg.sender], "Invalid reveal");
+            // Process bid
+        }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="5. Denial of Service">
+    **Avoid patterns that can be exploited:**
+```solidity
+    // ❌ VULNERABLE: Relies on external call success
+    function refundAll() public {
+        for (uint i = 0; i < users.length; i++) {
+            users[i].transfer(refunds[users[i]]);
+        }
+    }
+    
+    // ✅ SAFE: Pull payment pattern
+    mapping(address => uint256) public refunds;
+    
+    function withdraw() public {
+        uint256 amount = refunds[msg.sender];
+        refunds[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+    }
+```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📚 Using Libraries
+
+### OpenZeppelin Contracts
+
+The industry-standard library works perfectly on TeQoin:
+```bash
+# Install OpenZeppelin
+npm install @openzeppelin/contracts
+```
+
+<CodeGroup>
+```solidity ERC20 Token
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000000 * 10 ** decimals());
+    }
+}
+```
+```solidity ERC721 NFT
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
+contract MyNFT is ERC721, ERC721URIStorage {
+    uint256 private _tokenIds;
+    
+    constructor() ERC721("MyNFT", "MNFT") {}
+    
+    function mint(address to, string memory uri) public returns (uint256) {
+        uint256 tokenId = _tokenIds++;
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+        return tokenId;
+    }
+    
+    // Override required by Solidity
+    function tokenURI(uint256 tokenId)
+        public view override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+    
+    function supportsInterface(bytes4 interfaceId)
+        public view override(ERC721, ERC721URIStorage)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+}
+```
+```solidity Access Control
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/access/AccessControl.sol";
+
+contract MyContract is AccessControl {
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    
+    constructor() {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+    }
+    
+    function adminFunction() public onlyRole(ADMIN_ROLE) {
+        // Admin-only logic
+    }
+    
+    function mint() public onlyRole(MINTER_ROLE) {
+        // Minter-only logic
+    }
+}
+```
+</CodeGroup>
+
+### Other Popular Libraries
+
+<CardGroup cols={2}>
+  <Card title="Chainlink" icon="link">
+    **Oracles & VRF**
+    
+    Price feeds and randomness
+    
+    ✅ Compatible
+  </Card>
+  
+  <Card title="Uniswap V2/V3" icon="arrows-rotate">
+    **DEX Contracts**
+    
+    Automated market makers
+    
+    ✅ Compatible
+  </Card>
+  
+  <Card title="AAVE" icon="coins">
+    **Lending Protocols**
+    
+    DeFi primitives
+    
+    ✅ Compatible
+  </Card>
+  
+  <Card title="The Graph" icon="chart-network">
+    **Indexing**
+    
+    Query blockchain data
+    
+    ✅ Compatible
+  </Card>
+</CardGroup>
+
+---
+
+## 🧪 Testing Contracts
+
+### Unit Testing with Hardhat
+```javascript test/SimpleStorage.test.js
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("SimpleStorage", function () {
+  let simpleStorage;
+  let owner;
+  
+  beforeEach(async function () {
+    [owner] = await ethers.getSigners();
+    
+    const SimpleStorage = await ethers.getContractFactory("SimpleStorage");
+    simpleStorage = await SimpleStorage.deploy();
+    await simpleStorage.waitForDeployment();
+  });
+  
+  it("Should store and retrieve a value", async function () {
+    // Store a value
+    await simpleStorage.store(42);
+    
+    // Retrieve the value
+    expect(await simpleStorage.retrieve()).to.equal(42);
+  });
+  
+  it("Should emit ValueChanged event", async function () {
+    await expect(simpleStorage.store(100))
+      .to.emit(simpleStorage, "ValueChanged")
+      .withArgs(100);
+  });
+});
+```
+
+### Testing on TeQoin Testnet
+```javascript scripts/test-on-testnet.js
+const { ethers } = require("hardhat");
+
+async function main() {
+  // Connect to deployed contract on testnet
+  const contractAddress = "0x...";
+  const SimpleStorage = await ethers.getContractAt(
+    "SimpleStorage",
+    contractAddress
+  );
+  
+  // Test storing a value
+  console.log("Storing value 123...");
+  const tx = await SimpleStorage.store(123);
+  await tx.wait();
+  console.log("Value stored!");
+  
+  // Test retrieving
+  const value = await SimpleStorage.retrieve();
+  console.log("Retrieved value:", value.toString());
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+---
+
+## 🎨 Contract Examples
+
+### DeFi: Simple Staking Contract
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract SimpleStaking is ReentrancyGuard {
+    IERC20 public stakingToken;
+    uint256 public rewardRate = 100; // Rewards per second per token
+    
+    mapping(address => uint256) public stakedBalance;
+    mapping(address => uint256) public stakedTime;
+    mapping(address => uint256) public rewards;
+    
+    event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+    event RewardClaimed(address indexed user, uint256 reward);
+    
+    constructor(address _stakingToken) {
+        stakingToken = IERC20(_stakingToken);
+    }
+    
+    function stake(uint256 amount) external nonReentrant {
+        require(amount > 0, "Cannot stake 0");
+        
+        // Update rewards before staking
+        updateReward(msg.sender);
+        
+        stakingToken.transferFrom(msg.sender, address(this), amount);
+        stakedBalance[msg.sender] += amount;
+        stakedTime[msg.sender] = block.timestamp;
+        
+        emit Staked(msg.sender, amount);
+    }
+    
+    function withdraw(uint256 amount) external nonReentrant {
+        require(stakedBalance[msg.sender] >= amount, "Insufficient balance");
+        
+        // Update rewards before withdrawing
+        updateReward(msg.sender);
+        
+        stakedBalance[msg.sender] -= amount;
+        stakingToken.transfer(msg.sender, amount);
+        
+        emit Withdrawn(msg.sender, amount);
+    }
+    
+    function claimReward() external nonReentrant {
+        updateReward(msg.sender);
+        
+        uint256 reward = rewards[msg.sender];
+        require(reward > 0, "No rewards");
+        
+        rewards[msg.sender] = 0;
+        stakingToken.transfer(msg.sender, reward);
+        
+        emit RewardClaimed(msg.sender, reward);
+    }
+    
+    function updateReward(address user) internal {
+        if (stakedBalance[user] > 0) {
+            uint256 timeStaked = block.timestamp - stakedTime[user];
+            uint256 reward = (stakedBalance[user] * timeStaked * rewardRate) / 1e18;
+            rewards[user] += reward;
+            stakedTime[user] = block.timestamp;
+        }
+    }
+    
+    function pendingReward(address user) public view returns (uint256) {
+        if (stakedBalance[user] == 0) return rewards[user];
+        
+        uint256 timeStaked = block.timestamp - stakedTime[user];
+        uint256 newReward = (stakedBalance[user] * timeStaked * rewardRate) / 1e18;
+        return rewards[user] + newReward;
+    }
+}
+```
+
+### NFT: Dynamic NFT
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract DynamicNFT is ERC721, Ownable {
+    uint256 private _tokenIds;
+    
+    struct NFTData {
+        uint256 level;
+        uint256 experience;
+        uint256 lastUpdate;
+    }
+    
+    mapping(uint256 => NFTData) public nftData;
+    
+    constructor() ERC721("DynamicNFT", "DNFT") Ownable(msg.sender) {}
+    
+    function mint(address to) public onlyOwner returns (uint256) {
+        uint256 tokenId = _tokenIds++;
+        _safeMint(to, tokenId);
+        
+        nftData[tokenId] = NFTData({
+            level: 1,
+            experience: 0,
+            lastUpdate: block.timestamp
+        });
+        
+        return tokenId;
+    }
+    
+    function gainExperience(uint256 tokenId, uint256 amount) public {
+        require(ownerOf(tokenId) == msg.sender, "Not owner");
+        
+        nftData[tokenId].experience += amount;
+        nftData[tokenId].lastUpdate = block.timestamp;
+        
+        // Level up every 1000 XP
+        if (nftData[tokenId].experience >= nftData[tokenId].level * 1000) {
+            nftData[tokenId].level++;
+        }
+    }
+    
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        NFTData memory data = nftData[tokenId];
+        
+        // Generate dynamic metadata based on level
+        // In production, you'd generate proper JSON metadata
+        return string(abi.encodePacked(
+            "data:application/json;base64,",
+            _encodeMetadata(tokenId, data)
+        ));
+    }
+    
+    function _encodeMetadata(uint256 tokenId, NFTData memory data) 
+        internal 
+        pure 
+        returns (string memory) 
+    {
+        // Simplified - in production, properly encode JSON
+        return "...";
+    }
+}
+```
+
+---
+
+## 🔍 Differences from Ethereum L1
+
+While TeQoin is fully EVM-compatible, there are a few minor considerations:
+
+<Accordion title="Block Numbers and Timestamps">
+**Block Production:**
+- TeQoin produces blocks every **5 seconds** (vs 12 seconds on Ethereum)
+- This means `block.number` increments faster
+
+**Impact:**
+- Time-based logic using `block.number` will execute faster
+- Use `block.timestamp` for time-based logic instead
+```solidity
+// ❌ Less reliable on L2
+require(block.number > startBlock + 1000); // Not consistent timing
+
+// ✅ Better approach
+require(block.timestamp > startTime + 1 hours); // Consistent timing
+```
+</Accordion>
+
+<Accordion title="Gas Costs">
+**Lower Gas Costs:**
+- Some operations cost less on TeQoin L2
+- Storage is still expensive (same as L1)
+
+**Optimization still matters:**
+- Even though gas is cheap, optimize for good practice
+- Future-proof your contracts
+</Accordion>
+
+---
+
+## 📖 Learning Resources
+
+<CardGroup cols={2}>
+  <Card title="Solidity Documentation" icon="book" href="https://docs.soliditylang.org">
+    Official Solidity docs
+  </Card>
+  
+  <Card title="OpenZeppelin Contracts" icon="shield" href="https://docs.openzeppelin.com/contracts">
+    Secure contract library
+  </Card>
+  
+  <Card title="Ethereum.org" icon="ethereum" href="https://ethereum.org/en/developers">
+    Ethereum developer resources
+  </Card>
+  
+  <Card title="CryptoZombies" icon="skull" href="https://cryptozombies.io">
+    Interactive Solidity tutorial
+  </Card>
+</CardGroup>
+
+---
+
+## 🎯 Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Deploy Your Contract" icon="rocket" href="/developers/deploy-contract">
+    Deploy to TeQoin L2 using Hardhat or Foundry
+  </Card>
+  
+  <Card title="Verify Your Contract" icon="badge-check" href="/developers/verify-contract">
+    Verify source code on block explorer
+  </Card>
+  
+  <Card title="Integration Guide" icon="plug" href="/developers/integration-guide">
+    Integrate contracts with frontend
+  </Card>
+  
+  <Card title="Network Information" icon="network-wired" href="/developers/network-information">
+    Network configs and endpoints
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to deploy?** Continue to [Deploy Your First Contract](/developers/deploy-contract) →

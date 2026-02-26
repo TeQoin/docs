@@ -1,0 +1,562 @@
+---
+title: 'Network Information'
+description: 'Essential network configuration and endpoints for TeQoin L2 development'
+---
+
+# Network Information
+
+Complete technical reference for connecting to and building on TeQoin L2.
+
+<Note>
+**Quick Reference:**
+- **Network Name:** TeQoin L2
+- **Chain ID:** 420377 (0x66B69)
+- **RPC URL:** https://rpc.teqoin.io
+- **Currency:** ETH
+</Note>
+
+---
+
+## 🌐 Network Configuration
+
+### Mainnet
+
+<CodeGroup>
+```json MetaMask
+{
+  "chainId": "0x66B69",
+  "chainName": "TeQoin L2",
+  "rpcUrls": ["https://rpc.teqoin.io"],
+  "nativeCurrency": {
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18
+  },
+  "blockExplorerUrls": ["https://explorer.teqoin.io"]
+}
+```
+```javascript Ethers.js v6
+import { ethers } from 'ethers';
+
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+
+// Verify network
+const network = await provider.getNetwork();
+console.log('Chain ID:', network.chainId); // 420377n
+
+// Get block number
+const blockNumber = await provider.getBlockNumber();
+console.log('Current block:', blockNumber);
+```
+```javascript Web3.js
+const Web3 = require('web3');
+
+const web3 = new Web3('https://rpc.teqoin.io');
+
+// Verify connection
+const chainId = await web3.eth.getChainId();
+console.log('Chain ID:', chainId); // 420377
+
+// Get latest block
+const block = await web3.eth.getBlockNumber();
+console.log('Latest block:', block);
+```
+```python Python (Web3.py)
+from web3 import Web3
+
+# Connect to TeQoin L2
+w3 = Web3(Web3.HTTPProvider('https://rpc.teqoin.io'))
+
+# Verify connection
+print('Connected:', w3.is_connected())
+print('Chain ID:', w3.eth.chain_id)  # 420377
+
+# Get latest block
+print('Latest block:', w3.eth.block_number)
+```
+</CodeGroup>
+
+### Testnet
+
+<CodeGroup>
+```json Configuration
+{
+  "chainId": "0x66B69",
+  "chainName": "TeQoin L2 Testnet",
+  "rpcUrls": ["https://rpc-testnet.teqoin.io"],
+  "nativeCurrency": {
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18
+  },
+  "blockExplorerUrls": ["https://explorer-testnet.teqoin.io"]
+}
+```
+```javascript Ethers.js
+const provider = new ethers.JsonRpcProvider(
+  'https://rpc-testnet.teqoin.io'
+);
+```
+</CodeGroup>
+
+---
+
+## 📡 RPC Endpoints
+
+### HTTP RPC
+
+| Endpoint | URL | Purpose |
+|----------|-----|---------|
+| **Primary RPC** | https://rpc.teqoin.io | Main endpoint (recommended) |
+| **Backup RPC** | https://rpc-backup.teqoin.io | Fallback endpoint |
+| **Testnet RPC** | https://rpc-testnet.teqoin.io | For testing |
+
+### WebSocket RPC
+
+| Endpoint | URL | Purpose |
+|----------|-----|---------|
+| **Primary WS** | wss://ws.teqoin.io | Real-time events |
+| **Testnet WS** | wss://ws-testnet.teqoin.io | Testnet events |
+
+### Rate Limits
+
+| Type | Limit | Window |
+|------|-------|--------|
+| **HTTP Requests** | 100 requests/second | Per IP |
+| **WebSocket Connections** | 10 connections | Per IP |
+| **Batch Requests** | 100 calls/batch | Per request |
+
+<Tip>
+**Need Higher Limits?** Contact us at [support@teqoin.io](mailto:support@teqoin.io) for dedicated endpoints.
+</Tip>
+
+---
+
+## 🔗 API Endpoints
+
+### Indexer API
+
+Base URL: `https://api.teqoin.io/api/v1`
+
+<Accordion title="Available Endpoints">
+```
+GET /address/:address/transactions  - Get transactions for address
+GET /address/:address/count         - Get transaction count
+GET /transaction/:hash              - Get transaction details
+GET /transaction/:hash/logs         - Get transaction logs
+GET /block/:numberOrHash            - Get block details
+GET /block/latest                   - Get latest block
+GET /block/:number/transactions     - Get transactions in block
+GET /stats                          - Get network statistics
+GET /health                         - Health check
+```
+</Accordion>
+
+**Example Usage:**
+
+<CodeGroup>
+```javascript Fetch API
+const API_BASE = 'https://api.teqoin.io/api/v1';
+
+// Get transactions for an address
+const response = await fetch(
+  `${API_BASE}/address/0x123.../transactions?limit=10`
+);
+const data = await response.json();
+
+console.log('Transactions:', data.data);
+```
+```python Python
+import requests
+
+API_BASE = 'https://api.teqoin.io/api/v1'
+
+# Get network stats
+response = requests.get(f'{API_BASE}/stats')
+stats = response.json()
+
+print('Total Blocks:', stats['data']['totalBlocks'])
+print('Total TXs:', stats['data']['totalTransactions'])
+```
+```bash cURL
+# Get latest block
+curl https://api.teqoin.io/api/v1/block/latest
+
+# Get transaction details
+curl https://api.teqoin.io/api/v1/transaction/0x8551993d...
+```
+</CodeGroup>
+
+[Full API Reference →](/api-reference/introduction)
+
+---
+
+## 🔍 Block Explorer
+
+### Mainnet Explorer
+
+**URL:** https://explorer.teqoin.io
+
+**Features:**
+- View transactions and blocks
+- Search by address, TX hash, or block number
+- Contract verification
+- Token tracking
+- Analytics and statistics
+
+### Testnet Explorer
+
+**URL:** https://explorer-testnet.teqoin.io
+
+---
+
+## ⚙️ Network Parameters
+
+### Core Parameters
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| **Network Name** | TeQoin L2 | Display name |
+| **Chain ID** | 420377 | Decimal format |
+| **Chain ID (Hex)** | 0x66B69 | Hexadecimal format |
+| **Native Currency** | ETH | Same as Ethereum |
+| **Currency Symbol** | ETH | Token symbol |
+| **Currency Decimals** | 18 | Wei precision |
+
+### Block Parameters
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| **Block Time** | 5 seconds | Average time between blocks |
+| **Block Gas Limit** | 30,000,000 | Maximum gas per block |
+| **Block Size** | ~1 MB | Approximate size |
+
+### Transaction Parameters
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| **Gas Limit (Transfer)** | 21,000 | Simple ETH transfer |
+| **Gas Limit (Contract)** | Varies | Depends on contract complexity |
+| **Max Gas per TX** | 30,000,000 | Same as block limit |
+| **Gas Price** | Dynamic | Based on network demand |
+
+### EVM Version
+
+| Parameter | Value |
+|-----------|-------|
+| **EVM Version** | Shanghai |
+| **Solidity Support** | 0.4.x - 0.8.x |
+| **Vyper Support** | All versions |
+
+---
+
+## 🔑 Contract Addresses
+
+### Bridge Contracts
+
+| Contract | Network | Address |
+|----------|---------|---------|
+| **L1 Bridge** | Ethereum Mainnet | `0x919aa27d5278BC98bf40BA5A79be468B91f061dA` |
+| **L2 Bridge** | TeQoin L2 | `0x4200000000000000000000000000000000000010` |
+
+### System Contracts
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| **L2 Sequencer** | `0x4200000000000000000000000000000000000011` | Block production |
+| **L2 Gas Price Oracle** | `0x4200000000000000000000000000000000000015` | Gas price calculation |
+
+[View all contract ABIs →](/resources/contract-abis)
+
+---
+
+## 🛠️ Development Tools
+
+### Supported Tools
+
+<CardGroup cols={3}>
+  <Card title="Hardhat" icon="hammer">
+    ✅ Full support
+    
+    Standard Ethereum plugin works
+  </Card>
+  
+  <Card title="Foundry" icon="anvil">
+    ✅ Full support
+    
+    Use forge and cast normally
+  </Card>
+  
+  <Card title="Remix" icon="code">
+    ✅ Full support
+    
+    Select "Injected Provider"
+  </Card>
+  
+  <Card title="Truffle" icon="diamond">
+    ✅ Full support
+    
+    Configure network in truffle-config.js
+  </Card>
+  
+  <Card title="Brownie" icon="cookie-bite">
+    ✅ Full support
+    
+    Add network to networks.yaml
+  </Card>
+  
+  <Card title="Waffle" icon="bacon">
+    ✅ Full support
+    
+    Use with Ethers.js provider
+  </Card>
+</CardGroup>
+
+### Hardhat Configuration
+```javascript hardhat.config.js
+require('@nomicfoundation/hardhat-toolbox');
+
+module.exports = {
+  solidity: '0.8.20',
+  networks: {
+    teqoin: {
+      url: 'https://rpc.teqoin.io',
+      chainId: 420377,
+      accounts: [process.env.PRIVATE_KEY]
+    },
+    teqoinTestnet: {
+      url: 'https://rpc-testnet.teqoin.io',
+      chainId: 420377,
+      accounts: [process.env.PRIVATE_KEY]
+    }
+  },
+  etherscan: {
+    apiKey: {
+      teqoin: 'your-api-key'
+    },
+    customChains: [
+      {
+        network: 'teqoin',
+        chainId: 420377,
+        urls: {
+          apiURL: 'https://explorer.teqoin.io/api',
+          browserURL: 'https://explorer.teqoin.io'
+        }
+      }
+    ]
+  }
+};
+```
+
+### Foundry Configuration
+```toml foundry.toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+[rpc_endpoints]
+teqoin = "https://rpc.teqoin.io"
+teqoin_testnet = "https://rpc-testnet.teqoin.io"
+
+[etherscan]
+teqoin = { key = "${ETHERSCAN_API_KEY}" }
+```
+
+---
+
+## 📊 Network Statistics (Live)
+
+<CardGroup cols={4}>
+  <Card title="Chain ID" icon="fingerprint">
+    **420377**
+    
+    (0x66B69)
+  </Card>
+  
+  <Card title="Block Time" icon="clock">
+    **5 seconds**
+    
+    Fast finality
+  </Card>
+  
+  <Card title="TPS" icon="gauge-high">
+    **1000+**
+    
+    High throughput
+  </Card>
+  
+  <Card title="Uptime" icon="signal">
+    **99.9%**
+    
+    Reliable network
+  </Card>
+</CardGroup>
+
+---
+
+## 🔌 WebSocket Events
+
+Subscribe to real-time blockchain events.
+
+<CodeGroup>
+```javascript Ethers.js WebSocket
+import { ethers } from 'ethers';
+
+const provider = new ethers.WebSocketProvider('wss://ws.teqoin.io');
+
+// Listen for new blocks
+provider.on('block', (blockNumber) => {
+  console.log('New block:', blockNumber);
+});
+
+// Listen for pending transactions
+provider.on('pending', (txHash) => {
+  console.log('Pending TX:', txHash);
+});
+
+// Clean up
+// provider.removeAllListeners();
+```
+```javascript Web3.js WebSocket
+const Web3 = require('web3');
+
+const web3 = new Web3(
+  new Web3.providers.WebsocketProvider('wss://ws.teqoin.io')
+);
+
+// Subscribe to new block headers
+const subscription = await web3.eth.subscribe('newBlockHeaders');
+
+subscription.on('data', (blockHeader) => {
+  console.log('New block:', blockHeader.number);
+});
+
+// Unsubscribe
+// subscription.unsubscribe();
+```
+```python Web3.py
+from web3 import Web3
+from web3.providers.websocket import WebsocketProvider
+
+# Connect via WebSocket
+w3 = Web3(WebsocketProvider('wss://ws.teqoin.io'))
+
+# Filter for new blocks
+block_filter = w3.eth.filter('latest')
+
+# Get new blocks
+for block_hash in block_filter.get_new_entries():
+    block = w3.eth.get_block(block_hash)
+    print(f'New block: {block.number}')
+```
+</CodeGroup>
+
+---
+
+## 🧪 Testing & Faucets
+
+### Testnet Faucet
+
+Get free testnet ETH for development:
+
+**URL:** https://faucet.teqoin.io
+
+**Limits:**
+- 0.5 ETH per request
+- 1 request per 24 hours
+- Free and instant
+
+[Faucet Documentation →](/quickstart/get-testnet-eth)
+
+### Local Development
+
+Run a local TeQoin node for testing:
+```bash
+# Clone TeQoin node
+git clone https://github.com/TeQoin/teqoin-node
+cd teqoin-node
+
+# Start local node
+docker-compose up -d
+
+# Node runs on:
+# RPC: http://localhost:8545
+# WS: ws://localhost:8546
+```
+
+[Run Node Tutorial →](/tutorials/run-node)
+
+---
+
+## 🔐 Security Best Practices
+
+<Warning>
+**Never Commit Private Keys**
+
+Always use environment variables for private keys:
+```javascript
+// ❌ WRONG
+const privateKey = '0x1234567890abcdef...';
+
+// ✅ CORRECT
+const privateKey = process.env.PRIVATE_KEY;
+```
+
+Use `.env` files and add them to `.gitignore`
+</Warning>
+
+<Tip>
+**Use Testnet First**
+
+Always develop and test on testnet before deploying to mainnet:
+
+1. Deploy to testnet
+2. Test thoroughly
+3. Audit if needed
+4. Deploy to mainnet
+</Tip>
+
+---
+
+## 📚 Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Deploy Contract" icon="rocket" href="/developers/deploy-contract">
+    Deploy your first smart contract
+  </Card>
+  
+  <Card title="Integration Guide" icon="plug" href="/developers/integration-guide">
+    Integrate TeQoin into your dApp
+  </Card>
+  
+  <Card title="Smart Contracts" icon="file-code" href="/developers/smart-contracts">
+    Write contracts for TeQoin
+  </Card>
+  
+  <Card title="API Reference" icon="book" href="/api-reference/introduction">
+    Complete API documentation
+  </Card>
+</CardGroup>
+
+---
+
+## 💬 Get Help
+
+<CardGroup cols={3}>
+  <Card title="Discord" icon="discord" href="https://discord.gg/teqoin">
+    Developer chat
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/TeQoin">
+    Report issues
+  </Card>
+  
+  <Card title="Documentation" icon="book" href="/">
+    Browse docs
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to deploy?** Continue to [Deploy Your First Contract](/developers/deploy-contract) →
