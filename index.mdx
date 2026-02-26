@@ -1,137 +1,89 @@
 ---
-title: 'Welcome to TeQoin'
-description: 'Official documentation for TeQoin - EVM Layer-2 Scaling with Low-Fee Optimistic Rollup'
-icon: '/logo/TeQoin.svg'
+title: "Welcome to TeQoin"
+mode: "custom"
 ---
 
-<div className="flex items-center gap-3 mb-6">
-  <h1 className="text-4xl font-bold m-0">Welcome to TeQoin</h1>
-  <img 
-    src="/logo/TeQoin.svg" 
-    alt="TeQoin" 
-    className="h-10 pointer-events-none select-none" 
-  />
+{/* Main container with subtle radial background gradient */}
+<div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white via-[#F2F7FF] to-[#E6F0FF] dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+
+  {/* Hero Section */}
+  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative overflow-hidden">
+    
+    {/* Left Content */}
+    <div className="flex-1 flex flex-col items-start gap-6 z-10">
+      <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white leading-tight m-0 tracking-tight">
+        Welcome to <br /> TeQoin Blockchain <br /> documentation
+      </h1>
+      
+      <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 m-0 max-w-lg leading-relaxed font-medium">
+        Scaling Solution Using Optimistic Rollups on EVM for zero fee.
+      </p>
+      
+      <div className="flex flex-wrap items-center gap-6 mt-6">
+        <a
+          href="/introduction/what-is-teqoin"
+          className="bg-[#0066FF] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all duration-300 no-underline shadow-[0_10px_20px_-10px_rgba(0,102,255,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(0,102,255,0.6)] hover:-translate-y-1"
+        >
+          Learn TeQoin in Y minutes
+        </a>
+        <a 
+          href="#paths" 
+          className="text-slate-700 dark:text-slate-300 font-semibold text-sm hover:text-[#0066FF] dark:hover:text-[#0066FF] transition-colors no-underline"
+        >
+          Or choose a path
+        </a>
+      </div>
+    </div>
+
+    {/* Right Image with Glow Effect */}
+    <div className="flex-1 flex justify-center relative z-10">
+        {/* The blue glow effect behind the coin */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#0066FF] rounded-full blur-[120px] opacity-40 dark:opacity-30 -z-10"></div>
+        
+        {/* The 3D Coin Image */}
+        {/* Important: Ensure your 3D image in /images/TeQoin.svg has a transparent background */}
+        <img
+          src="/images/TeQoin.svg"
+          alt="TeQoin Blockchain Logo"
+          className="w-full max-w-[480px] drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 ease-in-out"
+        />
+    </div>
+  </div>
+
+  {/* --- Navigation Paths Section --- */}
+  <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10">
+    <CardGroup cols={2}>
+      <Card
+        title="Quick Start"
+        icon="rocket"
+        href="/quickstart/add-network"
+      >
+        Add the TeQoin network to your wallet, get testnet ETH, and make your first transaction.
+      </Card>
+      
+      <Card
+        title="Developer Guides"
+        icon="code"
+        href="/developers/smart-contracts"
+      >
+        Deploy, verify, and interact with EVM-compatible smart contracts on TeQoin.
+      </Card>
+      
+      <Card
+        title="Bridge Assets"
+        icon="bridge"
+        href="/bridge/overview"
+      >
+        Securely transfer your assets between L1 Ethereum and the TeQoin L2 network.
+      </Card>
+      
+      <Card
+        title="Architecture"
+        icon="sitemap"
+        href="/architecture/technical-overview"
+      >
+        Deep dive into how our Optimistic Rollup technology works under the hood.
+      </Card>
+    </CardGroup>
+  </div>
 </div>
-
-Welcome to the official TeQoin documentation! TeQoin is an **EVM-compatible Layer-2 scaling solution** built on Ethereum using **Optimistic Rollup technology**.
-
-## What is TeQoin?
-
-TeQoin provides **low-fee, high-speed transactions** while maintaining the security guarantees of Ethereum mainnet. Built for developers, users, and businesses who need scalable blockchain infrastructure without compromising on security.
-
-<CardGroup cols={2}>
-  <Card title="low Transaction Fees" icon="coins">
-    Enjoy low fee transactions on L2. low fees for users.
-  </Card>
-  <Card title="5-Second Blocks" icon="clock">
-    Lightning-fast transaction finality with 5-second block times.
-  </Card>
-  <Card title="Full EVM Compatibility" icon="code">
-    Deploy existing Ethereum contracts without modifications.
-  </Card>
-  <Card title="Ethereum Security" icon="shield">
-    Inherit Ethereum's security through optimistic rollup technology.
-  </Card>
-</CardGroup>
-
-## Quick Links
-
-<CardGroup cols={2}>
-  <Card title="Quick Start" icon="rocket" href="/quickstart/add-network">
-    Get started with TeQoin in 5 minutes
-  </Card>
-  <Card title="Network Information" icon="network-wired" href="/developers/network-information">
-    RPC endpoints, Chain ID, and contract addresses
-  </Card>
-  <Card title="Bridge Assets" icon="bridge" href="/bridge/deposit-l1-to-l2">
-    Move ETH between L1 and L2
-  </Card>
-  <Card title="Deploy Contracts" icon="file-code" href="/developers/deploy-contract">
-    Deploy your first smart contract on TeQoin
-  </Card>
-</CardGroup>
-
-## Network Information
-
-| Parameter | Value |
-|-----------|-------|
-| **Network Name** | TeQoin L2 |
-| **Chain ID(Testnet)** | 420377 (0x66B69) |
-| **Currency Symbol** | ETH |
-| **Block Time** | 5 seconds |
-| **Finality** | Instant (optimistic) |
-| **Challenge Period** | 7 days |
-
-## Key Features
-
-### 🎯 Low-Fee Transactions
-Pay **low gas fees** on TeQoin L2. Perfect for microtransactions, gaming, and high-frequency applications.
-
-### ⚡ Lightning Fast
-**5-second block times** provide near-instant transaction confirmation. Build responsive dApps with superior UX.
-
-### 🔒 Ethereum Security
-TeQoin inherits Ethereum's battle-tested security through optimistic rollup technology and fraud proofs.
-
-### 🛠️ Developer Friendly
-Use familiar tools:
-- **Solidity** for smart contracts
-- **Hardhat/Foundry** for development
-- **Web3.js/Ethers.js** for frontend integration
-- **MetaMask** for wallet connection
-
-## How It Works
-```mermaid
-graph LR
-    A[User] -->|Submit TX| B[TeQoin L2]
-    B -->|Batch TXs| C[Ethereum L1]
-    C -->|Security| B
-    B -->|Fast Execution| A
-```
-
-1. **Submit transactions** to TeQoin L2 sequencer
-2. **Execute instantly** with 5-second finality
-3. **Batch and post** transaction data to Ethereum L1
-4. **Inherit security** from Ethereum mainnet
-
-## Get Started
-
-<Steps>
-  <Step title="Install Teqoin Wallet in Telegram">
-    Configure TeQoin L2 network in your wallet
-    
-    [Add Network Guide →](/quickstart/add-network)
-  </Step>
-  
-  <Step title="Get Testnet ETH">
-    Use our faucet to get test ETH on L2
-    
-    [Get Testnet ETH →](/quickstart/get-testnet-eth)
-  </Step>
-  
-  <Step title="Make Your First Transaction">
-    Send a transaction on TeQoin L2
-    
-    [First Transaction →](/quickstart/first-transaction)
-  </Step>
-</Steps>
-
-## Support & Community
-
-Need help? Join our community!
-
-<CardGroup cols={3}>
-  <Card title="Telegram" icon="Telegram" href="https://t.me/TeQoin">
-    Chat with the community
-  </Card>
-  <Card title="GitHub" icon="github" href="https://github.com/TeQoin">
-    Contribute to the project
-  </Card>
-  <Card title="Twitter" icon="twitter" href="https://twitter.com/TeQoin">
-    Follow for updates
-  </Card>
-</CardGroup>
-
----
-
-**Ready to build?** Head to the [Quick Start Guide](/quickstart/add-network) to begin! 🚀
