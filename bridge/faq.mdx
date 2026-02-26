@@ -1,0 +1,751 @@
+---
+title: 'Bridge FAQ'
+description: 'Frequently asked questions about the TeQoin bridge'
+---
+
+# Bridge FAQ
+
+Answers to the most common questions about bridging between Ethereum L1 and TeQoin L2.
+
+---
+
+## 🌉 General Questions
+
+<AccordionGroup>
+  <Accordion title="What is the TeQoin bridge?">
+    The TeQoin bridge is a set of smart contracts that enables trustless transfer of ETH between Ethereum (L1) and TeQoin L2.
+    
+    **Key features:**
+    - Trustless (secured by smart contracts)
+    - 1:1 backing (1 ETH on L1 = 1 ETH on L2)
+    - Bidirectional (L1 → L2 and L2 → L1)
+    - Secure (fraud proof protected)
+    
+    [Learn more about the bridge →](/bridge/overview)
+  </Accordion>
+  
+  <Accordion title="Is the bridge safe to use?">
+    **Yes, the bridge is very safe.**
+    
+    **Security measures:**
+    - ✅ Audited smart contracts
+    - ✅ Optimistic rollup security model
+    - ✅ 7-day fraud proof protection
+    - ✅ Decentralized verification
+    - ✅ Open-source code
+    
+    **Your funds are secured by:**
+    - Ethereum L1 smart contracts (battle-tested)
+    - Cryptographic proofs
+    - Economic incentives for fraud detection
+    
+    **Best practices:**
+    - Only use the official bridge: https://bridge.teqoin.io
+    - Verify contract addresses before transactions
+    - Start with small amounts to test
+    
+    [Security model details →](/architecture/security-model)
+  </Accordion>
+  
+  <Accordion title="What can I bridge?">
+    **Currently supported:**
+    - ✅ ETH (native currency)
+    
+    **Coming soon:**
+    - 🔜 ERC-20 tokens
+    - 🔜 ERC-721 NFTs
+    - 🔜 ERC-1155 tokens
+    
+    For now, only ETH can be bridged between L1 and L2.
+  </Accordion>
+  
+  <Accordion title="How much does it cost to bridge?">
+    **Deposit (L1 → L2):**
+    - L1 Gas: $10-50 (varies with Ethereum gas price)
+    - L2 Fee: $0 (covered by bridge)
+    - Bridge Fee: $0
+    
+    **Withdrawal (L2 → L1):**
+    - L2 Gas: ~$0.001 (initiate)
+    - L1 Gas: $10-30 (finalize, varies with gas price)
+    - Bridge Fee: $0
+    
+    **Total cost:** Mostly Ethereum L1 gas fees
+    
+    [Cost breakdown →](/bridge/deposit-l1-to-l2#cost-breakdown)
+  </Accordion>
+  
+  <Accordion title="What's the ratio between L1 and L2 ETH?">
+    **1:1 ratio - always!**
+    
+    - 1 ETH on L1 = 1 ETH on L2
+    - 0.5 ETH on L1 = 0.5 ETH on L2
+    - No conversion, no fees on the amount
+    
+    **Example:**
+    - Deposit 2.0 ETH from L1
+    - Receive 2.0 ETH on L2
+    - (minus only gas fees, not deducted from amount)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## ⏱️ Timing Questions
+
+<AccordionGroup>
+  <Accordion title="How long does a deposit take?">
+    **Deposit (L1 → L2): ~15 minutes**
+    
+    **Breakdown:**
+    - L1 transaction confirmation: 2-5 minutes
+    - L2 processing: 5-10 minutes
+    - **Total: 10-15 minutes typically**
+    
+    **Factors affecting time:**
+    - Ethereum network congestion
+    - Gas price used (faster gas = faster confirmation)
+    - L2 sequencer processing time
+    
+    [Deposit guide →](/bridge/deposit-l1-to-l2)
+  </Accordion>
+  
+  <Accordion title="How long does a withdrawal take?">
+    **Withdrawal (L2 → L1): 7 days + 15 minutes**
+    
+    **Breakdown:**
+    - Initiate on L2: ~5 seconds
+    - Challenge period: 7 days (security feature)
+    - Finalize on L1: 2-5 minutes
+    - **Total: 7 days, ~15 minutes**
+    
+    **Why 7 days?**
+    
+    This is the challenge period for fraud proofs. It's a security feature that ensures your funds are safe.
+    
+    [Learn about challenge period →](/bridge/challenge-period)
+  </Accordion>
+  
+  <Accordion title="Can I speed up my withdrawal?">
+    **Official bridge: No - 7 days is mandatory for security**
+    
+    The challenge period cannot be bypassed when using the official bridge.
+    
+    **Alternative: Third-party fast bridges**
+    
+    Some services offer "instant" withdrawals:
+    - Across Protocol
+    - Hop Protocol
+    - Connext
+    
+    **How they work:**
+    - You pay a fee (0.1-1%)
+    - Liquidity provider gives you L1 ETH immediately
+    - They wait 7 days to claim your withdrawal
+    
+    **Trade-offs:**
+    - ✅ Fast (minutes instead of days)
+    - ❌ Less secure (trust third party)
+    - ❌ Additional fees
+    - ❌ May have liquidity limits
+    
+    <Warning>
+    Use third-party bridges at your own risk. Official bridge = safest option.
+    </Warning>
+  </Accordion>
+  
+  <Accordion title="My deposit is taking longer than 15 minutes. What should I do?">
+    **First, check if L1 transaction confirmed:**
+    
+    1. Go to https://etherscan.io
+    2. Paste your transaction hash
+    3. Check status
+    
+    **If L1 still pending:**
+    - Wait longer (may take hours if low gas)
+    - Consider speeding up (MetaMask "Speed Up")
+    
+    **If L1 confirmed but not on L2 after 30 minutes:**
+    - Wait another 30 minutes
+    - Check bridge status: https://status.teqoin.io
+    - Refresh wallet (disconnect/reconnect)
+    
+    **If still missing after 2 hours:**
+    - Contact support with transaction hash
+    - Check #support on Discord
+    
+    [Troubleshooting guide →](/bridge/deposit-l1-to-l2#troubleshooting)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💰 Amount & Limits
+
+<AccordionGroup>
+  <Accordion title="Is there a minimum amount to bridge?">
+    **No hard minimum, but recommendations:**
+    
+    **Deposit (L1 → L2):**
+    - Recommended: 0.01 ETH or more
+    - Reason: L1 gas fees ($10-50) make smaller amounts uneconomical
+    
+    **Example:**
+    - Bridge 0.001 ETH: Pay $15 gas on $2 transfer (750% fee)
+    - Bridge 0.1 ETH: Pay $15 gas on $200 transfer (7.5% fee)
+    - Bridge 1 ETH: Pay $15 gas on $2000 transfer (0.75% fee)
+    
+    **Withdrawal (L2 → L1):**
+    - Recommended: 0.05 ETH or more
+    - Reason: Must pay L1 finalization fee
+    
+    **Tip:** Bridge larger amounts less frequently to minimize gas costs.
+  </Accordion>
+  
+  <Accordion title="Is there a maximum amount to bridge?">
+    **No hard maximum, but practical limits:**
+    
+    **Bridge capacity:**
+    - Per transaction: ~1000 ETH (soft limit)
+    - Daily: No limit
+    
+    **For very large amounts (>100 ETH):**
+    - Consider splitting into multiple transactions
+    - Contact support for assistance
+    - Allow extra time for processing
+    
+    **Security tip:**
+    - Test with small amount first
+    - Then bridge larger amounts
+    - Don't bridge everything at once
+  </Accordion>
+  
+  <Accordion title="Can I bridge fractional amounts (e.g., 0.00123 ETH)?">
+    **Yes, any amount is supported!**
+    
+    - ✅ 0.00123 ETH - supported
+    - ✅ 0.5 ETH - supported
+    - ✅ 1.23456789 ETH - supported
+    
+    **Precision:** Up to 18 decimals (standard for ETH)
+    
+    **Note:** Very small amounts may not be economical due to gas fees.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔧 Technical Questions
+
+<AccordionGroup>
+  <Accordion title="What are the bridge contract addresses?">
+    **L1 Bridge (Ethereum Mainnet):**
+```
+    Address: 0x919aa27d5278BC98bf40BA5A79be468B91f061dA
+    Network: Ethereum Mainnet
+    Chain ID: 1
+```
+    
+    **L2 Bridge (TeQoin L2):**
+```
+    Address: 0x4200000000000000000000000000000000000010
+    Network: TeQoin L2
+    Chain ID: 420377
+```
+    
+    **Always verify these addresses before sending funds!**
+    
+    [View contract ABIs →](/resources/contract-abis)
+  </Accordion>
+  
+  <Accordion title="Can I interact with the bridge contracts directly?">
+    **Yes, advanced users can call contracts directly.**
+    
+    **Deposit:**
+```solidity
+    // Call on L1 Bridge
+    function depositETH() payable
+```
+    
+    **Withdraw:**
+```solidity
+    // Call on L2 Bridge
+    function initiateWithdrawal(uint256 amount)
+    
+    // Then call on L1 Bridge after 7 days
+    function finalizeWithdrawal(bytes proof)
+```
+    
+    **Tools:**
+    - Ethers.js
+    - Web3.js
+    - Foundry (cast)
+    - Block explorer (write contract)
+    
+    [Developer integration guide →](/developers/integration-guide)
+  </Accordion>
+  
+  <Accordion title="Can I automate bridging with a script?">
+    **Yes, the bridge can be automated!**
+    
+    **Use cases:**
+    - Automated liquidity management
+    - Scheduled transfers
+    - Bot operations
+    - DApp integrations
+    
+    **Example (Ethers.js):**
+```javascript
+    const bridge = new ethers.Contract(L1_BRIDGE, abi, signer);
+    const tx = await bridge.depositETH({
+      value: ethers.parseEther('1.0')
+    });
+    await tx.wait();
+```
+    
+    [View code examples →](/bridge/deposit-l1-to-l2#method-2-direct-contract-interaction-advanced)
+  </Accordion>
+  
+  <Accordion title="Does the bridge support smart contract wallets?">
+    **Yes, smart contract wallets are supported!**
+    
+    **Supported wallets:**
+    - ✅ Gnosis Safe
+    - ✅ Argent
+    - ✅ Other contract wallets
+    
+    **Important note:**
+    - Your contract wallet must exist on BOTH L1 and L2
+    - Or use the same address on both networks
+    - Standard EOA (externally owned accounts) work seamlessly
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## ❌ Cancellation & Errors
+
+<AccordionGroup>
+  <Accordion title="Can I cancel a deposit after sending it?">
+    **No, deposits cannot be cancelled.**
+    
+    Once your L1 transaction confirms:
+    - ETH is locked in L1 bridge
+    - L2 will automatically mint equivalent ETH
+    - Process cannot be stopped
+    
+    **If you want to undo:**
+    - Wait for deposit to complete (~15 min)
+    - Then withdraw back to L1 (7 days)
+  </Accordion>
+  
+  <Accordion title="Can I cancel a withdrawal?">
+    **No, withdrawals cannot be cancelled.**
+    
+    Once you initiate withdrawal:
+    - L2 ETH is immediately burned
+    - Withdrawal enters 7-day challenge period
+    - Cannot be reversed
+    
+    **Options:**
+    - Complete the withdrawal (finalize after 7 days)
+    - Once on L1, deposit back to L2 if needed
+  </Accordion>
+  
+  <Accordion title="What if my transaction fails?">
+    **If L1 deposit transaction fails:**
+    - Your ETH stays in your L1 wallet
+    - Nothing was bridged
+    - Check error message on Etherscan
+    - Retry with correct parameters
+    
+    **Common reasons:**
+    - Insufficient gas
+    - Wrong contract address
+    - Network congestion
+    
+    **If L2 withdrawal initiation fails:**
+    - Your ETH stays on L2
+    - Nothing was withdrawn
+    - Check error on explorer.teqoin.io
+    - Retry transaction
+  </Accordion>
+  
+  <Accordion title="I sent ETH directly to the bridge contract without calling the function. Can I get it back?">
+    **This depends on how you sent it:**
+    
+    **If you called depositETH():** ✅ Normal deposit, should process
+    
+    **If you sent plain ETH transfer:** ⚠️ Funds may be stuck
+    
+    **What to do:**
+    1. Find your transaction hash
+    2. Contact support immediately
+    3. Provide transaction details
+    4. May be recoverable in some cases
+    
+    **Prevention:**
+    - Always use the bridge interface
+    - Or call the correct contract function
+    - Never send plain ETH transfers
+    
+    <Warning>
+    Always use https://bridge.teqoin.io to avoid this issue!
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔒 Security Questions
+
+<AccordionGroup>
+  <Accordion title="How do I know I'm using the official bridge?">
+    **Always verify the URL:**
+    
+    ✅ **Official bridge:** https://bridge.teqoin.io
+    
+    ❌ **Not official:**
+    - teqoin-bridge.com
+    - bridge-teqoin.com
+    - teqoin.bridge.io
+    - Any other variation
+    
+    **Safety tips:**
+    - Bookmark the official URL
+    - Check the SSL certificate
+    - Verify contract addresses
+    - Don't trust random links in Discord/Telegram
+  </Accordion>
+  
+  <Accordion title="What if someone steals my private key?">
+    **Immediate actions:**
+    
+    1. **Don't panic** - assess the situation
+    2. **Create new wallet** immediately
+    3. **Transfer funds** from compromised wallet to new wallet
+    
+    **For pending withdrawals:**
+    - If in challenge period: Cannot be cancelled
+    - Change finalization address if possible (contact support)
+    - Attacker can't finalize to their address (goes to your address)
+    
+    **Prevention:**
+    - Use hardware wallet (Ledger, Trezor)
+    - Never share private key
+    - Use strong passwords
+    - Enable 2FA where possible
+  </Accordion>
+  
+  <Accordion title="Are my funds insured?">
+    **No formal insurance, but strong security:**
+    
+    **What protects your funds:**
+    - ✅ Audited smart contracts
+    - ✅ Fraud proof system
+    - ✅ Decentralized verification
+    - ✅ 7-day challenge period
+    - ✅ Open-source code
+    
+    **Your responsibility:**
+    - Use official bridge only
+    - Verify all transactions
+    - Secure your private keys
+    - Start with small amounts
+    
+    **In case of smart contract bug:**
+    - Would affect all users equally
+    - Team would work on resolution
+    - Community governance would decide recovery
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📱 User Experience
+
+<AccordionGroup>
+  <Accordion title="Which wallet should I use for bridging?">
+    **Recommended wallets:**
+    
+    **MetaMask** (Most popular)
+    - ✅ Easy to use
+    - ✅ Browser extension + mobile app
+    - ✅ Well-supported
+    
+    **TeQoin Telegram Wallet** (Easiest)
+    - ✅ Built-in TeQoin support
+    - ✅ No configuration needed
+    - ✅ Telegram integration
+    
+    **Others:**
+    - ✅ WalletConnect compatible wallets
+    - ✅ Coinbase Wallet
+    - ✅ Rainbow Wallet
+    
+    [Add network guide →](/quickstart/add-network)
+  </Accordion>
+  
+  <Accordion title="Do I need ETH on both L1 and L2?">
+    **For deposits:** Only need ETH on L1
+    
+    **For withdrawals:** Need ETH on both!
+    - L2: Tiny amount for initiating (~$0.001)
+    - L1: ~0.01 ETH for finalization gas
+    
+    **Best practice:**
+    - Keep small amounts on both networks
+    - Never bridge 100% of your ETH
+    - Reserve some for gas fees
+  </Accordion>
+  
+  <Accordion title="Can I track my bridge transactions?">
+    **Yes, multiple ways:**
+    
+    **1. Bridge Interface**
+    - Go to https://bridge.teqoin.io
+    - Connect wallet
+    - View "My Transactions" or "History"
+    
+    **2. Block Explorers**
+    - L1: https://etherscan.io (paste TX hash)
+    - L2: https://explorer.teqoin.io (paste TX hash)
+    
+    **3. Wallet**
+    - Check activity/history tab
+    - Switch between L1 and L2 networks
+    
+    [Tracking guide →](/bridge/deposit-l1-to-l2#tracking-your-deposit)
+  </Accordion>
+  
+  <Accordion title="I forgot to finalize my withdrawal after 7 days. Is it lost?">
+    **No! Your funds are safe - no deadline to finalize.**
+    
+    You can finalize:
+    - 7 days after initiation ✅
+    - 8 days later ✅
+    - 30 days later ✅
+    - 1 year later ✅
+    - Anytime after challenge period ✅
+    
+    **Your funds wait safely in L1 bridge contract.**
+    
+    **Benefits of waiting:**
+    - Finalize during low gas periods
+    - Save 50-70% on gas fees
+    - No rush!
+    
+    [Withdrawal guide →](/bridge/withdraw-l2-to-l1)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🌐 Network & Compatibility
+
+<AccordionGroup>
+  <Accordion title="Does the bridge work on testnet?">
+    **Yes! Testnet bridge available.**
+    
+    **Testnet details:**
+    - L1: Sepolia Testnet
+    - L2: TeQoin L2 Testnet
+    - Bridge: https://bridge-testnet.teqoin.io
+    
+    **Use testnet for:**
+    - Testing before mainnet
+    - Learning how bridge works
+    - Development and debugging
+    - Risk-free practice
+    
+    **Get testnet ETH:**
+    - Sepolia: https://sepoliafaucet.com
+    - TeQoin: https://faucet-testnet.teqoin.io
+  </Accordion>
+  
+  <Accordion title="Can I bridge from other networks (BSC, Polygon, etc.)?">
+    **No, only from Ethereum L1.**
+    
+    **Currently supported:**
+    - ✅ Ethereum Mainnet ↔ TeQoin L2
+    
+    **Not supported:**
+    - ❌ BSC → TeQoin
+    - ❌ Polygon → TeQoin
+    - ❌ Arbitrum → TeQoin
+    - ❌ Any other network → TeQoin
+    
+    **Workaround:**
+    1. Bridge from other network to Ethereum L1 (use their bridge)
+    2. Then bridge from Ethereum L1 to TeQoin L2 (use TeQoin bridge)
+  </Accordion>
+  
+  <Accordion title="Will the bridge support other tokens in the future?">
+    **Yes! Planned expansions:**
+    
+    **Coming soon:**
+    - 🔜 ERC-20 tokens
+    - 🔜 ERC-721 NFTs
+    - 🔜 ERC-1155 tokens
+    
+    **Timeline:** TBA
+    
+    **Follow updates:**
+    - Discord: https://discord.gg/teqoin
+    - Twitter: https://twitter.com/TeQoin
+    - Blog: https://blog.teqoin.io
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💡 Best Practices
+
+<AccordionGroup>
+  <Accordion title="What's the best strategy for bridging?">
+    **Recommended approach:**
+    
+    **For deposits (L1 → L2):**
+    1. Bridge during low Ethereum gas periods
+    2. Bridge larger amounts less frequently
+    3. Test with small amount first
+    4. Keep some ETH on L1 for future gas
+    
+    **For withdrawals (L2 → L1):**
+    1. Plan 7 days in advance
+    2. Initiate withdrawal now if you'll need L1 funds soon
+    3. Finalize during low gas periods (save money)
+    4. Don't withdraw 100% - keep some on L2
+    
+    **General:**
+    - Maintain balance on both networks
+    - Document all transactions
+    - Set calendar reminders for finalization
+  </Accordion>
+  
+  <Accordion title="How can I save on bridge fees?">
+    **Gas optimization tips:**
+    
+    **1. Time your transactions**
+    - Bridge on weekends (cheaper gas)
+    - Bridge late night US time (2-6 AM EST)
+    - Avoid peak hours (weekday afternoons)
+    
+    **2. Batch your transfers**
+    - Instead of: 10 deposits of 0.1 ETH = $100 gas
+    - Do: 1 deposit of 1 ETH = $10 gas
+    - **Save: $90**
+    
+    **3. Monitor gas prices**
+    - Use https://etherscan.io/gastracker
+    - Set up gas price alerts
+    - Wait for gas under 30 gwei
+    
+    **4. For withdrawals**
+    - Finalize during low gas periods
+    - No rush after 7 days - optimize timing
+    - Can save 50-70% on finalization
+    
+    [Gas optimization guide →](/bridge/deposit-l1-to-l2#gas-price-optimization)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🆘 Getting Help
+
+<AccordionGroup>
+  <Accordion title="Where can I get help if I have issues?">
+    **Official support channels:**
+    
+    **1. Discord**
+    - https://discord.gg/teqoin
+    - #support channel
+    - Community help + team support
+    
+    **2. Documentation**
+    - Search this docs site
+    - Comprehensive guides and troubleshooting
+    
+    **3. GitHub**
+    - https://github.com/TeQoin
+    - Report technical issues
+    - View open issues
+    
+    **4. Email**
+    - support@teqoin.io
+    - Include transaction hash
+    - Describe issue clearly
+    
+    **What to include when asking for help:**
+    - Transaction hash
+    - Wallet address
+    - Network (L1 or L2)
+    - Screenshots (if relevant)
+    - What you expected vs what happened
+  </Accordion>
+  
+  <Accordion title="How do I report a bug or issue?">
+    **Report via GitHub:**
+    1. Go to https://github.com/TeQoin/bridge
+    2. Click "Issues" tab
+    3. Click "New Issue"
+    4. Provide details:
+       - Steps to reproduce
+       - Expected behavior
+       - Actual behavior
+       - Screenshots
+       - Transaction hashes
+    
+    **Or report in Discord:**
+    - #support or #bug-reports channel
+    - Team will investigate
+    
+    **Security vulnerabilities:**
+    - Email: security@teqoin.io
+    - Do NOT post publicly
+    - Will be handled privately
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📚 Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Bridge Overview" icon="bridge" href="/bridge/overview">
+    Complete overview of the bridge system
+  </Card>
+  
+  <Card title="Deposit Guide" icon="arrow-down" href="/bridge/deposit-l1-to-l2">
+    Step-by-step deposit instructions
+  </Card>
+  
+  <Card title="Withdrawal Guide" icon="arrow-up" href="/bridge/withdraw-l2-to-l1">
+    Complete withdrawal walkthrough
+  </Card>
+  
+  <Card title="Challenge Period" icon="clock" href="/bridge/challenge-period">
+    Understanding the 7-day waiting period
+  </Card>
+</CardGroup>
+
+---
+
+## 💬 Still Have Questions?
+
+<Card title="Join Our Community" icon="discord" href="https://discord.gg/teqoin">
+  **Get help from the community**
+  
+  Join our Discord server for:
+  - Real-time support
+  - Community discussions
+  - Latest updates
+  - Direct team support
+  
+  [Join Discord →](https://discord.gg/teqoin)
+</Card>
+
+---
+
+**Can't find your answer?** Ask in [Discord](https://discord.gg/teqoin) or email [support@teqoin.io](mailto:support@teqoin.io)
