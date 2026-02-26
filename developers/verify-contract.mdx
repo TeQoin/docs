@@ -1,0 +1,668 @@
+---
+title: 'Verify Smart Contracts'
+description: 'Verify your contract source code on the TeQoin block explorer'
+---
+
+# Verify Smart Contracts
+
+Verify your smart contract source code on the TeQoin block explorer to make it publicly visible and enable users to interact with your contract directly.
+
+<Note>
+**Why Verify Your Contract?**
+- ✅ Users can read your contract source code
+- ✅ Builds trust and transparency
+- ✅ Enables direct interaction on the explorer
+- ✅ Required for many integrations
+- ✅ Shows you're a legitimate project
+</Note>
+
+---
+
+## 🎯 Benefits of Verification
+
+<CardGroup cols={2}>
+  <Card title="Transparency" icon="eye">
+    Users can read your contract code and verify what it does
+  </Card>
+  
+  <Card title="Trust" icon="shield-check">
+    Verified contracts are trusted by the community
+  </Card>
+  
+  <Card title="Direct Interaction" icon="hand-pointer">
+    Users can call functions directly on the block explorer
+  </Card>
+  
+  <Card title="Integration Support" icon="plug">
+    Many services require verified contracts
+  </Card>
+</CardGroup>
+
+---
+
+## 🔧 Verification Methods
+
+<Tabs>
+  <Tab title="Hardhat (Recommended)">
+    ## Verify with Hardhat
+    
+    The easiest and most reliable method for Hardhat users.
+    
+    ### Prerequisites
+```bash
+    # Install verification plugin
+    npm install --save-dev @nomicfoundation/hardhat-verify
+```
+    
+    ### Step 1: Configure hardhat.config.js
+```javascript hardhat.config.js
+    require("@nomicfoundation/hardhat-toolbox");
+    require("@nomicfoundation/hardhat-verify");
+    require("dotenv").config();
+    
+    module.exports = {
+      solidity: "0.8.20",
+      networks: {
+        teqoin: {
+          url: "https://rpc.teqoin.io",
+          chainId: 420377,
+          accounts: [process.env.PRIVATE_KEY]
+        }
+      },
+      etherscan: {
+        apiKey: {
+          teqoin: process.env.ETHERSCAN_API_KEY
+        },
+        customChains: [
+          {
+            network: "teqoin",
+            chainId: 420377,
+            urls: {
+              apiURL: "https://explorer.teqoin.io/api",
+              browserURL: "https://explorer.teqoin.io"
+            }
+          }
+        ]
+      }
+    };
+```
+    
+    ### Step 2: Get API Key
+    
+    <Steps>
+      <Step title="Visit Block Explorer">
+        Go to https://explorer.teqoin.io
+      </Step>
+      
+      <Step title="Sign In / Register">
+        1. Click **"Sign In"** (top-right)
+        2. Create account or sign in
+      </Step>
+      
+      <Step title="Generate API Key">
+        1. Go to **"My Profile"** → **"API Keys"**
+        2. Click **"Add"** to create new API key
+        3. Copy the API key
+      </Step>
+      
+      <Step title="Add to .env">
+```bash .env
+        ETHERSCAN_API_KEY=your_api_key_here
+```
+      </Step>
+    </Steps>
+    
+    ### Step 3: Verify Contract
+    
+    <CodeGroup>
+```bash Simple Contract (No Constructor Args)
+    # Verify contract with no constructor arguments
+    npx hardhat verify --network teqoin CONTRACT_ADDRESS
+    
+    # Example:
+    npx hardhat verify --network teqoin 0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D
+    
+    # Output:
+    # Successfully submitted source code for contract
+    # contracts/MyToken.sol:MyToken at 0x5E3A9432...
+    # for verification on the block explorer. Waiting for verification result...
+    # 
+    # Successfully verified contract MyToken on Etherscan.
+    # https://explorer.teqoin.io/address/0x5E3A9432...#code
+```
+```bash With Constructor Arguments
+    # Verify contract WITH constructor arguments
+    npx hardhat verify --network teqoin CONTRACT_ADDRESS "Constructor" "Arguments"
+    
+    # Example: ERC20 token with name and symbol
+    npx hardhat verify --network teqoin 0x1234... "MyToken" "MTK"
+    
+    # Example: Contract with multiple arguments
+    npx hardhat verify --network teqoin 0x5678... \
+      "0x919aa27d5278BC98bf40BA5A79be468B91f061dA" \
+      1000000 \
+      true
+```
+```bash Complex Constructor Arguments
+    # For complex arguments, create a separate file
+    
+    # Create arguments.js
+    module.exports = [
+      "0x919aa27d5278BC98bf40BA5A79be468B91f061dA", // address
+      ethers.parseEther("1000000"),                  // uint256
+      ["0xabc...", "0xdef..."],                       // address[]
+      { name: "MyToken", symbol: "MTK" }             // struct
+    ];
+    
+    # Verify with arguments file
+    npx hardhat verify --network teqoin \
+      --constructor-args arguments.js \
+      CONTRACT_ADDRESS
+```
+    </CodeGroup>
+    
+    ### Step 4: Verify Multi-File Contracts
+    
+    If your contract imports multiple files:
+```bash
+    # Hardhat automatically handles multi-file verification
+    npx hardhat verify --network teqoin CONTRACT_ADDRESS
+    
+    # It will upload all imported files automatically
+```
+    
+    ✅ **Contract Verified!**
+  </Tab>
+  
+  <Tab title="Foundry">
+    ## Verify with Foundry
+    
+    Fast verification using Foundry's built-in tools.
+    
+    ### Prerequisites
+    
+    Foundry installed (forge, cast)
+    
+    ### Step 1: Configure foundry.toml
+```toml foundry.toml
+    [profile.default]
+    src = "src"
+    out = "out"
+    libs = ["lib"]
+    
+    [rpc_endpoints]
+    teqoin = "https://rpc.teqoin.io"
+    
+    [etherscan]
+    teqoin = { 
+      key = "${ETHERSCAN_API_KEY}",
+      url = "https://explorer.teqoin.io/api"
+    }
+```
+    
+    ### Step 2: Set API Key
+```bash
+    # Export API key
+    export ETHERSCAN_API_KEY=your_api_key_here
+    
+    # Or add to .env and load it
+    echo "ETHERSCAN_API_KEY=your_key" >> .env
+    source .env
+```
+    
+    ### Step 3: Verify Contract
+    
+    <CodeGroup>
+```bash Simple Verification
+    # Verify contract
+    forge verify-contract \
+      CONTRACT_ADDRESS \
+      src/MyToken.sol:MyToken \
+      --chain 420377 \
+      --etherscan-api-key $ETHERSCAN_API_KEY
+    
+    # Example:
+    forge verify-contract \
+      0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D \
+      src/MyToken.sol:MyToken \
+      --chain 420377
+```
+```bash With Constructor Arguments
+    # Verify with constructor args
+    forge verify-contract \
+      CONTRACT_ADDRESS \
+      src/MyToken.sol:MyToken \
+      --constructor-args $(cast abi-encode "constructor(string,string)" "MyToken" "MTK") \
+      --chain 420377
+    
+    # With multiple arguments
+    forge verify-contract \
+      CONTRACT_ADDRESS \
+      src/MyContract.sol:MyContract \
+      --constructor-args $(cast abi-encode "constructor(address,uint256,bool)" "0x919aa..." "1000000" "true") \
+      --chain 420377
+```
+```bash Verify During Deployment
+    # Verify automatically during deployment
+    forge script script/Deploy.s.sol:DeployScript \
+      --rpc-url teqoin \
+      --broadcast \
+      --verify \
+      --etherscan-api-key $ETHERSCAN_API_KEY
+```
+    </CodeGroup>
+    
+    ✅ **Contract Verified!**
+  </Tab>
+  
+  <Tab title="Block Explorer (Manual)">
+    ## Verify via Block Explorer UI
+    
+    Manual verification through the web interface.
+    
+    ### Step 1: Visit Your Contract
+    
+    Go to https://explorer.teqoin.io/address/YOUR_CONTRACT_ADDRESS
+    
+    ### Step 2: Start Verification
+    
+    <Steps>
+      <Step title="Click 'Verify and Publish'">
+        On the contract page, click **"Contract"** tab, then **"Verify and Publish"**
+      </Step>
+      
+      <Step title="Select Verification Method">
+        Choose one:
+        - **Solidity (Single file)** - For simple contracts
+        - **Solidity (Multi-part files)** - For contracts with imports
+        - **Solidity (Standard JSON)** - For Hardhat/Foundry projects
+      </Step>
+    </Steps>
+    
+    ### Step 3: Enter Contract Details
+    
+    <Accordion title="Single File Method">
+      **For simple contracts without imports:**
+      
+      1. **Contract Address:** (pre-filled)
+      2. **Compiler Version:** Select exact version (e.g., v0.8.20+commit.a1b79de6)
+      3. **Open Source License:** Select license (MIT, GPL-3.0, etc.)
+      4. **Optimization:** Select "Yes" if you used optimizer
+      5. **Optimization Runs:** Enter runs (usually 200)
+      6. **Contract Code:** Paste your entire .sol file
+      7. **Constructor Arguments:** Enter if your contract had constructor args
+      
+      Click **"Verify and Publish"**
+    </Accordion>
+    
+    <Accordion title="Multi-Part Files Method">
+      **For contracts with imports:**
+      
+      1. Select **"Solidity (Multi-part files)"**
+      2. **Compiler Version:** Select exact version
+      3. **Optimization:** Yes/No
+      4. Upload all .sol files:
+         - Main contract file
+         - All imported files (OpenZeppelin, etc.)
+      5. **Constructor Arguments:** If applicable
+      
+      Click **"Verify and Publish"**
+    </Accordion>
+    
+    <Accordion title="Standard JSON Method (Recommended)">
+      **For Hardhat/Foundry projects:**
+      
+      This is the most reliable method for complex projects.
+      
+      **Generate Standard JSON Input:**
+```bash
+      # For Hardhat:
+      npx hardhat flatten contracts/MyToken.sol > flattened.sol
+      
+      # Then use the flattened file in single-file method
+      # OR generate standard JSON:
+      npx hardhat compile --force
+      # JSON is in artifacts/build-info/
+```
+      
+      **For Foundry:**
+```bash
+      # Generate standard JSON
+      forge verify-contract CONTRACT_ADDRESS \
+        src/MyToken.sol:MyToken \
+        --show-standard-json-input > standard-input.json
+      
+      # Upload this JSON to the explorer
+```
+      
+      Upload the JSON file and click **"Verify and Publish"**
+    </Accordion>
+    
+    ### Step 4: Get Constructor Arguments
+    
+    If your contract has constructor arguments, you need to encode them:
+    
+    <CodeGroup>
+```bash Using Cast (Foundry)
+    # Encode constructor arguments
+    cast abi-encode "constructor(string,string)" "MyToken" "MTK"
+    
+    # Output (paste this in "Constructor Arguments" field):
+    # 0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000774657174696f6e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000034d544b0000000000000000000000000000000000000000000000000000000000
+```
+```bash Using Ethers.js
+    const { ethers } = require("ethers");
+    
+    // Encode constructor arguments
+    const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+    const encoded = abiCoder.encode(
+      ["string", "string"],
+      ["MyToken", "MTK"]
+    );
+    
+    console.log(encoded);
+    // Paste this in "Constructor Arguments" field
+```
+```javascript Using Web Interface
+    // Some explorers have a constructor arguments helper
+    // Just enter the values and it encodes them for you
+    
+    // Example:
+    // Argument 1 (string): MyToken
+    // Argument 2 (string): MTK
+    // Click "Encode" → Copy encoded value
+```
+    </CodeGroup>
+    
+    ✅ **Contract Verified!**
+  </Tab>
+  
+  <Tab title="Flattened Source">
+    ## Verify with Flattened Source
+    
+    Combine all contract files into one for easier verification.
+    
+    ### Using Hardhat
+```bash
+    # Flatten your contract
+    npx hardhat flatten contracts/MyToken.sol > MyToken_flattened.sol
+    
+    # This creates a single file with all imports
+```
+    
+    ### Using Foundry
+```bash
+    # Flatten with Foundry
+    forge flatten src/MyToken.sol > MyToken_flattened.sol
+```
+    
+    ### Cleanup Flattened File
+    
+    1. Open `MyToken_flattened.sol`
+    2. Remove duplicate SPDX licenses (keep only one at the top)
+    3. Remove duplicate pragma statements (keep only one)
+    
+    ### Verify on Explorer
+    
+    1. Go to block explorer
+    2. Select **"Solidity (Single file)"** method
+    3. Paste the flattened source code
+    4. Click **"Verify and Publish"**
+    
+    ✅ **Contract Verified!**
+  </Tab>
+</Tabs>
+
+---
+
+## ✅ Verify Verification Success
+
+After submitting, check if your contract was verified:
+
+<Steps>
+  <Step title="Visit Contract Page">
+    Go to https://explorer.teqoin.io/address/YOUR_CONTRACT_ADDRESS
+  </Step>
+  
+  <Step title="Check for Green Checkmark">
+    You should see:
+    - ✅ Green checkmark next to contract address
+    - **"Contract"** tab shows source code
+    - **"Read Contract"** and **"Write Contract"** tabs appear
+  </Step>
+  
+  <Step title="Test Read Functions">
+    Click **"Read Contract"** tab
+    
+    Try calling a view function to verify it works
+  </Step>
+</Steps>
+
+---
+
+## 🔧 Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'Compiler version mismatch' error">
+    The compiler version must match exactly.
+    
+    **Solution:**
+```bash
+    # Check what version you used to compile
+    # In Hardhat:
+    cat hardhat.config.js | grep solidity
+    
+    # In Foundry:
+    cat foundry.toml | grep solc_version
+    
+    # Make sure this EXACT version is selected on the explorer
+    # Including the commit hash!
+```
+  </Accordion>
+  
+  <Accordion title="'Bytecode does not match' error">
+    The compiled bytecode doesn't match the deployed bytecode.
+    
+    **Possible reasons:**
+    - Wrong compiler version
+    - Optimization settings don't match
+    - Constructor arguments incorrect
+    - Wrong source code
+    
+    **Solution:**
+```javascript
+    // Check your hardhat.config.js settings
+    solidity: {
+      version: "0.8.20",  // Must match exactly
+      settings: {
+        optimizer: {
+          enabled: true,   // Must match deployment
+          runs: 200        // Must match deployment
+        }
+      }
+    }
+```
+  </Accordion>
+  
+  <Accordion title="'Invalid constructor arguments' error">
+    Constructor arguments are not encoded correctly.
+    
+    **Solution:**
+```bash
+    # Use cast to encode (Foundry)
+    cast abi-encode "constructor(string,string)" "MyToken" "MTK"
+    
+    # Or use ethers.js
+    const encoded = abiCoder.encode(["string", "string"], ["MyToken", "MTK"]);
+    
+    # Make sure to remove the "0x" prefix when pasting!
+```
+  </Accordion>
+  
+  <Accordion title="'Too many requests' error">
+    You've exceeded the API rate limit.
+    
+    **Solution:**
+    - Wait a few minutes before trying again
+    - If using Hardhat, it might be retrying automatically
+    - Contact support for higher rate limits
+  </Accordion>
+  
+  <Accordion title="Verification stuck on 'Pending'">
+    The verification is queued but taking a long time.
+    
+    **Solution:**
+    - Wait 5-10 minutes
+    - Check the explorer's status page
+    - Try manual verification via UI
+    - Contact support if stuck for > 1 hour
+  </Accordion>
+  
+  <Accordion title="'Already verified' but not showing">
+    Contract was verified but source code not visible.
+    
+    **Solution:**
+    - Clear browser cache
+    - Wait a few minutes for indexer to update
+    - Try accessing in incognito mode
+    - Contact support if persists
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📊 Verification Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Verify Immediately" icon="clock">
+    Verify your contract right after deployment while settings are fresh
+  </Card>
+  
+  <Card title="Keep Records" icon="file-lines">
+    Save compiler settings, constructor args, and verification commands
+  </Card>
+  
+  <Card title="Test on Testnet" icon="flask">
+    Practice verification on testnet before mainnet
+  </Card>
+  
+  <Card title="Use Automation" icon="robot">
+    Use Hardhat/Foundry auto-verification to avoid manual errors
+  </Card>
+</CardGroup>
+
+---
+
+## 📝 Verification Checklist
+
+<Steps>
+  <Step title="Before Deployment">
+    - [ ] Know your compiler version
+    - [ ] Know your optimization settings
+    - [ ] Have constructor arguments ready
+    - [ ] Have API key from block explorer
+  </Step>
+  
+  <Step title="During Deployment">
+    - [ ] Save contract address
+    - [ ] Save transaction hash
+    - [ ] Save deployment command
+    - [ ] Note block number
+  </Step>
+  
+  <Step title="After Deployment">
+    - [ ] Verify contract immediately
+    - [ ] Check verification succeeded
+    - [ ] Test read/write functions on explorer
+    - [ ] Document verification for records
+  </Step>
+</Steps>
+
+---
+
+## 🎯 After Verification
+
+Once your contract is verified, users can:
+
+<CardGroup cols={2}>
+  <Card title="Read Source Code" icon="code">
+    Anyone can view and audit your contract code
+  </Card>
+  
+  <Card title="Interact Directly" icon="hand-pointer">
+    Users can call functions via the block explorer
+  </Card>
+  
+  <Card title="Verify Security" icon="shield-check">
+    Security researchers can audit your code
+  </Card>
+  
+  <Card title="Trust Your Project" icon="heart">
+    Verified contracts build user confidence
+  </Card>
+</CardGroup>
+
+---
+
+## 💡 Pro Tips
+
+<Tip>
+**Automate Verification**
+
+Add verification to your deployment script:
+```javascript
+// Hardhat deployment script
+const token = await MyToken.deploy();
+await token.waitForDeployment();
+
+// Automatically verify
+await hre.run("verify:verify", {
+  address: await token.getAddress(),
+  constructorArguments: []
+});
+```
+</Tip>
+
+<Tip>
+**Keep a Verification Log**
+```bash
+# Create a verification log
+echo "MyToken: 0x5E3A... - Verified on $(date)" >> verification_log.txt
+```
+</Tip>
+
+<Tip>
+**Verify All Contracts**
+
+Don't forget to verify:
+- Main contract
+- Proxy contracts (if using proxies)
+- Implementation contracts
+- Library contracts
+</Tip>
+
+---
+
+## 🎯 Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integrate with Frontend" icon="window" href="/developers/integration-guide">
+    Connect your verified contract to a dApp
+  </Card>
+  
+  <Card title="Deploy Another Contract" icon="rocket" href="/developers/deploy-contract">
+    Deploy and verify more contracts
+  </Card>
+  
+  <Card title="Write Documentation" icon="book">
+    Document your contract functions for users
+  </Card>
+  
+  <Card title="Get Security Audit" icon="shield">
+    Consider professional audit for production contracts
+  </Card>
+</CardGroup>
+
+---
+
+**Contract verified?** Now [integrate it with your frontend](/developers/integration-guide) →
