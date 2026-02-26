@@ -1,0 +1,493 @@
+---
+title: 'Make Your First Transaction'
+description: 'Send your first low-fee transaction on TeQoin L2 and experience the difference'
+---
+
+# Make Your First Transaction
+
+Experience TeQoin's low fees and lightning-fast speed by sending your first transaction on L2.
+
+<Note>
+**What You'll Need:**
+- ✅ TeQoin L2 network added to your wallet
+- ✅ Some testnet ETH (from the faucet)
+- ✅ Less than 1 minute
+
+**You'll Experience:**
+- ⚡ 5-second confirmation time
+- 💰 Low transaction fees
+- 🎯 Simple and straightforward process
+</Note>
+
+---
+
+## 🎯 Choose Your Wallet
+
+<Tabs>
+  <Tab title="TeQoin Telegram Wallet">
+    ## Send Transaction via Telegram Wallet
+    
+    The easiest way to send your first transaction.
+    
+    <Steps>
+      <Step title="Open TeQoin Wallet">
+        Open **@TeQoinWalletBot** in Telegram
+      </Step>
+      
+      <Step title="Tap 'Send'">
+        On the main wallet screen, tap **"Send"** or **"Transfer"**
+      </Step>
+      
+      <Step title="Enter Details">
+        Fill in the transaction details:
+        
+        - **To Address:** Enter the recipient's wallet address
+        - **Amount:** Enter the amount of ETH to send (e.g., `0.01`)
+        
+        <Tip>
+        **Test Transaction:** Send a small amount first (like 0.001 ETH) to make sure everything works!
+        </Tip>
+      </Step>
+      
+      <Step title="Review and Confirm">
+        Review the transaction:
+        
+        - ✅ Recipient address is correct
+        - ✅ Amount is correct
+        - ✅ Network shows **"TeQoin L2"**
+        
+        Tap **"Confirm"** or **"Send"**
+      </Step>
+      
+      <Step title="Transaction Sent!">
+        ✅ Your transaction is sent!
+        
+        You'll see:
+        - Transaction hash (TX ID)
+        - Status updates in real-time
+        - Confirmation in ~5 seconds
+        
+        **Transaction confirmed!** That was fast! ⚡
+      </Step>
+    </Steps>
+    
+    ### View Transaction on Explorer
+    
+    <Steps>
+      <Step title="Get Transaction Hash">
+        In the Telegram wallet, tap on the transaction to see details
+        
+        Copy the **transaction hash** (starts with `0x...`)
+      </Step>
+      
+      <Step title="Open Block Explorer">
+        Visit https://explorer.teqoin.io
+        
+        Or tap **"View on Explorer"** in the wallet
+      </Step>
+      
+      <Step title="View Details">
+        See complete transaction information:
+        
+        - ✅ Status (Success)
+        - ✅ Block number
+        - ✅ Timestamp
+        - ✅ Gas used
+        - ✅ From/To addresses
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="MetaMask">
+    ## Send Transaction via MetaMask
+    
+    Send your first transaction using MetaMask wallet.
+    
+    <Steps>
+      <Step title="Open MetaMask">
+        1. Click the MetaMask extension in your browser
+        2. Make sure you're connected to **TeQoin L2** network
+        3. Check that you have testnet ETH balance
+      </Step>
+      
+      <Step title="Click 'Send'">
+        On the main MetaMask screen, click **"Send"**
+      </Step>
+      
+      <Step title="Enter Recipient Address">
+        Paste the recipient's wallet address:
+        
+        - Should start with `0x`
+        - 42 characters total
+        
+        <Warning>
+        **Double-check the address!** Blockchain transactions cannot be reversed.
+        </Warning>
+        
+        <Tip>
+        **Send to yourself:** You can send ETH to your own address as a test. Just copy your address and paste it as the recipient!
+        </Tip>
+      </Step>
+      
+      <Step title="Enter Amount">
+        Enter the amount of ETH to send:
+        
+        - Example: `0.01` ETH
+        - Or use the **"Max"** button to send your entire balance
+        
+        MetaMask will show:
+        - Amount in ETH
+        - Approximate USD value (if available)
+        - Gas fee estimate
+      </Step>
+      
+      <Step title="Review Transaction">
+        Review the transaction details:
+        
+        - **To:** Recipient address
+        - **Amount:** How much you're sending
+        - **Gas Fee:** Very low on TeQoin L2!
+        - **Total:** Amount + Gas Fee
+        
+        Everything looks good? Click **"Next"**
+      </Step>
+      
+      <Step title="Confirm Transaction">
+        Final confirmation screen:
+        
+        1. Review one last time
+        2. Click **"Confirm"**
+        3. MetaMask will sign and broadcast the transaction
+      </Step>
+      
+      <Step title="Transaction Sent!">
+        ✅ Transaction submitted!
+        
+        MetaMask shows:
+        - **Pending** status (brief - usually 5 seconds)
+        - **Success** status (after confirmation)
+        - Transaction hash
+        
+        Click **"View on block explorer"** to see details
+      </Step>
+    </Steps>
+    
+    ### Understanding the Transaction
+    
+    <Accordion title="What is a transaction hash?">
+      A **transaction hash** (or TX hash) is a unique identifier for your transaction.
+      
+      - Starts with `0x`
+      - 66 characters long
+      - Example: `0x8551993d9c5625bc8e3e75afc58c0aa2998f95be9eb9bd033875157ce900afe8`
+      
+      Think of it like a tracking number for packages - you can use it to track your transaction on the block explorer.
+    </Accordion>
+    
+    <Accordion title="What are gas fees?">
+      **Gas fees** are the cost to process your transaction on the blockchain.
+      
+      On TeQoin L2:
+      - Gas fees are **very low** (usually < $0.01)
+      - Much cheaper than Ethereum L1 ($5-50+)
+      - Paid in ETH automatically from your balance
+    </Accordion>
+    
+    <Accordion title="Why is it so fast?">
+      TeQoin L2 produces blocks every **5 seconds**, compared to Ethereum's 12-15 seconds.
+      
+      This means your transaction confirms in:
+      - ⚡ **~5 seconds** on TeQoin L2
+      - 🐢 **~15 seconds** on Ethereum L1
+    </Accordion>
+  </Tab>
+</Tabs>
+
+---
+
+## 🔍 Verify Your Transaction
+
+Check that your transaction was successful on the block explorer.
+
+<Steps>
+  <Step title="Copy Transaction Hash">
+    From your wallet:
+    
+    - **Telegram Wallet:** Tap transaction → Copy hash
+    - **MetaMask:** Click "View on explorer" or copy hash from activity
+  </Step>
+  
+  <Step title="Open Block Explorer">
+    Visit **https://explorer.teqoin.io**
+  </Step>
+  
+  <Step title="Search Transaction">
+    Paste your transaction hash in the search bar and press Enter
+  </Step>
+  
+  <Step title="View Transaction Details">
+    You should see:
+    
+    | Field | Description |
+    |-------|-------------|
+    | **Status** | ✅ Success (green checkmark) |
+    | **Block** | Block number where transaction was included |
+    | **Timestamp** | When transaction was confirmed |
+    | **From** | Your wallet address |
+    | **To** | Recipient address |
+    | **Value** | Amount sent |
+    | **Transaction Fee** | Gas cost (very low!) |
+    | **Gas Used** | Computational resources used |
+  </Step>
+</Steps>
+
+---
+
+## 💰 Understanding Transaction Costs
+
+Let's break down what you just paid for your transaction.
+
+### Example Transaction Breakdown
+```
+Amount Sent:        0.01 ETH
+Transaction Fee:    0.00001 ETH (~$0.002)
+─────────────────────────────────
+Total Deducted:     0.01001 ETH
+
+Compared to Ethereum L1:
+Amount Sent:        0.01 ETH
+Transaction Fee:    0.005 ETH (~$10-20)
+─────────────────────────────────
+Total Deducted:     0.015 ETH
+```
+
+<Check>
+**500-1000x cheaper** than Ethereum L1!
+</Check>
+
+---
+
+## 🎓 What You Just Learned
+
+Congratulations! You just:
+
+<CardGroup cols={2}>
+  <Card title="Sent a Blockchain Transaction" icon="check">
+    You successfully initiated and confirmed a transaction on TeQoin L2
+  </Card>
+  
+  <Card title="Experienced Low Fees" icon="coins">
+    You paid minimal gas fees compared to Ethereum mainnet
+  </Card>
+  
+  <Card title="Saw 5-Second Confirmation" icon="clock">
+    Your transaction confirmed in just 5 seconds
+  </Card>
+  
+  <Card title="Used a Block Explorer" icon="magnifying-glass">
+    You verified your transaction on the blockchain
+  </Card>
+</CardGroup>
+
+---
+
+## 🚀 Try More Advanced Transactions
+
+Now that you've sent a basic transaction, try these:
+
+<Tabs>
+  <Tab title="Send to Multiple Addresses">
+    **Batch Transactions**
+    
+    Send ETH to multiple recipients in separate transactions:
+    
+    1. Send 0.01 ETH to Address A
+    2. Send 0.02 ETH to Address B
+    3. Send 0.03 ETH to Address C
+    
+    On TeQoin L2, all three transactions will:
+    - Confirm in ~15 seconds total
+    - Cost minimal fees combined
+    
+    On Ethereum L1, this would:
+    - Take ~45 seconds
+    - Cost $30-60 in gas fees
+  </Tab>
+  
+  <Tab title="Interact with a Smart Contract">
+    **Call Contract Functions**
+    
+    Ready to interact with smart contracts?
+    
+    <Steps>
+      <Step title="Find a Contract">
+        Visit the block explorer and find a deployed contract
+        
+        Or use this test contract:
+        `0x5E3A9432a2D6eb0c5D362A0A2F58Bc02Db45850D`
+      </Step>
+      
+      <Step title="Connect Wallet">
+        Some contracts have web interfaces. Connect your wallet to interact.
+      </Step>
+      
+      <Step title="Call Functions">
+        Try calling read functions (free) or write functions (requires gas)
+      </Step>
+    </Steps>
+    
+    [Learn more about smart contracts →](/developers/smart-contracts)
+  </Tab>
+  
+  <Tab title="Test Transaction Speed">
+    **Speed Test Challenge**
+    
+    See how fast TeQoin really is:
+    
+    1. Note the current time
+    2. Send a transaction
+    3. Wait for confirmation
+    4. Check the time again
+    
+    **Goal:** Confirmation in under 10 seconds!
+    
+    Share your results in our [Discord](https://discord.gg/teqoin)!
+  </Tab>
+</Tabs>
+
+---
+
+## 🔧 Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Transaction is pending for a long time">
+    TeQoin L2 transactions should confirm in ~5 seconds.
+    
+    **If stuck on pending:**
+    1. Wait 30 seconds
+    2. Refresh your wallet
+    3. Check the block explorer with your TX hash
+    4. Check network status: https://status.teqoin.io
+    
+    If still pending after 1 minute, join our [Discord](https://discord.gg/teqoin) for support.
+  </Accordion>
+  
+  <Accordion title="'Insufficient funds' error">
+    You don't have enough ETH to cover the amount + gas fee.
+    
+    **Solution:**
+    1. Check your balance
+    2. Try sending a smaller amount
+    3. Get more testnet ETH from the [faucet](/quickstart/get-testnet-eth)
+  </Accordion>
+  
+  <Accordion title="Transaction failed">
+    If your transaction shows "Failed" status:
+    
+    **Common reasons:**
+    - Insufficient gas limit (rare on simple transfers)
+    - Smart contract execution error (if interacting with contracts)
+    - Out of gas
+    
+    **Solution:**
+    1. Check the error message on block explorer
+    2. Try the transaction again
+    3. If interacting with a contract, check contract documentation
+  </Accordion>
+  
+  <Accordion title="Wrong network - sent on Ethereum instead">
+    If you accidentally sent on Ethereum L1:
+    
+    **Prevention:**
+    - Always verify you're on **TeQoin L2** before sending
+    - Check the network name in your wallet
+    
+    **If already sent on L1:**
+    - Your ETH is safe, just on the wrong network
+    - Switch to Ethereum L1 in your wallet to see it
+    - Use the [bridge](/bridge/deposit-l1-to-l2) to move it to TeQoin L2
+  </Accordion>
+  
+  <Accordion title="Recipient didn't receive ETH">
+    If the recipient says they didn't receive the ETH:
+    
+    **Check:**
+    1. View transaction on block explorer - does it show "Success"?
+    2. Did you send to the correct address?
+    3. Is the recipient checking the right network (TeQoin L2)?
+    
+    If transaction succeeded, the ETH was delivered. Recipient needs to:
+    - Switch to TeQoin L2 network in their wallet
+    - Refresh their wallet
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 📊 Transaction Statistics
+
+<CardGroup cols={3}>
+  <Card title="Average Confirmation" icon="clock">
+    **5 seconds**
+    
+    Time to confirm
+  </Card>
+  
+  <Card title="Average Fee" icon="coins">
+    **< $0.01**
+    
+    Per transaction
+  </Card>
+  
+  <Card title="Success Rate" icon="check">
+    **99.9%**
+    
+    Transaction success
+  </Card>
+</CardGroup>
+
+---
+
+## 🎯 Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Bridge Assets from L1" icon="bridge" href="/quickstart/bridge-assets">
+    Move real ETH from Ethereum to TeQoin L2
+  </Card>
+  
+  <Card title="Deploy a Smart Contract" icon="code" href="/developers/deploy-contract">
+    Deploy your first contract on TeQoin
+  </Card>
+  
+  <Card title="Build a DApp" icon="laptop-code" href="/tutorials/build-dapp">
+    Create a decentralized application
+  </Card>
+  
+  <Card title="Explore the Network" icon="compass" href="https://explorer.teqoin.io">
+    Browse transactions and contracts
+  </Card>
+</CardGroup>
+
+---
+
+## 💡 Pro Tips
+
+<Tip>
+**Test First:** Always send a small test transaction first when sending to a new address. Once confirmed, send the larger amount.
+</Tip>
+
+<Tip>
+**Save TX Hashes:** Keep a record of important transaction hashes. You can always look them up later on the block explorer.
+</Tip>
+
+<Tip>
+**Bookmark the Explorer:** Add https://explorer.teqoin.io to your bookmarks for quick transaction lookups.
+</Tip>
+
+<Tip>
+**Same Address Everywhere:** Your wallet address is the same on Ethereum L1, TeQoin L2, and all EVM chains. The ETH just lives on different networks!
+</Tip>
+
+---
+
+**Transaction successful?** You're now ready to [bridge real assets](/quickstart/bridge-assets) or [deploy contracts](/developers/deploy-contract)! 🚀
