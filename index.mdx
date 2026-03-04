@@ -3,50 +3,63 @@ title: "Welcome to TeQoin"
 mode: "custom"
 ---
 
-{/* Main container with subtle radial background gradient */}
-<div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white via-[#F2F7FF] to-[#E6F0FF] dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+{/* Main container */}
+<div className="relative min-h-screen bg-[#F6F9FF] dark:bg-slate-950 overflow-hidden font-sans">
+
+  {/* Background Blobs Container (Based on your provided CSS) */}
+  {/* We center this container to ensure it stays responsive on different screen sizes */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1440px] h-[817px] pointer-events-none z-0">
+    {/* Ellipse 163 */}
+    <div style={{ position: 'absolute', width: '1073px', height: '189px', left: '403px', top: '-22px', background: 'rgba(27, 105, 255, 0.79)', filter: 'blur(197px)' }}></div>
+    {/* Ellipse 156 */}
+    <div style={{ position: 'absolute', width: '244px', height: '348px', left: '473px', top: '35px', background: 'rgba(27, 105, 255, 0.44)', filter: 'blur(117px)' }}></div>
+    {/* Ellipse 164 */}
+    <div style={{ position: 'absolute', width: '177px', height: '436px', left: '717px', top: '-22px', background: '#FCFCFD', filter: 'blur(82px)' }}></div>
+    {/* Ellipse 157 */}
+    <div style={{ position: 'absolute', width: '244px', height: '307px', left: '159px', top: '182px', background: '#B3CCFE', filter: 'blur(97px)' }}></div>
+    {/* Ellipse 160 */}
+    <div style={{ position: 'absolute', width: '684px', height: '141px', left: '879px', top: '354px', background: 'rgba(1, 88, 255, 0.39)', filter: 'blur(97px)' }}></div>
+  </div>
 
   {/* Hero Section */}
-  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative overflow-hidden">
+  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative z-10">
     
     {/* Left Content */}
-    <div className="flex-1 flex flex-col items-start gap-6 z-10">
-      <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white leading-tight m-0 tracking-tight">
+    <div className="flex-1 flex flex-col items-start gap-6">
+      <h1 className="text-5xl md:text-[64px] font-bold text-black dark:text-white leading-[1.1] m-0 tracking-tight">
         Welcome to <br /> TeQoin Blockchain <br /> documentation
       </h1>
       
-      <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 m-0 max-w-lg leading-relaxed font-medium">
+      <p className="text-lg md:text-xl text-black dark:text-slate-300 m-0 max-w-lg leading-relaxed">
         Scaling Solution Using Optimistic Rollups on EVM for zero fee.
       </p>
       
-      <div className="flex flex-wrap items-center gap-6 mt-6">
+      <div className="flex flex-wrap items-center gap-6 mt-4">
         <a
           href="/introduction/what-is-teqoin"
-          className="bg-[#0066FF] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all duration-300 no-underline shadow-[0_10px_20px_-10px_rgba(0,102,255,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(0,102,255,0.6)] hover:-translate-y-1"
+          className="bg-[#2D68FE] text-white px-6 py-3.5 rounded-lg font-medium text-sm hover:bg-blue-700 transition-all duration-300 no-underline shadow-sm"
         >
           Learn TeQoin in Y minutes
         </a>
         <a 
           href="#paths" 
-          className="text-slate-700 dark:text-slate-300 font-semibold text-sm hover:text-[#0066FF] dark:hover:text-[#0066FF] transition-colors no-underline"
+          className="text-black dark:text-slate-300 font-medium text-sm hover:text-[#2D68FE] dark:hover:text-[#2D68FE] transition-colors no-underline"
         >
           Or choose a path
         </a>
       </div>
     </div>
 
-    {/* Right Image with Glow Effect */}
-    <div className="flex-1 flex justify-center relative z-10">
-        {/* The blue glow effect behind the coin */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#0066FF] rounded-full blur-[120px] opacity-40 dark:opacity-30 -z-10"></div>
-        
+    {/* Right Image with Custom Shadow */}
+    <div className="flex-1 flex flex-col justify-center items-center relative z-10">
         {/* The 3D Coin Image */}
-        {/* Important: Ensure your 3D image in /images/TeQoin.svg has a transparent background */}
         <img
           src="/images/TeQoin.svg"
           alt="TeQoin Blockchain Logo"
-          className="w-full max-w-[480px] drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 ease-in-out"
+          className="w-full max-w-[420px] hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
+        {/* The distinct blue shadow underneath the coin */}
+        <div className="w-[280px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%] mt-2 -translate-y-6"></div>
     </div>
   </div>
 
