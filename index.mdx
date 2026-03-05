@@ -15,15 +15,16 @@ mode: "custom"
     <div style={{ position: 'absolute', width: '684px', height: '141px', left: '879px', top: '354px', background: 'rgba(1, 88, 255, 0.39)', filter: 'blur(97px)' }}></div>
   </div>
 
-  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative z-10">
+  {/* Hero Section - Reduced max-width to bring elements to the center */}
+  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 py-24 px-8 max-w-5xl mx-auto relative z-10">
     
     {/* Left Content */}
     <div className="flex-1 flex flex-col items-start gap-6">
-      <h1 className="text-4xl md:text-[56px] font-semibold text-black dark:text-white leading-[1.2] m-0 tracking-tight">
+      <h1 className="text-4xl md:text-[52px] font-semibold text-black dark:text-white leading-[1.2] m-0 tracking-tight">
         Welcome to <br /> TeQoin Blockchain <br /> documentation
       </h1>
       
-      <p className="text-lg md:text-xl text-black dark:text-slate-300 m-0 max-w-lg leading-relaxed">
+      <p className="text-lg md:text-xl text-black dark:text-slate-300 m-0 max-w-md leading-relaxed">
         Scaling Solution Using Optimistic Rollups on EVM for zero fee.
       </p>
       
@@ -48,13 +49,14 @@ mode: "custom"
         <img
           src="/images/TeCoin.png"
           alt="TeQoin Blockchain Logo"
-          style={{ width: '320px', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '300px', height: 'auto', objectFit: 'contain' }}
           className="hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
-        <div className="absolute bottom-[20px] w-[220px] h-[20px] bg-[#122288] blur-[20px] opacity-60 rounded-[100%]"></div>
+        <div className="absolute bottom-[40px] w-[200px] h-[20px] bg-[#122288] blur-[20px] opacity-50 rounded-[100%]"></div>
     </div>
   </div>
 
+  {/* Navigation Paths - Kept wide for the grid layout */}
   <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10 mt-12">
     <CardGroup cols={2}>
       <Card title="Quick Start" icon="rocket" href="/quickstart/add-network">
