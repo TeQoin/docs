@@ -22,11 +22,12 @@ mode: "custom"
   </div>
 
   {/* Hero Section */}
-  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative z-10">
+  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-[1300px] mx-auto relative z-10">
     
     {/* Left Content */}
     <div className="flex-1 flex flex-col items-start gap-6">
-      <h1 className="text-5xl md:text-[64px] font-bold text-black dark:text-white leading-[1.1] m-0 tracking-tight">
+      {/* Updated Font Size, Weight, and Line-height matching Figma */}
+      <h1 className="text-5xl md:text-[78px] font-semibold text-black dark:text-white leading-tight md:leading-[95px] m-0 tracking-tight">
         Welcome to <br /> TeQoin Blockchain <br /> documentation
       </h1>
       
@@ -52,19 +53,19 @@ mode: "custom"
 
     {/* Right Image with Custom Shadow */}
     <div className="flex-1 flex flex-col justify-center items-center relative z-10">
-        {/* The 3D Coin Image */}
+        {/* Updated Image Sizing matching Figma (430x477) */}
         <img
           src="/images/TeCoin.png"
           alt="TeQoin Blockchain Logo"
-          className="w-full max-w-[420px] hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
+          className="w-full max-w-[430px] md:w-[430px] md:h-[477px] object-contain hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
         {/* The distinct blue shadow underneath the coin */}
-        <div className="w-[280px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%] mt-2 -translate-y-6"></div>
+        <div className="w-[300px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%] mt-0 -translate-y-8"></div>
     </div>
   </div>
 
   {/* --- Navigation Paths Section --- */}
-  <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10">
+  <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10 mt-12">
     <CardGroup cols={2}>
       <Card
         title="Quick Start"
