@@ -20,7 +20,6 @@ mode: "custom"
     
     {/* Left Content */}
     <div className="flex-1 flex flex-col items-start gap-6">
-      {/* Reduced font size to 56px to fit nicely while keeping the exact Figma weight */}
       <h1 className="text-4xl md:text-[56px] font-semibold text-black dark:text-white leading-[1.2] m-0 tracking-tight">
         Welcome to <br /> TeQoin Blockchain <br /> documentation
       </h1>
@@ -45,52 +44,33 @@ mode: "custom"
       </div>
     </div>
 
-    {/* Right Image Container - Forced Dimensions */}
-    <div className="relative z-10 flex-shrink-0 flex flex-col justify-center items-center w-[430px] h-[477px]">
-        {/* Strictly enforced 430x477 using inline styles to override Mintlify/Tailwind defaults */}
+    {/* Right Image Container - Smaller Dimensions */}
+    <div className="relative z-10 flex-shrink-0 flex flex-col justify-center items-center w-[320px] h-[350px]">
         <img
           src="/images/TeCoin.png"
           alt="TeQoin Blockchain Logo"
-          style={{ width: '430px', height: '477px', objectFit: 'contain' }}
+          {/* Changed width from 430px to 320px */}
+          style={{ width: '320px', height: 'auto', objectFit: 'contain' }}
           className="hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
-        {/* Adjusted absolute positioning so the shadow stays anchored exactly below the coin */}
-        <div className="absolute bottom-[-10px] w-[300px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%]"></div>
+        {/* Adjusted shadow size to match the 320px coin */}
+        <div className="absolute bottom-[20px] w-[220px] h-[20px] bg-[#122288] blur-[20px] opacity-60 rounded-[100%]"></div>
     </div>
   </div>
 
   {/* --- Navigation Paths Section --- */}
   <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10 mt-12">
     <CardGroup cols={2}>
-      <Card
-        title="Quick Start"
-        icon="rocket"
-        href="/quickstart/add-network"
-      >
+      <Card title="Quick Start" icon="rocket" href="/quickstart/add-network">
         Add the TeQoin network to your wallet, get testnet ETH, and make your first transaction.
       </Card>
-      
-      <Card
-        title="Developer Guides"
-        icon="code"
-        href="/developers/smart-contracts"
-      >
+      <Card title="Developer Guides" icon="code" href="/developers/smart-contracts">
         Deploy, verify, and interact with EVM-compatible smart contracts on TeQoin.
       </Card>
-      
-      <Card
-        title="Bridge Assets"
-        icon="bridge"
-        href="/bridge/overview"
-      >
+      <Card title="Bridge Assets" icon="bridge" href="/bridge/overview">
         Securely transfer your assets between L1 Ethereum and the TeQoin L2 network.
       </Card>
-      
-      <Card
-        title="Architecture"
-        icon="sitemap"
-        href="/architecture/technical-overview"
-      >
+      <Card title="Architecture" icon="sitemap" href="/architecture/technical-overview">
         Deep dive into how our Optimistic Rollup technology works under the hood.
       </Card>
     </CardGroup>
