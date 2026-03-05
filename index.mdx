@@ -6,7 +6,7 @@ mode: "custom"
 {/* Main container */}
 <div className="relative min-h-screen bg-[#F6F9FF] dark:bg-slate-950 overflow-hidden font-sans">
 
-  {/* Background Blobs Container */}
+  {/* Background Blobs */}
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1440px] h-[817px] pointer-events-none z-0">
     <div style={{ position: 'absolute', width: '1073px', height: '189px', left: '403px', top: '-22px', background: 'rgba(27, 105, 255, 0.79)', filter: 'blur(197px)' }}></div>
     <div style={{ position: 'absolute', width: '244px', height: '348px', left: '473px', top: '35px', background: 'rgba(27, 105, 255, 0.44)', filter: 'blur(117px)' }}></div>
@@ -15,7 +15,6 @@ mode: "custom"
     <div style={{ position: 'absolute', width: '684px', height: '141px', left: '879px', top: '354px', background: 'rgba(1, 88, 255, 0.39)', filter: 'blur(97px)' }}></div>
   </div>
 
-  {/* Hero Section */}
   <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative z-10">
     
     {/* Left Content */}
@@ -44,21 +43,18 @@ mode: "custom"
       </div>
     </div>
 
-    {/* Right Image Container - Smaller Dimensions */}
+    {/* Right Image Container */}
     <div className="relative z-10 flex-shrink-0 flex flex-col justify-center items-center w-[320px] h-[350px]">
         <img
           src="/images/TeCoin.png"
           alt="TeQoin Blockchain Logo"
-          {/* Changed width from 430px to 320px */}
           style={{ width: '320px', height: 'auto', objectFit: 'contain' }}
           className="hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
-        {/* Adjusted shadow size to match the 320px coin */}
         <div className="absolute bottom-[20px] w-[220px] h-[20px] bg-[#122288] blur-[20px] opacity-60 rounded-[100%]"></div>
     </div>
   </div>
 
-  {/* --- Navigation Paths Section --- */}
   <div id="paths" className="max-w-7xl mx-auto px-8 pb-24 relative z-10 mt-12">
     <CardGroup cols={2}>
       <Card title="Quick Start" icon="rocket" href="/quickstart/add-network">
