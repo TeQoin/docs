@@ -6,28 +6,22 @@ mode: "custom"
 {/* Main container */}
 <div className="relative min-h-screen bg-[#F6F9FF] dark:bg-slate-950 overflow-hidden font-sans">
 
-  {/* Background Blobs Container (Based on your provided CSS) */}
-  {/* We center this container to ensure it stays responsive on different screen sizes */}
+  {/* Background Blobs Container */}
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1440px] h-[817px] pointer-events-none z-0">
-    {/* Ellipse 163 */}
     <div style={{ position: 'absolute', width: '1073px', height: '189px', left: '403px', top: '-22px', background: 'rgba(27, 105, 255, 0.79)', filter: 'blur(197px)' }}></div>
-    {/* Ellipse 156 */}
     <div style={{ position: 'absolute', width: '244px', height: '348px', left: '473px', top: '35px', background: 'rgba(27, 105, 255, 0.44)', filter: 'blur(117px)' }}></div>
-    {/* Ellipse 164 */}
     <div style={{ position: 'absolute', width: '177px', height: '436px', left: '717px', top: '-22px', background: '#FCFCFD', filter: 'blur(82px)' }}></div>
-    {/* Ellipse 157 */}
     <div style={{ position: 'absolute', width: '244px', height: '307px', left: '159px', top: '182px', background: '#B3CCFE', filter: 'blur(97px)' }}></div>
-    {/* Ellipse 160 */}
     <div style={{ position: 'absolute', width: '684px', height: '141px', left: '879px', top: '354px', background: 'rgba(1, 88, 255, 0.39)', filter: 'blur(97px)' }}></div>
   </div>
 
   {/* Hero Section */}
-  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-[1300px] mx-auto relative z-10">
+  <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 py-24 px-8 max-w-7xl mx-auto relative z-10">
     
     {/* Left Content */}
     <div className="flex-1 flex flex-col items-start gap-6">
-      {/* Updated Font Size, Weight, and Line-height matching Figma */}
-      <h1 className="text-5xl md:text-[78px] font-semibold text-black dark:text-white leading-tight md:leading-[95px] m-0 tracking-tight">
+      {/* Reduced font size to 56px to fit nicely while keeping the exact Figma weight */}
+      <h1 className="text-4xl md:text-[56px] font-semibold text-black dark:text-white leading-[1.2] m-0 tracking-tight">
         Welcome to <br /> TeQoin Blockchain <br /> documentation
       </h1>
       
@@ -51,16 +45,17 @@ mode: "custom"
       </div>
     </div>
 
-    {/* Right Image with Custom Shadow */}
-    <div className="flex-1 flex flex-col justify-center items-center relative z-10">
-        {/* Updated Image Sizing matching Figma (430x477) */}
+    {/* Right Image Container - Forced Dimensions */}
+    <div className="relative z-10 flex-shrink-0 flex flex-col justify-center items-center w-[430px] h-[477px]">
+        {/* Strictly enforced 430x477 using inline styles to override Mintlify/Tailwind defaults */}
         <img
           src="/images/TeCoin.png"
           alt="TeQoin Blockchain Logo"
-          className="w-full max-w-[430px] md:w-[430px] md:h-[477px] object-contain hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
+          style={{ width: '430px', height: '477px', objectFit: 'contain' }}
+          className="hover:-translate-y-2 transition-transform duration-500 ease-in-out relative z-10"
         />
-        {/* The distinct blue shadow underneath the coin */}
-        <div className="w-[300px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%] mt-0 -translate-y-8"></div>
+        {/* Adjusted absolute positioning so the shadow stays anchored exactly below the coin */}
+        <div className="absolute bottom-[-10px] w-[300px] h-[30px] bg-[#122288] blur-[24px] opacity-60 rounded-[100%]"></div>
     </div>
   </div>
 
