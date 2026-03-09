@@ -6,22 +6,6 @@
     "primary": "#0066FF",
     "light": "#00D4AA",
     "dark": "#0066FF"
-  },
-    "metadata": {
-    "google-site-verification": "JnVpGF89QD9EfZZxhkUufUf3r6HVv-atpExcz9kovLY",
-    "og:site_name": "TeQoin Documentation",
-    "og:title": "TeQoin L2 Blockchain Documentation - Developer Guides & API Reference",
-    "og:description": "Complete technical documentation for TeQoin Layer 2 blockchain. Learn how to build on TeQoin with guides, smart contract deployment, bridge integration, and API reference.",
-    "og:url": "https://docs.teqoin.io",
-    "og:image": "https://docs.teqoin.io/images/og-image.png",
-    "twitter:card": "summary_large_image",
-    "twitter:title": "TeQoin L2 Blockchain Documentation",
-    "twitter:description": "Build on TeQoin L2 - Fast, low-fee Ethereum Layer 2 solution with 1000+ TPS",
-    "twitter:site": "@TeQoin"
-  },
-  
-  "seo": {
-    "indexHiddenPages": false
   },    
   "navigation": {
     "tabs": [
