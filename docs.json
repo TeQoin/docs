@@ -1,12 +1,27 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "willow",
-  "name": " TeQoin Official Documentation",
+  "name": "TeQoin Official Documentation",
+  "description": "Complete technical documentation for TeQoin Layer 2 blockchain - Developer guides, API reference, and tutorials for building on TeQoin L2",
+  "favicon": "/images/TeQoin.svg",
+  
   "colors": {
     "primary": "#0066FF",
     "light": "#00D4AA",
     "dark": "#0066FF"
-  },    
+  },
+  
+  "metadata": {
+    "google-site-verification": "JnVpGF89QD9EfZZxhkUufUf3r6HVv-atpExcz9kovLY",
+    "og:site_name": "TeQoin Documentation",
+    "og:title": "TeQoin L2 Blockchain Documentation",
+    "og:description": "Complete technical documentation for TeQoin Layer 2 blockchain",
+    "og:url": "https://docs.teqoin.io",
+    "twitter:card": "summary_large_image",
+    "twitter:title": "TeQoin L2 Documentation",
+    "twitter:site": "@TeQoin"
+  },
+  
   "navigation": {
     "tabs": [
       {
@@ -136,45 +151,48 @@
       ]
     }
   },
+  
   "logo": {
     "light": "/logo/TeQoin.svg",
     "dark": "/logo/TeQoin.svg"
   },
+  
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@teqoin.io"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://dashboard.teqoin.io"
     }
   },
+  
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor",
+      "vscode"
+    ]
   },
+  
   "footer": {
     "socials": {
       "x": "https://x.com/TeQoin",
       "github": "https://github.com/TeQoin"
     }
   },
-
+  
   "appearance": {
     "default": "light"
   },
-  "description": "Welcome to TeQoin Blockchain documentation",
-  "favicon": "/images/TeQoin.svg",
+  
   "fonts": {
     "family": "Inter",
     "weight": 500
