@@ -3,7 +3,7 @@
   "theme": "willow",
   "name": "TeQoin Official Documentation",
   "description": "Complete technical documentation for TeQoin Layer 2 blockchain - Developer guides, API reference, and tutorials for building on TeQoin L2",
-  "favicon": "/images/TeQoin.svg",
+  "favicon": "/images/favicon.svg",
   
   "colors": {
     "primary": "#0066FF",
