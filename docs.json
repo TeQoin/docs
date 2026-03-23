@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "willow",
+  "theme": "mint",
   "name": "TeQoin Official Documentation",
   "description": "Complete technical documentation for TeQoin Layer 2 blockchain - Developer guides, API reference, and tutorials for building on TeQoin L2",
   "favicon": "/images/favicon.svg",
