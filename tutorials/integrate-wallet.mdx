@@ -5,6 +5,111 @@ description: 'Connect browser wallets to a TeQoin application and handle network
 
 # Integrate a wallet
 
-This page is available as part of the TeQoin tutorials rollout.
+Wallet integration is the minimum requirement for any dapp that needs user signatures or transactions. This guide shows a simple browser-wallet integration flow for TeQoin.
 
-The next update will add the wallet connection and network-switching guide for TeQoin.
+## TeQoin network details
+
+Use these values when adding the chain:
+
+| Field | Value |
+| --- | --- |
+| Network name | `TeQoin L2` |
+| RPC URL | `https://rpc.teqoin.io` |
+| Chain ID | `420377` |
+| Chain ID hex | `0x66A19` |
+| Currency symbol | `ETH` |
+
+## Step 1: Detect a wallet
+
+```javascript
+if (!window.ethereum) {
+  throw new Error('No injected wallet was found');
+}
+```
+
+## Step 2: Request access
+
+```javascript
+const accounts = await window.ethereum.request({
+  method: 'eth_requestAccounts',
+});
+
+const activeAccount = accounts[0];
+```
+
+## Step 3: Add or switch the network
+
+```javascript
+const teqoinNetwork = {
+  chainId: '0x66A19',
+  chainName: 'TeQoin L2',
+  rpcUrls: ['https://rpc.teqoin.io'],
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+};
+
+async function connectToTeQoin() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: teqoinNetwork.chainId }],
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [teqoinNetwork],
+      });
+      return;
+    }
+
+    throw error;
+  }
+}
+```
+
+## Step 4: Build an ethers provider
+
+```javascript
+import { ethers } from 'ethers';
+
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const address = await signer.getAddress();
+```
+
+## Step 5: Listen for wallet changes
+
+```javascript
+window.ethereum.on('accountsChanged', (accounts) => {
+  console.log('accountsChanged', accounts);
+});
+
+window.ethereum.on('chainChanged', (chainId) => {
+  console.log('chainChanged', chainId);
+  window.location.reload();
+});
+```
+
+## Recommended UX
+
+Use this flow in production:
+
+1. Detect the wallet on page load.
+2. Ask the user to connect only when they start an action.
+3. Verify the chain before every write transaction.
+4. Show clear errors for rejected signatures and wrong-network states.
+
+## Security notes
+
+- Never ask users to paste private keys into your app.
+- Never store private keys in frontend code.
+- Revalidate the selected account before sending a transaction.
+
+## Where to go next
+
+- Use [/tutorials/build-dapp](/tutorials/build-dapp) to wire wallet actions into a frontend
+- Use [/resources/sdks-libraries](/resources/sdks-libraries) to choose higher-level tooling
