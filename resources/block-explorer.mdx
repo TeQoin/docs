@@ -5,6 +5,59 @@ description: 'Track transactions and confirm explorer availability for the TeQoi
 
 # Block explorer
 
-This page is available as part of the TeQoin resources rollout.
+A block explorer helps you inspect blocks, addresses, transactions, and verified contracts. It is also the fastest way to confirm that a transaction actually landed onchain.
 
-The next update will add the block explorer guide and current endpoint status for TeQoin.
+## What to verify after every transaction
+
+Check these items:
+
+- Transaction hash
+- Status
+- Block number
+- From and to addresses
+- Gas used
+- Event logs
+
+## Current TeQoin status
+
+The live docs navigation currently points to `https://block-explorer.teqoin.io`, but that hostname did not resolve in DNS when this page was verified on April 22, 2026.
+
+Because of that, your safest confirmation path today is:
+
+1. Save the transaction hash from your wallet or deployment script.
+2. Query the TeQoin RPC directly.
+3. Recheck the explorer hostname later if TeQoin publishes it publicly.
+
+## RPC fallback for transaction lookup
+
+Use `cast`:
+
+```bash
+cast tx 0xYourTransactionHash --rpc-url https://rpc.teqoin.io
+```
+
+Or call JSON-RPC directly:
+
+```bash
+curl https://rpc.teqoin.io ^
+  -H "Content-Type: application/json" ^
+  -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[\"0xYourTransactionHash\"],\"id\":1}"
+```
+
+## What to expect from a future explorer
+
+Once the public explorer is live, it should support:
+
+- Address search
+- Block and transaction search
+- Contract verification
+- Token transfers and logs
+
+## Team recommendation
+
+If you operate internal services, treat RPC receipt checks as the source of truth and treat explorer pages as a convenience layer.
+
+## Related pages
+
+- [/tutorials/deploy-first-contract](/tutorials/deploy-first-contract)
+- [/resources/support](/resources/support)
