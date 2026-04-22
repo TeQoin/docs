@@ -1,0 +1,12 @@
+---
+title: 'Get transaction'
+description: 'Reference shape for single-transaction lookups in TeQoin indexer integrations'
+---
+
+# Get transaction
+
+A single-transaction lookup should return the transaction payload, execution status, block placement, and emitted logs.
+
+## Best practice
+
+Always keep the original transaction hash and cross-check the result with an RPC receipt query when the data matters for balances or settlement.

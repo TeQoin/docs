@@ -1,0 +1,150 @@
+---
+title: 'Build dapp'
+description: 'Create a minimal frontend that reads from and writes to a TeQoin smart contract'
+---
+
+# Build a dapp
+
+This tutorial walks through a small React app that connects to TeQoin, reads a contract value, and sends a transaction.
+
+## What you will build
+
+You will build a React app that:
+
+- Connects to a wallet
+- Checks that the user is on TeQoin
+- Reads `number()` from a deployed `Counter`
+- Sends `increment()`
+
+## Step 1: Create the app
+
+```bash
+npm create vite@latest teqoin-counter -- --template react
+cd teqoin-counter
+npm install
+npm install ethers
+```
+
+## Step 2: Add contract details
+
+Create `src/config.js`:
+
+```javascript
+export const TEQOIN_CHAIN_ID = 420377;
+export const TEQOIN_CHAIN_HEX = '0x66A19';
+export const TEQOIN_RPC_URL = 'https://rpc.teqoin.io';
+
+export const COUNTER_ADDRESS = '0xYourContractAddress';
+
+export const COUNTER_ABI = [
+  'function number() view returns (uint256)',
+  'function increment()',
+];
+```
+
+## Step 3: Build the app
+
+Replace `src/App.jsx`:
+
+```jsx
+import { useState } from 'react';
+import { ethers } from 'ethers';
+import {
+  COUNTER_ABI,
+  COUNTER_ADDRESS,
+  TEQOIN_CHAIN_HEX,
+} from './config';
+
+export default function App() {
+  const [account, setAccount] = useState('');
+  const [number, setNumber] = useState('');
+  const [status, setStatus] = useState('Disconnected');
+
+  async function ensureTeQoin() {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: TEQOIN_CHAIN_HEX }],
+    });
+  }
+
+  async function connectWallet() {
+    if (!window.ethereum) {
+      setStatus('Install a wallet first.');
+      return;
+    }
+
+    const [selected] = await window.ethereum.request({
+      method: 'eth_requestAccounts',
+    });
+
+    await ensureTeQoin();
+
+    setAccount(selected);
+    setStatus('Wallet connected');
+  }
+
+  async function readCounter() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const contract = new ethers.Contract(COUNTER_ADDRESS, COUNTER_ABI, provider);
+    const value = await contract.number();
+    setNumber(value.toString());
+  }
+
+  async function incrementCounter() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(COUNTER_ADDRESS, COUNTER_ABI, signer);
+    const tx = await contract.increment();
+
+    setStatus(`Pending: ${tx.hash}`);
+    await tx.wait();
+    setStatus('Transaction confirmed');
+    await readCounter();
+  }
+
+  return (
+    <main style={{ maxWidth: 720, margin: '40px auto', fontFamily: 'sans-serif' }}>
+      <h1>TeQoin Counter</h1>
+      <p>{status}</p>
+      <p>Account: {account || 'Not connected'}</p>
+      <p>Current number: {number || '-'}</p>
+      <button onClick={connectWallet}>Connect wallet</button>
+      <button onClick={readCounter} style={{ marginLeft: 12 }}>
+        Read
+      </button>
+      <button onClick={incrementCounter} style={{ marginLeft: 12 }}>
+        Increment
+      </button>
+    </main>
+  );
+}
+```
+
+## Step 4: Start the app
+
+```bash
+npm run dev
+```
+
+Open the local URL from Vite, connect your wallet, and test the read and write buttons.
+
+## Common fixes
+
+### Wallet switch fails
+
+If `wallet_switchEthereumChain` fails because TeQoin is not added yet, first follow [/tutorials/integrate-wallet](/tutorials/integrate-wallet).
+
+### Contract calls revert
+
+Check:
+
+- The contract address is correct
+- The ABI matches the deployed contract
+- Your wallet is on chain `420377`
+
+## Next steps
+
+- Add loading and error states
+- Store the contract address in an environment variable
+- Add event listening with `provider.on()`
+- Move to Wagmi or Viem if you want a larger React app
