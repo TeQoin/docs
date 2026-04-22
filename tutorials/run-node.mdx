@@ -5,6 +5,95 @@ description: 'Use the public RPC today and prepare for self-hosted node operatio
 
 # Run a node
 
-This page is available as part of the TeQoin tutorials rollout.
+TeQoin currently exposes a public RPC endpoint at `https://rpc.teqoin.io`. If you need read and write access immediately, that endpoint is the fastest option.
 
-The next update will add the current node and RPC operations guidance for TeQoin.
+This page focuses on two practical workflows:
+
+- Using the public RPC in development and automation
+- Preparing your stack for a dedicated or self-hosted node later
+
+## Quick connectivity check
+
+Use a JSON-RPC request to confirm the network is reachable:
+
+```bash
+curl https://rpc.teqoin.io ^
+  -H "Content-Type: application/json" ^
+  -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":1}"
+```
+
+You should get back the TeQoin chain ID in hex.
+
+## Use the public RPC in your tools
+
+### Hardhat
+
+```javascript
+networks: {
+  teqoin: {
+    url: 'https://rpc.teqoin.io',
+    chainId: 420377,
+    accounts: [process.env.PRIVATE_KEY],
+  },
+}
+```
+
+### Foundry
+
+```toml
+[rpc_endpoints]
+teqoin = "https://rpc.teqoin.io"
+```
+
+### Ethers
+
+```javascript
+import { ethers } from 'ethers';
+
+const provider = new ethers.JsonRpcProvider('https://rpc.teqoin.io');
+const blockNumber = await provider.getBlockNumber();
+console.log(blockNumber);
+```
+
+## When you need your own node
+
+A dedicated node becomes useful when you need:
+
+- Higher request volume
+- Internal monitoring
+- Stable latency for production services
+- Control over archival, tracing, or custom indexing
+
+## Suggested operational checklist
+
+Prepare these pieces now, even if you still rely on the public RPC:
+
+- A secrets manager for RPC credentials and wallet keys
+- Request retries and circuit breakers in your backend
+- Health checks for `eth_chainId`, `eth_blockNumber`, and `net_version`
+- Metrics for latency, error rate, and stale block detection
+
+## Health checks to automate
+
+Run these checks on an interval:
+
+```bash
+cast chain-id --rpc-url https://rpc.teqoin.io
+cast block-number --rpc-url https://rpc.teqoin.io
+```
+
+Alert when:
+
+- The chain ID changes unexpectedly
+- Block height stops advancing
+- Latency spikes above your service threshold
+
+## Current limitation
+
+As of April 22, 2026, the public TeQoin GitHub account only exposes the docs repository. A public node repository or install guide was not available in that account when this page was prepared, so this guide documents the live RPC workflow instead of unpublished infrastructure.
+
+## Next steps
+
+- Build against the public RPC first
+- Add monitoring before you scale traffic
+- Revisit this page when TeQoin publishes dedicated node software or operator docs
