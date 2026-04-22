@@ -20,13 +20,18 @@ Check these items:
 
 ## Current TeQoin status
 
-The live docs navigation currently points to `https://block-explorer.teqoin.io`, but that hostname did not resolve in DNS when this page was verified on April 22, 2026.
+As of April 22, 2026:
 
-Because of that, your safest confirmation path today is:
+- Testnet block explorer is live at `https://testnet-blockscan.teqoin.io`
+- The older hostname `https://block-explorer.teqoin.io` did not resolve in DNS from this machine
+
+For testnet activity, use the live blockscan URL first.
+
+For any environment that does not yet have a public explorer hostname, your safest confirmation path is:
 
 1. Save the transaction hash from your wallet or deployment script.
 2. Query the TeQoin RPC directly.
-3. Recheck the explorer hostname later if TeQoin publishes it publicly.
+3. Recheck the public explorer hostname later if TeQoin publishes it.
 
 ## RPC fallback for transaction lookup
 
@@ -46,7 +51,7 @@ curl https://rpc.teqoin.io ^
 
 ## What to expect from a future explorer
 
-Once the public explorer is live, it should support:
+The current testnet explorer should support the usual explorer workflow:
 
 - Address search
 - Block and transaction search
