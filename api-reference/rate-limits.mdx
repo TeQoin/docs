@@ -1,0 +1,30 @@
+---
+title: 'Rate limits'
+description: 'Guidance for handling throughput and retries against TeQoin infrastructure'
+---
+
+# Rate limits
+
+Public blockchain infrastructure should always be treated as rate-limited, even when exact quotas are not published.
+
+## Safe client behavior
+
+Build your apps with:
+
+- Request retries with backoff
+- Batched reads where possible
+- Shared provider instances
+- Circuit breakers around write-heavy workflows
+
+## What to monitor
+
+Track:
+
+- Response latency
+- HTTP error rate
+- RPC error codes
+- Stale block height
+
+## Recommendation
+
+If your application depends on high throughput, plan for a dedicated endpoint or self-hosted infrastructure rather than relying indefinitely on a public shared RPC.
