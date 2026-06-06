@@ -18,7 +18,7 @@ TeQoin operates as a **separate blockchain** that runs in parallel to Ethereum (
 | Aspect | Ethereum L1 | TeQoin L2 |
 |--------|-------------|-----------|
 | **Transaction Speed** | ~12-15 seconds | **5 seconds** |
-| **Transaction Fees** | $1-50+ per transaction | **$0 (zero fees)** |
+| **Transaction Fees** | $1-50+ per transaction | **8 wei baseline on L2 today** |
 | **Security** | Ethereum consensus | **Inherits from Ethereum** |
 | **Smart Contracts** | EVM-compatible | **Fully EVM-compatible** |
 | **Finality** | Probabilistic | **Instant (optimistic)** |
@@ -79,13 +79,39 @@ The fraud proof system ensures:
 ### Low Transaction Fees
 
 <Card title="Gasless Transactions" icon="gift">
-  Users pay **low in gas fees** on TeQoin L2. This makes microtransactions, gaming, and frequent interactions economically viable.
+  Users currently pay a very small **8 wei L2 transaction fee baseline** on TeQoin. This keeps microtransactions, gaming, and frequent interactions economically viable while TeQoin prepares the fuller mainnet fee model.
 </Card>
 
 **How is this possible?**
 - The sequencer covers gas costs
 - Transaction costs are amortized across many users
 - L2 execution is much cheaper than L1
+
+### Mainnet L1 Data Fee Model
+
+TeQoin mainnet is designed to use an **L1 gas price oracle plus a scalar algorithm** for L1 data-fee accounting.
+
+<Note>
+The current low-fee testnet experience should not be treated as the final TeQoin mainnet fee policy. Mainnet fee accounting is expected to include both the L2 execution component and an L1 data component derived from the TeQoin oracle.
+</Note>
+
+At a high level, the mainnet pricing model is:
+
+```text
+L1 fee = adjustedDataGas * l1Price * scalar / 1e6
+adjustedDataGas = compressedGas * priceScalar / 1e6
+compressedGas = rawDataGas * compressionRatio / 1e6
+rawDataGas = zeroBytes * 4 + nonZeroBytes * 16 + 1088
+```
+
+What that means in practice:
+
+- `l1Price` is sourced from the TeQoin L1 gas oracle
+- `compressionRatio` reflects how TeQoin batches and compresses posted transaction data
+- `scalar` is the dynamic multiplier used to tune fee recovery against real L1 posting costs
+- the scalar algorithm is intended to keep TeQoin fee recovery aligned with actual mainnet data-availability costs over time
+
+For developers, the important takeaway is simple: **TeQoin mainnet fee estimation will eventually be oracle-driven, not hardcoded to a fixed zero-fee model**.
 
 ### Full EVM Compatibility
 
@@ -233,7 +259,7 @@ Ready to use TeQoin?
   </Accordion>
 
   <Accordion title="Are there transaction fees?">
-    No! TeQoin provides **zero-fee transactions** for users. The sequencer covers the cost of posting data to Ethereum L1.
+    Yes, but they are currently extremely low. TeQoin L2 currently uses an **8 wei transaction fee baseline**, and the planned mainnet fee model is expected to incorporate the TeQoin L1 gas oracle and scalar-based fee adjustment logic.
   </Accordion>
 </AccordionGroup>
 
