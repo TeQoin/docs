@@ -48,9 +48,9 @@ The **easiest way** to use TeQoin - our official Telegram mini app with **built-
   </Step>
   
   <Step title="Search for TeQoin Wallet">
-    Search for **@TeQoinWalletBot** in Telegram
+    Search for **@TeQoin_Wallet_Bot** in Telegram
     
-    Or click this link: [t.me/TeQoinWalletBot](https://t.me/TeQoinWalletBot)
+    Or click this link: [t.me/TeQoin_Wallet_Bot](https://t.me/TeQoin_Wallet_Bot)
   </Step>
   
   <Step title="Start the Bot">
@@ -159,16 +159,13 @@ Already have MetaMask? Configure it to connect to TeQoin L2.
     RPC URL: https://rpc.teqoin.io
     Chain ID: 420377
     Currency Symbol: ETH
-    Block Explorer URL: https://explorer.teqoin.io
-```
-```text Alternative RPC (if needed)
-    Network Name: TeQoin L2
-    RPC URL: https://rpc-backup.teqoin.io
-    Chain ID: 420377
-    Currency Symbol: ETH
-    Block Explorer URL: https://explorer.teqoin.io
+    Block Explorer URL: https://testnet-blockscan.teqoin.io/
 ```
     </CodeGroup>
+
+    <Note>
+    TeQoin does not currently publish a backup RPC endpoint. Use `https://rpc.teqoin.io` as the active public RPC.
+    </Note>
     
     <Warning>
     **Important:** The Chain ID must be exactly `420377`. Double-check this value!
@@ -211,7 +208,7 @@ Add TeQoin L2 on the MetaMask mobile app.
         - **RPC URL:** https://rpc.teqoin.io
         - **Chain ID:** 420377
         - **Symbol:** ETH
-        - **Block Explorer:** https://explorer.teqoin.io
+        - **Block Explorer:** https://testnet-blockscan.teqoin.io/
       </Step>
       
       <Step title="Save">
@@ -240,7 +237,7 @@ Add TeQoin L2 on the MetaMask mobile app.
         - **RPC URL:** https://rpc.teqoin.io
         - **Chain ID:** 420377
         - **Symbol:** ETH
-        - **Block Explorer:** https://explorer.teqoin.io
+        - **Block Explorer:** https://testnet-blockscan.teqoin.io/
       </Step>
       
       <Step title="Save">
@@ -271,7 +268,7 @@ async function addTeQoinNetwork() {
           symbol: 'ETH',
           decimals: 18
         },
-        blockExplorerUrls: ['https://explorer.teqoin.io']
+        blockExplorerUrls: ['https://testnet-blockscan.teqoin.io/']
       }]
     });
     
@@ -304,7 +301,7 @@ async function addTeQoinNetwork(): Promise<void> {
           symbol: 'ETH',
           decimals: 18
         },
-        blockExplorerUrls: ['https://explorer.teqoin.io']
+        blockExplorerUrls: ['https://testnet-blockscan.teqoin.io/']
       }]
     });
   } catch (error) {
@@ -332,7 +329,7 @@ function AddNetworkButton() {
             symbol: 'ETH',
             decimals: 18
           },
-          blockExplorerUrls: ['https://explorer.teqoin.io']
+          blockExplorerUrls: ['https://testnet-blockscan.teqoin.io/']
         }]
       });
       alert('Network added! Please switch to TeQoin L2');
@@ -360,13 +357,13 @@ Quick reference for all TeQoin L2 network parameters.
 |-----------|-------|-------|
 | **Network Name** | TeQoin L2 | Display name in wallet |
 | **RPC URL** | https://rpc.teqoin.io | Primary endpoint |
-| **RPC URL (Backup)** | https://rpc-backup.teqoin.io | Fallback if primary fails |
+| **RPC URL (Backup)** | Not available currently | TeQoin does not publish a backup RPC yet |
 | **WebSocket URL** | wss://ws.teqoin.io | For real-time data |
 | **Chain ID** | 420377 | Decimal format |
 | **Chain ID (Hex)** | 0x66B69 | Hexadecimal format |
 | **Currency Symbol** | ETH | Native currency |
 | **Currency Decimals** | 18 | Standard for ETH |
-| **Block Explorer** | https://explorer.teqoin.io | View transactions |
+| **Block Explorer** | https://testnet-blockscan.teqoin.io/ | View transactions |
 | **Block Time** | 5 seconds | Average time between blocks |
 
 ---
@@ -379,7 +376,7 @@ Make sure you're connected correctly.
   <Tab title="TeQoin Telegram Wallet">
     <Steps>
       <Step title="Open Wallet">
-        Open @TeQoinWalletBot in Telegram
+        Open @TeQoin_Wallet_Bot in Telegram
       </Step>
       
       <Step title="Check Network">
@@ -410,7 +407,7 @@ Make sure you're connected correctly.
         Try viewing your account on the block explorer:
         
         1. Copy your wallet address
-        2. Visit https://explorer.teqoin.io
+        2. Visit https://testnet-blockscan.teqoin.io/
         3. Paste your address in the search bar
         
         You should see your account page (even with 0 balance)
@@ -424,14 +421,14 @@ Make sure you're connected correctly.
 ## 🔧 Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Can't find @TeQoinWalletBot on Telegram">
+  <Accordion title="Can't find @TeQoin_Wallet_Bot on Telegram">
     Make sure you're searching in the global Telegram search (not just in chats).
     
     **Solution:**
     1. Open Telegram
     2. Use the search bar at the top
-    3. Type: `@TeQoinWalletBot`
-    4. Or visit: https://t.me/TeQoinWalletBot
+    3. Type: `@TeQoin_Wallet_Bot`
+    4. Or visit: https://t.me/TeQoin_Wallet_Bot
   </Accordion>
   
   <Accordion title="MetaMask says 'Chain ID already exists'">
@@ -446,13 +443,13 @@ Make sure you're connected correctly.
   </Accordion>
   
   <Accordion title="RPC URL not responding">
-    If the primary RPC isn't working:
+    TeQoin currently publishes a single public RPC endpoint.
     
     **Solution:**
-    1. Try the backup RPC: `https://rpc-backup.teqoin.io`
+    1. Re-check the primary RPC: `https://rpc.teqoin.io`
     2. Check your internet connection
     3. Try again in a few minutes
-    4. Join our [Discord](https://discord.gg/teqoin) for live support
+    4. Contact support through [/resources/support](/resources/support)
   </Accordion>
   
   <Accordion title="Wrong Chain ID error">
