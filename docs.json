@@ -148,7 +148,7 @@
         },
         {
           "anchor": "Block Explorer",
-          "href": "https://block-explorer.teqoin.io",
+          "href": "https://testnet-blockscan.teqoin.io/",
           "icon": "magnifying-glass"
         }
       ]
