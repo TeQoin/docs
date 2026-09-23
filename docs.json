@@ -93,7 +93,8 @@
               "resources/sdks-libraries",
               "resources/block-explorer",
               "resources/faucet",
-              "resources/support"
+              "resources/support",
+              "resources/legal-disclaimer"
             ]
           }
         ]
